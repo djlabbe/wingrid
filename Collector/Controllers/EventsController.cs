@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Wingrid.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+using Wingrid.Collector.Services;
 
-namespace Wingrid.Web.Controllers;
+namespace Wingrid.Collector.Controllers;
 
 [Route("api/[controller]")]
+[ApiController]
 public class EventsController : BaseController<EventsController>
 {
     private readonly IEventsService _eventsService;
@@ -17,9 +18,8 @@ public class EventsController : BaseController<EventsController>
     public async Task<IActionResult> Get([FromQuery] int? season)
     {
        return await ExecuteActionAsync(async () => {
-            var events = await _eventsService.GetEventsAsync(season);
+            var events = season == null ? await _eventsService.GetEventsAsync() : await _eventsService.GetEventsBySeasonAsync(season.Value);
             return Ok(events);
        });
     }
 }
-

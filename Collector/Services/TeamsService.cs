@@ -1,8 +1,8 @@
-using Domain;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
-namespace Collector.Services
+using Microsoft.EntityFrameworkCore;
+using Wingrid.Collector.Models;
+
+namespace Wingrid.Collector.Services
 {
     public interface ITeamsService
     {

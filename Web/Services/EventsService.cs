@@ -1,26 +1,24 @@
-using Domain;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Wingrid.Web.Models;
+using Wingrid.Web.Models.Exceptions;
 
-namespace Web.Services
+namespace Wingrid.Web.Services
 {
     public interface IEventsService
     {
-        public IEnumerable<Event> GetEvents();
+        public Task<IEnumerable<Event>> GetEventsAsync(int? season);
     }
 
     public class EventsService : IEventsService
     {
-        private readonly DataContext _context;
+        static readonly HttpClient _client = new();
 
-        public EventsService(DataContext context)
-        {
-            _context = context;
-        }
+         static readonly string COLLECTOR_API = "https://localhost:7286/api";
 
-        public IEnumerable<Event> GetEvents()
+        public async Task<IEnumerable<Event>> GetEventsAsync(int? season)
         {
-           return _context.Events;
+            var query = season == null ? "" : $"?season={season}";
+            var response = await _client.GetFromJsonAsync<List<Event>>($"{COLLECTOR_API}/events{query}") ?? throw new NotFoundException();
+            return response;
         }
     }
 }

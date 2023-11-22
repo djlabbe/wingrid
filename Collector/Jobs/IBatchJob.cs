@@ -1,9 +1,7 @@
-using Hangfire;
 using Hangfire.Server;
 
-namespace Collector.Jobs
+namespace Wingrid.Collector.Jobs
 {
-   
     public interface IBatchJob
     {
         static string? JobId { get; }

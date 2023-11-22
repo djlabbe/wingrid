@@ -1,9 +1,8 @@
-using Collector.Services;
-using Domain;
 using Hangfire.Console;
 using Hangfire.Server;
+using Wingrid.Collector.Services;
 
-namespace Collector.Jobs
+namespace Wingrid.Collector.Jobs
 {
     public class TeamsJob : IBatchJob
     {

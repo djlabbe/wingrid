@@ -1,24 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Persistence;
-using Web.Services;
+﻿using Wingrid.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = GetConnectionString(builder, "DefaultConnection");
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add services to the container.
-builder.Services.AddDbContext<DataContext>(opt =>
-{
-    opt.UseNpgsql(connectionString);
-});
-
-
-builder.Services.AddMemoryCache().AddTransient<IEventsService, EventsService>();
+builder.Services.AddTransient<IEventsService, EventsService>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
 
-
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -31,22 +30,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+var services = app.Services.CreateScope().ServiceProvider;
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
-
 app.Run();
-
-string GetConnectionString(WebApplicationBuilder builder, string name)
-{
-    if (string.IsNullOrWhiteSpace(name))
-        throw new ArgumentException(nameof(name));
-
-    var connectionString = builder.Configuration.GetConnectionString(name);
-
-    var password = builder.Configuration["DB_Password"] ?? throw new Exception("Missing environment variable: DB_Password");
-    return $"{connectionString};Password={password}";
-}

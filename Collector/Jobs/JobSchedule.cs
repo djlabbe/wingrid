@@ -1,6 +1,6 @@
 using Hangfire;
 
-namespace Collector.Jobs
+namespace Wingrid.Collector.Jobs
 {
     public class JobSchedule
     {

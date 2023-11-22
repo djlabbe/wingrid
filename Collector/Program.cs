@@ -1,43 +1,52 @@
-using Application.Services;
-using Collector.Jobs;
-using Collector.Services;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.PostgreSql;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Wingrid.Collector;
+using Wingrid.Collector.Jobs;
+using Wingrid.Collector.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var connectionString = GetConnectionString(builder, "DefaultConnection");
 
-// Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddTransient<IEspnService, EspnService>();
 builder.Services.AddTransient<IEventsService, EventsService>();
 builder.Services.AddTransient<ITeamsService, TeamsService>();
 
-builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(opt =>
 {
     opt.UseNpgsql(connectionString);
 });
 
-builder.Services
-    .AddHangfire(config => {
-        config.UseConsole(); 
-        config.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString));
-    })
-    .AddHangfireServer(options => { options.WorkerCount = 10; });
+builder.Services.AddHangfire(config => {
+    config.UseConsole(); 
+    config.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString));
+}).AddHangfireServer(options => { options.WorkerCount = 10; });
+
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
 
-app.UseAuthorization();
+app.UseHttpsRedirection();
 
 app.UseHangfireDashboard();
 
 var services = app.Services.CreateScope().ServiceProvider;
-
 try
 {
     var context = services.GetRequiredService<DataContext>();
@@ -52,24 +61,22 @@ catch (Exception ex)
 AddRecurringJob<TeamsJob>(TeamsJob.JobId);
 AddRecurringJob<EventsJob>(EventsJob.JobId);
 
-// app.MapControllers();
+app.MapControllers();
 
 app.Run();
 
-
-void AddRecurringJob<T>(string jobId) where T : IBatchJob
-{
-    RecurringJob.AddOrUpdate<T>(jobId, j => j.ExecuteAsync(null), JobSchedule.GetCronExpression<T>(app.Environment.EnvironmentName));
-}
-
-string GetConnectionString(WebApplicationBuilder builder, string name)
+static string GetConnectionString(WebApplicationBuilder builder, string name)
 {
     if (string.IsNullOrWhiteSpace(name))
-        throw new ArgumentException("Name is required.", nameof(name));
+        throw new ArgumentException("Connection name is required.", nameof(name));
 
     var connectionString = builder.Configuration.GetConnectionString(name);
 
     var password = builder.Configuration["DB_Password"] ?? throw new Exception("Missing environment variable: DB_Password");
-
     return $"{connectionString};Password={password}";
+}
+
+void AddRecurringJob<T>(string jobId) where T : IBatchJob
+{
+    RecurringJob.AddOrUpdate<T>(jobId, j => j.ExecuteAsync(null), JobSchedule.GetCronExpression<T>(builder.Environment.EnvironmentName));
 }

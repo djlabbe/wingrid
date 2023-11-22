@@ -1,15 +1,14 @@
-using Domain;
-using Domain.Espn;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
-using static Domain.Espn.Status;
+using Wingrid.Collector.Models;
+using Wingrid.Collector.Models.Espn;
 
-namespace Application.Services
+namespace Wingrid.Collector.Services
 {
     public interface IEventsService
     {
         public Task<IEnumerable<Event>> GetEventsAsync();
-        public Task<Event> AddOrUpdateEvent(EspnEvent espnEvent);
+        public Task<IEnumerable<Event>> GetEventsBySeasonAsync(int season);
+        public Task<Event> AddOrUpdateEventAsync(EspnEvent espnEvent);
         public Task<int> SaveChangesAsync();
     }
 
@@ -29,7 +28,14 @@ namespace Application.Services
             return events;
         }
 
-        public async Task<Event> AddOrUpdateEvent(EspnEvent espnEvent)
+        public async Task<IEnumerable<Event>> GetEventsBySeasonAsync(int season)
+        {
+            var events = await _context.Events.Where(e => e.Season == season).ToListAsync();
+            return events;
+        }
+
+
+        public async Task<Event> AddOrUpdateEventAsync(EspnEvent espnEvent)
         {
             var entity = await _context.Events.FirstOrDefaultAsync(e => e.Id == espnEvent.Id);
 

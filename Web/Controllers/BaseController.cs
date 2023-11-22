@@ -1,7 +1,7 @@
-using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Wingrid.Web.Models.Exceptions;
 
-namespace Web.Controllers
+namespace Wingrid.Web.Controllers
 {
     [ApiController]
     public abstract class BaseController<T> : ControllerBase where T : BaseController<T>

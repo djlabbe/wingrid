@@ -1,9 +1,8 @@
-using Application.Services;
-using Collector.Services;
 using Hangfire.Console;
 using Hangfire.Server;
+using Wingrid.Collector.Services;
 
-namespace Collector.Jobs
+namespace Wingrid.Collector.Jobs
 {
     public class EventsJob : IBatchJob
     {
@@ -33,7 +32,7 @@ namespace Collector.Jobs
                     foreach (var e in response.Events)
                     {
                         performContext.WriteLine($"Processing event {e.Id}");
-                        await _eventsService.AddOrUpdateEvent(e);
+                        await _eventsService.AddOrUpdateEventAsync(e);
                     }
                 }
             }
