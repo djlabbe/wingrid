@@ -1,4 +1,4 @@
-using Wingrid.Collector.Models;
+using Wingrid.Services.Collector.Models;
 
 namespace Collector.Tests.Models
 {

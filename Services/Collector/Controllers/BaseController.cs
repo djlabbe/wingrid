@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Wingrid.Services.Collector.Models.Dto;
 
-namespace Wingrid.Collector.Controllers;
+namespace Wingrid.Services.Collector.Controllers;
 
 [ApiController]
 public abstract class BaseController<T> : ControllerBase where T : BaseController<T>
