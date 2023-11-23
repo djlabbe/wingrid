@@ -24,7 +24,7 @@
 <h3 align="center">Wingrid</h3>
 
   <p align="center">
-    project_description
+    Pick weekly NFL winners, win bragging rights!
     <br />
     <a href="https://github.com/djlabbe/wingrid"><strong>Explore the docs »</strong></a>
     <br />
