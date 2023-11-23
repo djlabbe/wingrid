@@ -14,8 +14,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -47,9 +45,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -59,7 +54,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <!-- <li><a href="#roadmap">Roadmap</a></li> -->
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
@@ -70,29 +65,23 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://wingrid.io)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+Wingrid is in the early stages of development, but will become a platform to play football "pick-em" competitions. Currently, the Collector service collects data on all available NFL games from ESPN APIs. Eventually, this data will be used
+to generate a subset of games each week for users to predict the winner of. As the games are completed, Collector records
+the final score and game winner. Wingrid will determine which user correctly predicted the winner for the most games each week. 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-* [![Dotnet][Dotnet]][Dotnet-url]
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these  steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Wingrid requires the following tools:
+
 * dotnet 8.0+
   ```sh
   https://dotnet.microsoft.com/en-us/
@@ -141,7 +130,7 @@ _For more examples, please refer to the [Documentation](https://wingrid.io)_
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- ROADMAP -->
+<!-- ROADMAP
 ## Roadmap
 
 - [ ] Feature 1
@@ -151,13 +140,13 @@ _For more examples, please refer to the [Documentation](https://wingrid.io)_
 
 See the [open issues](https://github.com/djlabbe/wingrid/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - dougjlabbe@gmail.com
+Douglas Labbe - dougjlabbe@gmail.com
 
 Project Link: [https://github.com/djlabbe/wingrid](https://github.com/djlabbe/wingrid)
 
@@ -166,19 +155,19 @@ Project Link: [https://github.com/djlabbe/wingrid](https://github.com/djlabbe/wi
 
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+<!-- ## Acknowledgments
 
 * []()
 * []()
 * []()
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
+<!-- [contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
 [contributors-url]: https://github.com/djlabbe/wingrid/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
 [forks-url]: https://github.com/djlabbe/wingrid/network/members
@@ -206,4 +195,4 @@ Project Link: [https://github.com/djlabbe/wingrid](https://github.com/djlabbe/wi
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[JQuery-url]: https://jquery.com  -->
