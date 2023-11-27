@@ -137,7 +137,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: wingridEventAPI-app
+          name: wingridFixtureAPI-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
