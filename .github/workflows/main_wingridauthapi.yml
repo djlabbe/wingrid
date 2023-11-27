@@ -23,12 +23,10 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: cd Services/Wingrid.Services.Auth
-        run: dotnet build --configuration Release
+        run: cd Services/Wingrid.Services.Auth && dotnet build --configuration Release
 
       - name: dotnet publish
-        run: cd Services/Wingrid.Services.Auth
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/wingridAuthAPI
+        run: cd Services/Wingrid.Services.Auth && dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/wingridAuthAPI
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
