@@ -1,4 +1,4 @@
-namespace Collector.Tests.Services;
+namespace EventAPI.Tests.Services;
 
 public class EspnServiceTest
 {

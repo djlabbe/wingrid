@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/FrontEnd/Wingrid.Web/bin/Debug/net8.0/Wingrid.Web.dll",
+            "program": "${workspaceFolder}/Services/Wingrid.Services.FixtureAPI/bin/Debug/net8.0/Wingrid.Services.FixtureAPI.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/FrontEnd/Wingrid.Web",
+            "cwd": "${workspaceFolder}/Services/Wingrid.Services.FixtureAPI",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

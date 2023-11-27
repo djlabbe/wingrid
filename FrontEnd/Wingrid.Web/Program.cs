@@ -8,15 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<IFixturesService, FixturesService>();
 builder.Services.AddHttpClient<IEventsService, EventsService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
-StaticDetails.CollectorAPIBase = builder.Configuration["ServiceUrls:CollectorAPI"] ?? "";
+StaticDetails.FixturesAPIBase = builder.Configuration["ServiceUrls:FixturesAPI"] ?? "";
+StaticDetails.EventAPIBase = builder.Configuration["ServiceUrls:EventAPI"] ?? "";
 StaticDetails.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"] ?? "";
 
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFixturesService, FixturesService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {

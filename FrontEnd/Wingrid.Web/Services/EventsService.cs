@@ -25,7 +25,7 @@ namespace Wingrid.Web.Services
             if (season != null) param.Add("season", season.ToString());
             if (week != null) param.Add("week", week.ToString());
 
-            var url = QueryHelpers.AddQueryString($"{CollectorAPIBase}/api/events", param);
+            var url = QueryHelpers.AddQueryString($"{EventAPIBase}/api/events", param);
 
             return await _baseService.SendAsync(new RequestDto() {
                 ApiType=ApiType.GET,

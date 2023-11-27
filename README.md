@@ -67,8 +67,8 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://wingrid.io)
 
-Wingrid is in the early stages of development, but will become a platform to play football "pick-em" competitions. Currently, the Collector service collects data on all available NFL games from ESPN APIs. Eventually, this data will be used
-to generate a subset of games each week for users to predict the winner of. As the games are completed, Collector records
+Wingrid is in the early stages of development, but will become a platform to play football "pick-em" competitions. Currently, the EventAPI service collects data on all available NFL games from ESPN APIs. Eventually, this data will be used
+to generate a subset of games each week for users to predict the winner of. As the games are completed, EventAPI records
 the final score and game winner. Wingrid will determine which user correctly predicted the winner for the most games each week. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -106,9 +106,9 @@ Wingrid requires the following tools:
    cd Services/Auth
    dotnet run
    ```
-3. Start the Collector Service
+3. Start the EventAPI Service
    ```sh
-   cd Services/Collector
+   cd Services/EventAPI
    dotnet run
    ```
 4. Start the Web Application
@@ -123,7 +123,7 @@ Wingrid requires the following tools:
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-With the Collector service running, navigate to https://localhost:7001/hangfire to view the Hangfire dashboard and control Collector batch jobs. Click on "Recurring Jobs", first execute the Teams job, and then the Events job to populate the database. Subsequent runs of the events job will update any existing events (eg. populating the score once the event is in progress or completed.)
+With the EventAPI service running, navigate to https://localhost:7002/hangfire to view the Hangfire dashboard and control EventAPI batch jobs. Click on "Recurring Jobs", first execute the Teams job, and then the Events job to populate the database. Subsequent runs of the events job will update any existing events (eg. populating the score once the event is in progress or completed.)
 
 _For more examples, please refer to the [Documentation](https://wingrid.io)_
 
