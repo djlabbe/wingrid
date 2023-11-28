@@ -5,7 +5,7 @@ using Wingrid.Gateway.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddAppAuthentication();
-if(builder.Environment.ToString()?.ToLower().Equals("production") == true)
+if(builder.Environment.EnvironmentName.ToString()?.ToLower().Equals("production") == true)
 {
     builder.Configuration.AddJsonFile("ocelot.Production.json", optional: false, reloadOnChange: true);
 }
