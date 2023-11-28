@@ -24,6 +24,30 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    
+  build-gateway:
+    runs-on: windows-latest
+    needs: unittest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        run: cd Gateway/Wingrid.Gateway && dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: cd Gateway/Wingrid.Gateway && dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/wingridGateway
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: wingridGateway-app
+          path: ${{env.DOTNET_ROOT}}/wingridGateway
 
   build-auth:
     runs-on: windows-latest
@@ -46,7 +70,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: winGridAuthAPI-app
+          name: wingridAuthAPI-app
           path: ${{env.DOTNET_ROOT}}/wingridAuthAPI
   
   build-eventapi:
@@ -97,6 +121,28 @@ jobs:
           name: wingridFixtureAPI-app
           path: ${{env.DOTNET_ROOT}}/wingridFixtureAPI
 
+  deploy-gateway:
+    runs-on: windows-latest
+    needs: build-gateway
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: wingridGateway-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'WingridGateway'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_403FFCA611DB4ABAAA758DACF4FC4A7E }}
+          package: .
+
   deploy-auth:
     runs-on: windows-latest
     needs: build-auth
@@ -108,7 +154,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: winGridAuthAPI-app
+          name: wingridAuthAPI-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
