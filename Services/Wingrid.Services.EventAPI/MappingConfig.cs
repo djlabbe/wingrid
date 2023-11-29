@@ -10,8 +10,8 @@ namespace Wingrid.Services.EventAPI
         {
             var mappingConfig = new MapperConfiguration(config => 
             {
-                config.CreateMap<Event, EventDto>();
-                config.CreateMap<EventDto, Event>();
+                config.CreateMap<Event, EventDto>().ReverseMap();
+                config.CreateMap<Team, TeamDto>().ReverseMap();
             });
             
             return mappingConfig;

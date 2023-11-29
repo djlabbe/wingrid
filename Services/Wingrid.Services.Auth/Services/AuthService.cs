@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using Auth.Models;
 using Auth.Models.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Wingrid.Auth.Data;
 using Wingrid.Services.Auth.Models.Dto;
 
@@ -10,22 +12,43 @@ namespace Wingrid.Services.Auth.Services
     {
         Task<string> Register(RegistrationRequestDto registrationRequestDto);
         Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+        Task<LoginResponseDto> GetCurrentUser(string? email);
         Task<bool> AssignRole(string email, string roleName);
     }
 
-    public class AuthService : IAuthService
+    public class AuthService(AppDbContext db, IJwtTokenGenerator jwtTokenGenerator, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) : IAuthService
     {
-        private readonly AppDbContext _db;
-        private readonly IJwtTokenGenerator _jwtTokenGenerator;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AppDbContext _db = db;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator = jwtTokenGenerator;
+        private readonly UserManager<ApplicationUser> _userManager = userManager;
+        private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
-        public AuthService(AppDbContext db, IJwtTokenGenerator jwtTokenGenerator, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
-        {
-            _db = db;
-            _jwtTokenGenerator = jwtTokenGenerator;
-            _userManager = userManager;
-            _roleManager = roleManager;
+        public async Task<LoginResponseDto> GetCurrentUser(string? email)
+        { 
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return new LoginResponseDto() { User = null, Token = "" };
+            }
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
+            if (user == null) return new LoginResponseDto() { User = null, Token = "" };
+             UserDto userDto = new()
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
+                PhoneNumber = user.PhoneNumber,
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            LoginResponseDto loginResponseDto = new ()
+            {
+                User = userDto,
+                Roles = [.. roles],
+                Token = _jwtTokenGenerator.GenerateToken(user, roles),
+            };
+
+            return loginResponseDto;
         }
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
@@ -53,6 +76,7 @@ namespace Wingrid.Services.Auth.Services
             LoginResponseDto loginResponseDto = new ()
             {
                 User = userDto,
+                Roles = [.. roles],
                 Token = _jwtTokenGenerator.GenerateToken(user, roles),
             };
 

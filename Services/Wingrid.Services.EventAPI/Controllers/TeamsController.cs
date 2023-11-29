@@ -8,18 +8,11 @@ namespace Wingrid.Services.EventAPI.Controllers
 {
     [Route("api/teams")]
     [ApiController]
-    [Authorize]
-    public class TeamsController : BaseController<TeamsController>
+    // [Authorize]
+    public class TeamsController(ITeamsService teamsService, IMapper mapper) : BaseController<TeamsController>
     {
-        private readonly ITeamsService _teamsService;
-        private readonly IMapper _mapper;
-
-
-        public TeamsController(ITeamsService teamsService, IMapper mapper)
-        {
-            _teamsService = teamsService;
-            _mapper = mapper;
-        }
+        private readonly ITeamsService _teamsService = teamsService;
+        private readonly IMapper _mapper = mapper;
 
     [HttpGet]
     [Route("{id}")]

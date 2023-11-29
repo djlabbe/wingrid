@@ -1,19 +1,36 @@
 
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wingrid.Services.Auth.Models.Dto;
 using Wingrid.Services.Auth.Services;
 
 namespace Wingrid.Services.Auth.Controllers
 {
-
     [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthService authService) : ControllerBase
     {
-        private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly IAuthService _authService = authService;
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentUser()
         {
-            _authService = authService;
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            var loginResponse = await _authService.GetCurrentUser(userEmail);
+             if (loginResponse.User == null)
+            {
+                var res = new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Message = "Error logging in. Please try logging in again.",
+                };
+                return BadRequest(res);
+            }
+
+            return Ok(new ResponseDto() { Result = loginResponse });
         }
 
         [HttpPost("register")]

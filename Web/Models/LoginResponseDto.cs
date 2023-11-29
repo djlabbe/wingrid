@@ -1,6 +1,4 @@
-using Wingrid.Services.Auth.Models.Dto;
-
-namespace Auth.Models.Dto
+namespace Wingrid.Web.Models
 {
     public class LoginResponseDto
     {
