@@ -1,9 +1,8 @@
-import NavBar from './components/NavBar';
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { ToastContainer } from 'react-toastify';
 import { LoginProvider } from './hooks/LoginContext';
-import NavBarNew from './components/NavBarNew';
+import NavBar from './components/NavBar';
 
 
 const App = () => {
@@ -11,7 +10,7 @@ const App = () => {
     <LoginProvider>
       <BrowserRouter>
         <ToastContainer />
-        <NavBarNew />
+        <NavBar />
         <AppRoutes/>
       </BrowserRouter>
     </LoginProvider>

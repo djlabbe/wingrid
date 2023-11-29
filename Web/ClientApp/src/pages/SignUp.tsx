@@ -2,7 +2,7 @@ import { useState } from "react";
 import { post } from "../services/api";
 import { RegistrationRequestDto } from "../models/RegistrationRequestDto";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toastifyError } from "../services/toastService";
 
 const SignUp = () => {
     const [formData, setFormData] = useState<RegistrationRequestDto>();
@@ -14,7 +14,7 @@ const SignUp = () => {
         await post<string>("/api/auth/register", formData);
         navigate("/login");
       } catch (e) {
-        toast(`Error - ${e}`)
+        toastifyError(`${e}`)
         console.error(e);
       }
     }

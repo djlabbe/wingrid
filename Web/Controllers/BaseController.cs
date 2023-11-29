@@ -8,7 +8,7 @@ public abstract class BaseController<T> : ControllerBase where T : BaseControlle
     protected ILogger<T>? _logger;
     protected ILogger<T>? Logger => _logger ??= HttpContext.RequestServices.GetService<ILogger<T>>();
 
-    protected async Task<object> ExecuteActionAsync(Func<Task<object>> func)
+    protected async Task<IActionResult> ExecuteActionAsync(Func<Task<IActionResult>> func)
     {
         try
         {

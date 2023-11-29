@@ -2,7 +2,7 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import LoginResult from "../models/LoginResult";
 import { get, post } from "../services/api";
 import { LoginResponseDto } from "../models/LoginResponseDto";
-import { toast } from "react-toastify";
+import { toastifyError } from "../services/toastService";
 
 type LoginContextState = {
     login?: (username: string, password: string) => void;
@@ -59,14 +59,13 @@ export const LoginProvider = ({children}: Props) => {
                 token: loginResponse.token,
                 isLoggingIn: false,
             });
-            console.log(`LOGGED IN: ${loginResponse.user.email}`)
         } catch (e) {
             console.error(e);
             setState({
                 isLoggingIn: false,
                 loginError: `${e}`
             });
-            toast(`Error Logging In - ${e}`)
+            toastifyError(`${e}`)
         }
     }
      
@@ -82,7 +81,7 @@ export const LoginProvider = ({children}: Props) => {
                 isLoggingIn: false,
             })
           } catch (e) {
-            toast(`Error - ${e}`)
+            toastifyError(`${e}`)
             console.error(e);
           }
     }
