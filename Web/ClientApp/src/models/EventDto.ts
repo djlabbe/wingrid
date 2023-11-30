@@ -2,7 +2,7 @@ import { TeamDto } from "./TeamDto";
 
 export interface EventDto {
     // Event
-    od: string;
+    id: string;
     date: string;
     name: string;
     shortName: string;

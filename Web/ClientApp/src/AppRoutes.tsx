@@ -7,7 +7,7 @@ import { useLoginContext } from "./hooks/useLoginContext";
 import NotAuthorized from "./pages/NotAuthorized";
 import Dashboard from "./pages/Dashboard";
 import ContainerLoading from "./components/ContainerLoading";
-import Admin from "./pages/Admin";
+import Admin from "./pages/Admin/Admin";
 
 interface AuthRequiredProps {
     authorizedRoles: string[],

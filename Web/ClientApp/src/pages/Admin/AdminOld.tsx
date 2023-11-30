@@ -1,8 +1,8 @@
 import { Button, Carousel } from 'flowbite-react';
 import { HiOutlineArrowLeft, HiOutlineArrowRight } from 'react-icons/hi';
-import { get } from '../services/api';
+import { get } from '../../services/api';
 
-const Admin = () => {
+const AdminOld = () => {
     const handleSelectWeek = async (week: number) => {
         try {
             await get(`/api/events/?season=2023&week=${week}`)
@@ -57,4 +57,4 @@ const Admin = () => {
         )
 }
 
-export default Admin;
+export default AdminOld;

@@ -10,7 +10,7 @@ namespace Wingrid.Services.FixtureAPI.Models
         [NotMapped]
         public List<EventDto> Events { get; set; } = [];
         public bool Locked { get; set; }
-        public DateTime LockedAt { get; set; }
+        public DateTime? LockedAt { get; set; }
         public required string TiebreakerEventId { get; set; }
     }
 }

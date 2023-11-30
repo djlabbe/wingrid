@@ -1,14 +1,14 @@
 export interface TeamDto {
-    Id: string;
-    Uid: string;
-    Location: string;
-    Name: string;
-    Nickname: string;
-    Abbreviation: string;
-    DisplayName: string;
-    ShortDisplayName: string;
-    Color: string;
-    AlternateColor: string;
-    IsActive: boolean;
-    IsAllStar: boolean;
+    id: string;
+    uid: string;
+    location: string;
+    name: string;
+    nickname: string;
+    abbreviation: string;
+    displayName: string;
+    shortDisplayName: string;
+    color: string;
+    alternateColor: string;
+    isActive: boolean;
+    isAllStar: boolean;
 }

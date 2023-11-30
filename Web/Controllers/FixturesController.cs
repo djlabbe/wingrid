@@ -13,15 +13,37 @@ public class FixturesController(IFixturesService fixturesService) : BaseControll
     [HttpGet]
     public async Task<IActionResult> FixturesIndex()
     {
-        ResponseDto response = await _fixturesService.GetFixturesAsync();
-        if (response.IsSuccess)
+        return await ExecuteActionAsync(async () =>
         {
-            List<FixtureDto> fixtures = JsonConvert.DeserializeObject<List<FixtureDto>>(Convert.ToString(response.Result) ?? "") ?? [];
-            return Ok(fixtures);
-        } else
+            ResponseDto response = await _fixturesService.GetFixturesAsync();
+            if (response.IsSuccess)
+            {
+                List<FixtureDto> fixtures = JsonConvert.DeserializeObject<List<FixtureDto>>(Convert.ToString(response.Result) ?? "") ?? throw new Exception("Error deserializeing API response");
+                return Ok(fixtures);
+            }
+            else
+            {
+                throw new Exception(response.Message);
+            }
+        });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateFixture([FromBody] FixtureDto fixture)
+    {
+        return await ExecuteActionAsync(async () =>
         {
-           throw new Exception(response.Message);
-        }
+            ResponseDto response = await _fixturesService.CreateFixtureAsync(fixture);
+            if (response.IsSuccess)
+            {
+                FixtureDto savedFix = JsonConvert.DeserializeObject<FixtureDto>(Convert.ToString(response.Result) ?? "") ?? throw new Exception("Error deserializeing API response");
+                return Ok(savedFix);
+            }
+            else
+            {
+                throw new Exception(response.Message);
+            }
+        });
     }
 }
 
