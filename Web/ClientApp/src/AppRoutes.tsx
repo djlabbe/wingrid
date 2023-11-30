@@ -7,6 +7,7 @@ import { useLoginContext } from "./hooks/useLoginContext";
 import NotAuthorized from "./pages/NotAuthorized";
 import Dashboard from "./pages/Dashboard";
 import ContainerLoading from "./components/ContainerLoading";
+import Admin from "./pages/Admin";
 
 interface AuthRequiredProps {
     authorizedRoles: string[],
@@ -40,6 +41,11 @@ const AppRoutes = () => {
             <Route path="/dashboard" element={
                 <AuthRequired authorizedRoles={["USER"]}>
                     <Dashboard />
+                </AuthRequired>
+            }/>
+            <Route path="/admin" element={
+                <AuthRequired authorizedRoles={["ADMIN"]}>
+                    <Admin />
                 </AuthRequired>
             }/>
             <Route path="/" element={ <Splash />} />

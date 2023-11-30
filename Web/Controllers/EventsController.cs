@@ -11,17 +11,19 @@ public class EventsController(IEventsService eventsService) : BaseController<Eve
     private readonly IEventsService _eventsService = eventsService;
 
     [HttpGet]
-    public async Task<IActionResult> EventsIndex()
+    public async Task<IActionResult> Get([FromQuery] EventQueryParams eventQueryParams)
     {
-        ResponseDto response = await _eventsService.GetEventsAsync(2023, null);
-        if (response.IsSuccess)
-        {
-            List<EventDto> events = JsonConvert.DeserializeObject<List<EventDto>>(Convert.ToString(response.Result) ?? "") ?? [];
-            return Ok(events);
-        } else
-        {
-            throw new Exception(response.Message);
-        }
+       return await ExecuteActionAsync(async () => {
+            ResponseDto response = await _eventsService.GetEventsAsync(eventQueryParams);
+            if (response.IsSuccess)
+            {
+                List<EventDto> events = JsonConvert.DeserializeObject<List<EventDto>>(Convert.ToString(response.Result) ?? "") ?? [];
+                return Ok(events);
+            } else
+            {
+                throw new Exception(response.Message);
+            }
+       });
     }
 }
 

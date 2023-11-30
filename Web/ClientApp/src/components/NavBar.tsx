@@ -16,7 +16,7 @@ const NavBar = () => {
 
 
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid rounded className='bg-gray-200'>
       <div className="flex flex-wrap items-center">
         <Navbar.Brand as={NavLink} to={user ? "/dashboard" : "/"} className="me-8">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Wingrid Logo" />
@@ -25,7 +25,7 @@ const NavBar = () => {
         {user && <Navbar.Collapse>
           <Navbar.Link as={NavLink} to="/dashboard" className='md:hover:text-green-600'>Dashboard</Navbar.Link>
           {isAdmin && <Navbar.Link as={NavLink} to="/admin" className='md:hover:text-green-600'>Admin</Navbar.Link>}
-          <Navbar.Link as={NavLink} to="/about" lassName='md:hover:text-green-600'>About</Navbar.Link>
+          <Navbar.Link as={NavLink} to="/about" className='md:hover:text-green-600'>About</Navbar.Link>
         </Navbar.Collapse>
         }
       </div>

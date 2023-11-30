@@ -17,19 +17,11 @@ namespace Wingrid.Services.EventAPI.Services
         public Task DispatchEventComplete(EventDto evnt);
     }
 
-    public class EventsService : IEventsService
+    public class EventsService(AppDbContext context, IMessageBus messageBus, IConfiguration configuration) : IEventsService
     {
-        private readonly AppDbContext _context;
-        private readonly IMessageBus _messageBus;
-        private readonly IConfiguration _configuration;
-
-        public EventsService(AppDbContext context, IMessageBus messageBus, IConfiguration configuration)
-        {
-            _context = context;
-            _messageBus = messageBus;
-            _configuration = configuration;
-        }
-
+        private readonly AppDbContext _context = context;
+        private readonly IMessageBus _messageBus = messageBus;
+        private readonly IConfiguration _configuration = configuration;
 
         public async Task<IEnumerable<Event>> GetEventsAsync(EventQueryParams eventQueryParams)
         {

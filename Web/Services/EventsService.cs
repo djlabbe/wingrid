@@ -6,19 +6,19 @@ namespace Wingrid.Web.Services
 {
     public interface IEventsService
     {
-        public Task<ResponseDto> GetEventsAsync(int? season, int? week);
+        public Task<ResponseDto> GetEventsAsync(EventQueryParams query);
     }
 
     public class EventsService(IBaseService baseService) : IEventsService
     {
         private readonly IBaseService _baseService = baseService;
 
-        public async Task<ResponseDto> GetEventsAsync(int? season, int? week)
+        public async Task<ResponseDto> GetEventsAsync(EventQueryParams query)
         {
             var param = new Dictionary<string, string?>();
 
-            if (season != null) param.Add("season", season.ToString());
-            if (week != null) param.Add("week", week.ToString());
+            if (query.Season != null) param.Add("season", query.Season.ToString());
+            if (query.Week != null) param.Add("week", query.Week.ToString());
 
             var url = QueryHelpers.AddQueryString($"{EventAPIBase}/api/events", param);
 
