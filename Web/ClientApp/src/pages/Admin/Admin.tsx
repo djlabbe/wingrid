@@ -1,11 +1,12 @@
 import { Button, Checkbox, Label, Radio, Select, Table } from "flowbite-react";
 import { useState } from "react";
-import { get, post } from "../../services/api";
+import { GATEWAY_URI, get, post } from "../../services/api";
 import { EventDto } from "../../models/EventDto";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FixtureDto } from "../../models/FixtureDto";
 import { toastifyError, toastifySuccess } from "../../services/toastService";
 import { useNavigate } from "react-router-dom";
+import { ResponseDto } from "../../models/ResponseDto";
 
 const Admin = () => {
 	const [season, setSeason] = useState<string>("2023");
@@ -21,10 +22,12 @@ const Admin = () => {
 	const handleSearch = async () => {
 		try {
 			setLoadingEvents(true);
-			const apiResponse = await get<EventDto[]>(`/api/events/?season=${season}&week=${week}`);
+			const apiResponse = await get<ResponseDto<EventDto[]>>(`${GATEWAY_URI}/api/events?season=${season}&week=${week}`);
 			setLoadingEvents(false);
-			setEvents(apiResponse);
-			setSelectedEventIds([]);
+			if (apiResponse.isSuccess) {
+				setEvents(apiResponse.result);
+				setSelectedEventIds([]);
+			} else toastifyError(apiResponse.message);
 		} catch (e) {
 			setLoadingEvents(false);
 			console.error(e);
@@ -57,12 +60,18 @@ const Admin = () => {
 				locked: false,
 			};
 
-			await post<FixtureDto>("/api/fixtures", fixture);
+			var apiResponse = await post<ResponseDto<FixtureDto>>(`${GATEWAY_URI}/api/fixtures`, fixture);
 			setSaving(false);
-			toastifySuccess("Fixture created successfully.");
-			navigate("/dashboard");
+			if (apiResponse.isSuccess) {
+				toastifySuccess("Fixture created successfully.");
+				navigate("/dashboard");
+			} else {
+				toastifyError(apiResponse.message);
+			}
 		} catch (e) {
 			setSaving(false);
+			console.error(e);
+			toastifyError(`${e}`);
 		}
 	};
 
@@ -101,7 +110,7 @@ const Admin = () => {
 				<>
 					<div className="mb-8 overflow-x-auto">
 						<Table>
-							<Table.Head className="">
+							<Table.Head>
 								<Table.HeadCell className="bg-gray-200 text-center">Select</Table.HeadCell>
 								<Table.HeadCell className="bg-gray-200">Date</Table.HeadCell>
 								<Table.HeadCell className="bg-gray-200">Away Team</Table.HeadCell>

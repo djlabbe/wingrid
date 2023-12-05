@@ -17,12 +17,12 @@ namespace EventAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Wingrid.EventAPI.Models.Event", b =>
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Event", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -120,10 +120,10 @@ namespace EventAPI.Migrations
 
                     b.HasIndex("HomeTeamId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Wingrid.EventAPI.Models.Team", b =>
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Team", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -149,6 +149,9 @@ namespace EventAPI.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
+                    b.Property<string>("Logo")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -163,16 +166,16 @@ namespace EventAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("Wingrid.EventAPI.Models.Event", b =>
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Event", b =>
                 {
-                    b.HasOne("Wingrid.EventAPI.Models.Team", "AwayTeam")
+                    b.HasOne("Wingrid.Services.EventAPI.Models.Team", "AwayTeam")
                         .WithMany()
                         .HasForeignKey("AwayTeamId");
 
-                    b.HasOne("Wingrid.EventAPI.Models.Team", "HomeTeam")
+                    b.HasOne("Wingrid.Services.EventAPI.Models.Team", "HomeTeam")
                         .WithMany()
                         .HasForeignKey("HomeTeamId");
 

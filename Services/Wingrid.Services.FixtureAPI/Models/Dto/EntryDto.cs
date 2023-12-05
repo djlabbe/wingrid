@@ -14,7 +14,9 @@ namespace Wingrid.Services.FixtureAPI.Models.Dto
 
     public class EventEntryDto
     {
+        public required string EventId { get; set; }
         public required bool HomeWinnerSelected { get; set; }
         public bool? HomeWinner { get; set; }
+        public bool IsCorrect { get; set; }
     }
 }

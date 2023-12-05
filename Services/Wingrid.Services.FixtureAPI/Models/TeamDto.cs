@@ -13,6 +13,7 @@ namespace Wingrid.Services.FixtureAPI.Models
         public string? Color { get; set; }
         public string? AlternateColor { get; set; }
         public bool? IsActive { get; set; }
-        public bool? IsAllStar {get; set; }  
+        public bool? IsAllStar { get; set; }
+        public string? Logo { get; set; }
     }
 }

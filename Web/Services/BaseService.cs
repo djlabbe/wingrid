@@ -29,7 +29,7 @@ namespace Wingrid.Web.Services
                     var token = _tokenProvider.GetToken();
                     message.Headers.Add("Authorization", $"Bearer {token}");
                 }
-                
+
                 message.RequestUri = new Uri(requestDto.Url);
                 if (requestDto.Data != null)
                 {
@@ -45,7 +45,7 @@ namespace Wingrid.Web.Services
                     ApiType.DELETE => HttpMethod.Post,
                     _ => HttpMethod.Get,
                 };
-                
+
                 apiResponse = await client.SendAsync(message);
 
                 switch (apiResponse.StatusCode)
@@ -61,10 +61,11 @@ namespace Wingrid.Web.Services
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-                        
-                        return apiResponseDto ?? new ResponseDto() {
-                            IsSuccess=false,
-                            Message="Error deserializing api response."
+
+                        return apiResponseDto ?? new ResponseDto()
+                        {
+                            IsSuccess = false,
+                            Message = "Error deserializing api response."
                         };
                 }
             }

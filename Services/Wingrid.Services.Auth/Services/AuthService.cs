@@ -24,7 +24,7 @@ namespace Wingrid.Services.Auth.Services
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
         public async Task<LoginResponseDto> GetCurrentUser(string? email)
-        { 
+        {
             if (string.IsNullOrWhiteSpace(email))
             {
                 return new LoginResponseDto() { User = null, Token = "" };
@@ -32,7 +32,7 @@ namespace Wingrid.Services.Auth.Services
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == email);
             if (user == null) return new LoginResponseDto() { User = null, Token = "" };
-             UserDto userDto = new()
+            UserDto userDto = new()
             {
                 Email = user.Email,
                 Id = user.Id,
@@ -41,7 +41,7 @@ namespace Wingrid.Services.Auth.Services
             };
 
             var roles = await _userManager.GetRolesAsync(user);
-            LoginResponseDto loginResponseDto = new ()
+            LoginResponseDto loginResponseDto = new()
             {
                 User = userDto,
                 Roles = [.. roles],
@@ -73,7 +73,7 @@ namespace Wingrid.Services.Auth.Services
             };
 
             var roles = await _userManager.GetRolesAsync(user);
-            LoginResponseDto loginResponseDto = new ()
+            LoginResponseDto loginResponseDto = new()
             {
                 User = userDto,
                 Roles = [.. roles],

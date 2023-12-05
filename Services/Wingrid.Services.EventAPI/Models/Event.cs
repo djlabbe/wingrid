@@ -3,10 +3,10 @@ using Wingrid.Services.EventAPI.Models.Espn;
 
 namespace Wingrid.Services.EventAPI.Models
 {
-    public class Event
+    public class Event(string id)
     {
         // Event
-        public string Id { get; set; }
+        public string Id { get; set; } = id;
         public string? Uid { get; set; }
         public DateTime? Date { get; set; }
         public string? Name { get; set; }
@@ -30,13 +30,13 @@ namespace Wingrid.Services.EventAPI.Models
 
         // Home Competitor
         public bool? HomeWinner { get; set; }
-        public string? HomeTeamId {get; set;}
+        public string? HomeTeamId { get; set; }
         public Team? HomeTeam { get; set; }
         public string? HomeScore { get; set; }
 
         // Away Competitor
         public bool? AwayWinner { get; set; }
-        public string? AwayTeamId {get; set;}
+        public string? AwayTeamId { get; set; }
         public Team? AwayTeam { get; set; }
         public string? AwayScore { get; set; }
 
@@ -53,11 +53,6 @@ namespace Wingrid.Services.EventAPI.Models
         public string? StatusDescription { get; set; }
         public string? StatusDetail { get; set; }
         public string? StatusShortDetail { get; set; }
-
-        public Event(string id)
-        {
-            Id = id;
-        }
 
         public Event(EspnEvent espnEvent) : this(espnEvent.Id)
         {

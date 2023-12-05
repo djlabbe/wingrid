@@ -17,10 +17,11 @@ namespace Wingrid.Services.Auth.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCurrentUser()
         {
+
             var userEmail = User.FindFirstValue(ClaimTypes.Email);
 
             var loginResponse = await _authService.GetCurrentUser(userEmail);
-             if (loginResponse.User == null)
+            if (loginResponse.User == null)
             {
                 var res = new ResponseDto()
                 {
@@ -80,7 +81,7 @@ namespace Wingrid.Services.Auth.Controllers
                 return BadRequest(res);
             }
 
-              if (string.IsNullOrWhiteSpace(model.Role))
+            if (string.IsNullOrWhiteSpace(model.Role))
             {
                 var res = new ResponseDto()
                 {

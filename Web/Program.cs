@@ -1,27 +1,17 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Wingrid.Web.Services;
-using Wingrid.Web.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<IFixturesService, FixturesService>();
-builder.Services.AddHttpClient<IEventsService, EventsService>();
-builder.Services.AddHttpClient<IAuthService, AuthService>();
-
-StaticDetails.FixturesAPIBase = builder.Configuration["ServiceUrls:FixturesAPI"] ?? "";
-StaticDetails.EventAPIBase = builder.Configuration["ServiceUrls:EventAPI"] ?? "";
-StaticDetails.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"] ?? "";
 
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IFixturesService, FixturesService>();
-builder.Services.AddScoped<IEventsService, EventsService>();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
     options.ExpireTimeSpan = TimeSpan.FromHours(10);
     options.LoginPath = "/Auth/Login";
     options.AccessDeniedPath = "/Auth/AccessDenied";

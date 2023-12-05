@@ -6,6 +6,17 @@ using Wingrid.Services.Auth.Extensions;
 using Wingrid.Services.Auth.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+});
+
 var connectionString = GetConnectionString(builder, "DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
@@ -45,6 +56,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors();
 
 ApplyMigrations();
 

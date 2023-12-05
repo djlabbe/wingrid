@@ -1,5 +1,6 @@
 using Hangfire.Console;
 using Hangfire.Server;
+using Wingrid.Services.EventAPI.Models;
 using Wingrid.Services.EventAPI.Services;
 
 namespace Wingrid.Services.EventAPI.Jobs
@@ -20,17 +21,17 @@ namespace Wingrid.Services.EventAPI.Jobs
         {
             performContext.WriteLine("Syncing Teams...");
 
-            var espnTeams = await _espnService.GetTeams();
+            var espnTeams = await _espnService.GetNFLTeams();
             var dbTeams = await _teamsService.GetTeamsAsync();
 
             foreach (var espnTeam in espnTeams)
             {
-                if (espnTeam == null) continue;
                 var existingTeam = dbTeams.FirstOrDefault(dbTeam => dbTeam.Id == espnTeam.Id);
+
                 if (existingTeam == null)
-                    _teamsService.AddTeam(espnTeam);
+                    _teamsService.AddTeam(new Team(espnTeam));
                 else
-                    existingTeam = espnTeam;
+                    existingTeam.UpdateFrom(espnTeam);
             }
 
             var changeCount = await _teamsService.SaveChangesAsync();

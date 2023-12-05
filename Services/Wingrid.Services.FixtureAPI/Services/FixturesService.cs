@@ -21,14 +21,19 @@ namespace Wingrid.Services.FixtureAPI.Services
             var events = await LoadEventsAsync(fixture);
 
             var invalidIds = fixture.EventIds.Where(id => events.FirstOrDefault(e => e.Id == id) == null);
-            if (invalidIds.Any()) {
-                 throw new Exception($"Request contains invalid events ids. ({string.Join(",", invalidIds)})");
+            if (invalidIds.Any())
+            {
+                throw new Exception($"Request contains invalid events ids. ({string.Join(",", invalidIds)})");
             }
-            
+
+            if (!events.Exists(e => e.Id == fixture.TiebreakerEventId))
+            {
+                throw new Exception($"Tiebreaker event must exist in the Fixture.");
+            }
+
             _context.Fixtures.Add(fixture);
             await _context.SaveChangesAsync();
 
-            fixture.Events = events;
             return fixture;
         }
 

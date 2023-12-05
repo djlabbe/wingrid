@@ -13,15 +13,9 @@ namespace Wingrid.Services.EventAPI.Services
         public Task<int> SaveChangesAsync();
     }
 
-    public class TeamsService : ITeamsService
+    public class TeamsService(AppDbContext context) : ITeamsService
     {
-        private readonly AppDbContext _context;
-
-        public TeamsService(AppDbContext context)
-        {
-            _context = context;
-        }
-
+        private readonly AppDbContext _context = context;
 
         public async Task<IEnumerable<Team>> GetTeamsAsync()
         {
@@ -42,8 +36,8 @@ namespace Wingrid.Services.EventAPI.Services
 
         public async Task<Team?> GetTeamAsync(string id)
         {
-           var team = await _context.Teams.FindAsync(id);
-           return team;
+            var team = await _context.Teams.FindAsync(id);
+            return team;
         }
     }
 }

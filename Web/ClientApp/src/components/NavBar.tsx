@@ -28,7 +28,7 @@ const NavBar = () => {
 						</Navbar.Link>
 						{isAdmin && (
 							<Navbar.Link as={NavLink} to="/admin" className="md:hover:text-green-600">
-								Admin
+								Create Fixture
 							</Navbar.Link>
 						)}
 						<Navbar.Link as={NavLink} to="/about" className="md:hover:text-green-600">

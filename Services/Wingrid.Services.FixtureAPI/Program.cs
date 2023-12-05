@@ -27,7 +27,7 @@ builder.Logging.AddOpenTelemetry(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => 
+builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
     {
@@ -71,7 +71,8 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IFixturesService, FixturesService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
-builder.Services.AddHttpClient("Events", u => u.BaseAddress=new Uri(builder.Configuration["ServiceUrls:EventsAPI"] ?? ""));
+builder.Services.AddScoped<IEntryService, EntryService>();
+builder.Services.AddHttpClient("Events", u => u.BaseAddress = new Uri(builder.Configuration["ServiceUrls:EventsAPI"] ?? ""));
 
 
 builder.AddAppAuthentication();
