@@ -5,7 +5,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingrideventapi.azurewebsites.net"
+          "Host": "wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/events",
@@ -19,7 +19,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingrideventapi.azurewebsites.net"
+          "Host": "wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/events/{url}",
@@ -33,7 +33,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingrideventapi.azurewebsites.net"
+          "Host": "wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/teams/{url}",
@@ -47,7 +47,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingridfixtureapi.azurewebsites.net"
+          "Host": "wingridfixtureapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/entries",
@@ -61,7 +61,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingridfixtureapi.azurewebsites.net"
+          "Host": "wingridfixtureapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/entries/{url}",
@@ -75,7 +75,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingridfixtureapi.azurewebsites.net"
+          "Host": "wingridfixtureapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/fixtures",
@@ -89,7 +89,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingridfixtureapi.azurewebsites.net"
+          "Host": "wingridfixtureapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/fixtures/{url}",
