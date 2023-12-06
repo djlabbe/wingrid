@@ -38,6 +38,9 @@ export const LoginProvider = ({ children }: Props) => {
 				});
 			} catch (e) {
 				console.error(e);
+				setState({
+					isLoggingIn: false,
+				});
 			}
 		};
 		if (token) {
