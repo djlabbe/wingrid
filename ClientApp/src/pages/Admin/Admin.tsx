@@ -154,7 +154,7 @@ const Admin = () => {
 					</div>
 					<Button
 						className="w-full mt-auto bg-green-700 enabled:hover:bg-green-800"
-						disabled={!isValid}
+						disabled={!isValid || saving}
 						onClick={handleSubmit}
 						isProcessing={saving}
 						processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}
