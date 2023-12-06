@@ -2,9 +2,15 @@ using Wingrid.Services.EventAPI.Models.Espn;
 
 namespace Wingrid.Services.EventAPI.Models
 {
-    public class Team(string id)
+    public class Team
     {
-        public string Id { get; set; } = id;
+        // Do not change constructor (yet) wont deserialize from ESPN
+        public Team(string id)
+        {
+            Id = id;
+        }
+
+        public string Id { get; set; }
         public string? Uid { get; set; }
         public string? Location { get; set; }
         public string? Name { get; set; }

@@ -21,15 +21,14 @@ namespace Wingrid.Services.FixtureAPI.Services
         public async Task ProcessFinalScore(EventDto eventDto)
         {
             await using var _db = new AppDbContext(_dbOptions);
-            var entries = await _db.Entries.SelectMany(
-                e => e.EventEntries.Where(ee => ee.EventId == eventDto.Id)
-            ).ToListAsync();
+            var entries = _db.Entries.Where(e => e.EventEntries.Any(ee => ee.EventId == eventDto.Id));
 
-            foreach (var e in entries)
+            foreach (var entry in entries)
             {
-                e.HomeWinner = eventDto.HomeWinner;
+                var eeToUpdate = entry.EventEntries.FirstOrDefault(ee => ee.EventId == eventDto.Id);
+                if (eeToUpdate != null) eeToUpdate.HomeWinner = eventDto.HomeWinner;
             }
-            
+
             await _db.SaveChangesAsync();
         }
     }

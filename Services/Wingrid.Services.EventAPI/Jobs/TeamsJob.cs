@@ -1,3 +1,4 @@
+using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
 using Wingrid.Services.EventAPI.Models;
@@ -5,6 +6,7 @@ using Wingrid.Services.EventAPI.Services;
 
 namespace Wingrid.Services.EventAPI.Jobs
 {
+    [AutomaticRetry(Attempts = 0)]
     public class TeamsJob : IBatchJob
     {
         private readonly IEspnService _espnService;

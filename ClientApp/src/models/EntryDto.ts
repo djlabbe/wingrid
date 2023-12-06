@@ -1,5 +1,6 @@
 export interface EntryDto {
 	userId: string;
+	userName: string;
 	fixtureId: number;
 	eventEntries: EventEntryDto[];
 	tiebreaker?: number;

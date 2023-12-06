@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wingrid.MessageBus", "Messa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wingrid.Gateway", "Gateway\Wingrid.Gateway.csproj", "{A77BFBB1-A84E-4A5F-ABA7-546F2EF82C6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wingrid.Web", "Web\Wingrid.Web.csproj", "{AE8476D5-16EE-445F-AF4F-7FF7FDC10BA9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

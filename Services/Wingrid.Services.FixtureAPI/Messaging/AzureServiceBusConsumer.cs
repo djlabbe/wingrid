@@ -13,7 +13,7 @@ namespace Wingrid.Services.FixtureAPI.Messaging
     public interface IAzureServiceBusConsumer
     {
         Task Start();
-        Task Stop(); 
+        Task Stop();
     }
 
     public class AzureServiceBusConsumer : IAzureServiceBusConsumer
@@ -31,7 +31,7 @@ namespace Wingrid.Services.FixtureAPI.Messaging
             _scoreService = scoreService;
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString") ?? throw new Exception("Missing ServiceBusConnectionString configuration.");
             eventFinalQueue = _configuration.GetValue<string>("TopicAndQueueNames:EventFinalQueue") ?? throw new Exception("Missing TopicAndQueueNames:EventFinalQueue configuration.");
-            var client  = new ServiceBusClient(serviceBusConnectionString);
+            var client = new ServiceBusClient(serviceBusConnectionString);
             _eventFinalProcessor = client.CreateProcessor(eventFinalQueue);
         }
 
@@ -51,7 +51,7 @@ namespace Wingrid.Services.FixtureAPI.Messaging
             {
                 await _scoreService.ProcessFinalScore(objMessage);
                 await args.CompleteMessageAsync(args.Message);
-            } 
+            }
             catch (Exception)
             {
                 throw;
@@ -60,8 +60,8 @@ namespace Wingrid.Services.FixtureAPI.Messaging
 
         private Task ErrorHandler(ProcessErrorEventArgs args)
         {
-           _logger.LogError(args.Exception.ToString());
-           return Task.CompletedTask;
+            _logger.LogError(args.Exception.ToString());
+            return Task.CompletedTask;
         }
 
         public async Task Stop()

@@ -7,9 +7,8 @@ const About = () => {
 						<img src="football2.png" alt="image" loading="lazy" width="" height="" />
 					</div>
 					<div className="md:7/12 lg:w-6/12">
-						<h2 className="text-2xl text-gray-900 font-bold md:text-4xl">
-							Predict, Play, Prevail: Pigskin Pick'em Perfection!
-						</h2>
+						<h2 className="text-2xl text-gray-900 font-bold md:text-4xl">Predict, Play, Prevail</h2>
+						<h2 className="text-xl text-gray-500 font-bold md:text-2xl mt-2">Pigskin Pick'em Perfection!</h2>
 						<p className="mt-6 text-gray-600">
 							Welcome to Wingrid, where the thrill of football meets the excitement of prediction! Wingrid is your go-to
 							destination for an immersive and competitive pigskin picking experience. Whether you're a seasoned

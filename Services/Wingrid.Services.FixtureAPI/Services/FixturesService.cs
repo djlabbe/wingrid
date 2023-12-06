@@ -44,7 +44,7 @@ namespace Wingrid.Services.FixtureAPI.Services
 
         public async Task<Fixture?> GetFixtureAsync(int id)
         {
-            var fixture = await _context.Fixtures.FirstOrDefaultAsync(e => e.Id == id);
+            var fixture = await _context.Fixtures.Include(f => f.Entries).FirstOrDefaultAsync(e => e.Id == id);
             if (fixture != null) fixture.Events = await LoadEventsAsync(fixture);
             return fixture;
         }

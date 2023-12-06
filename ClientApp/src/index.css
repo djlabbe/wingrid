@@ -18,3 +18,7 @@ input[type="number"] {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
 }
+
+.event-grid-col .ag-header-cell-label {
+	justify-content: center;
+}

@@ -7,8 +7,8 @@ namespace Wingrid.Services.FixtureAPI.Models
     {
         public int Id { get; set; }
         public required string UserId { get; set; }
+        public required string UserName { get; set; }
         public required int FixtureId { get; set; }
-        public required Fixture Fixture { get; set; }
         public List<EventEntry> EventEntries { get; set; } = [];
         public int Tiebreaker { get; set; }
         public int Score => EventEntries.Where(ee => ee.IsCorrect).Count();

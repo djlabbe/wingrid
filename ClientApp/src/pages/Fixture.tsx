@@ -55,6 +55,7 @@ const FixtureIndex = () => {
 	const handleSubmit = async () => {
 		const entry: EntryDto = {
 			userId: loginResult?.user?.id || "",
+			userName: loginResult?.user?.name || "",
 			fixtureId: fixture?.id || 0,
 			eventEntries:
 				fixture?.events?.map((e) => ({
@@ -143,7 +144,7 @@ const FixtureIndex = () => {
 			<div className="flex rounded-lg border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 flex-col my-4">
 				<div className="flex h-full flex-col justify-center gap-2 p-2 px-6">
 					<p className="text-center text-xs text-neutral-600 font-bold">
-						What will be the final score of this matchup?
+						How many total points will be scored in this matchup?
 					</p>
 					<hr />
 					<div className="items-center justify-center mx-auto">

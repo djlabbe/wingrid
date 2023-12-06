@@ -33,6 +33,10 @@ const Dashboard = () => {
 		navigate(`/fixtures/${fixtureId}`);
 	};
 
+	const handleClickGrid = (fixtureId: number) => {
+		navigate(`/grid/${fixtureId}`);
+	};
+
 	if (loading) return <LoadingContainer />;
 
 	return (
@@ -61,7 +65,7 @@ const Dashboard = () => {
 									</Button>
 									<Button
 										className="mt-auto bg-green-700 enabled:hover:bg-green-800 ms-2"
-										onClick={() => handleMakePicks(fixture.id)}
+										onClick={() => handleClickGrid(fixture.id)}
 									>
 										<p className="text-xs">View Grid</p>
 									</Button>

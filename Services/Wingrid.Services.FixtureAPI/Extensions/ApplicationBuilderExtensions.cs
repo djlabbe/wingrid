@@ -15,18 +15,17 @@ namespace Wingrid.Services.FixtureAPI.Extensions
             var hostApplicationLife = app.ApplicationServices.GetService<IHostApplicationLifetime>();
             hostApplicationLife?.ApplicationStarted.Register(OnStart);
             hostApplicationLife?.ApplicationStopped.Register(OnStop);
-
             return app;
         }
 
         private static void OnStop()
         {
-            ServiceBusConsumer?.Start();
+            ServiceBusConsumer?.Stop();
         }
 
         private static void OnStart()
         {
-            ServiceBusConsumer?.Stop();
+            ServiceBusConsumer?.Start();
         }
     }
 }

@@ -2,7 +2,8 @@ namespace Wingrid.Services.EventAPI.Models.Espn
 {
     public class Competitor
     {
-        public Competitor(string id) {
+        public Competitor(string id)
+        {
             Id = id;
         }
 
@@ -12,7 +13,7 @@ namespace Wingrid.Services.EventAPI.Models.Espn
         public int? Order { get; set; }
         public string? HomeAway { get; set; }
         public bool? Winner { get; set; }
-        public Team? Team { get; set; }
+        public EspnTeam? Team { get; set; }
         public string? Score { get; set; }
     }
 }

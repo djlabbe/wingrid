@@ -3,10 +3,16 @@ using Wingrid.Services.EventAPI.Models.Espn;
 
 namespace Wingrid.Services.EventAPI.Models
 {
-    public class Event(string id)
+    public class Event
     {
+        // Do not change constructor (yet) wont deserialize from ESPN
+        public Event(string id)
+        {
+            Id = id;
+        }
+
         // Event
-        public string Id { get; set; } = id;
+        public string Id { get; set; }
         public string? Uid { get; set; }
         public DateTime? Date { get; set; }
         public string? Name { get; set; }
