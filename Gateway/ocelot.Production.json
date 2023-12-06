@@ -5,7 +5,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingrideventapi.azurewebsites.net/"
+          "Host": "https://wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/events",
@@ -19,7 +19,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingrideventapi.azurewebsites.net/"
+          "Host": "https://wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/events/{url}",
@@ -33,7 +33,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "https://wingrideventapi.azurewebsites.net/"
+          "Host": "https://wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/teams/{url}",
