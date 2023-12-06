@@ -7,6 +7,7 @@ import { FixtureDto } from "../../models/FixtureDto";
 import { toastifyError, toastifySuccess } from "../../services/toastService";
 import { useNavigate } from "react-router-dom";
 import { ResponseDto } from "../../models/ResponseDto";
+import LoadingButton from "../../components/LoadingButton";
 
 const Admin = () => {
 	const [season, setSeason] = useState<string>("2023");
@@ -95,15 +96,7 @@ const Admin = () => {
 					</Select>
 				</div>
 				<div className="col-span-2">
-					<Button
-						className="w-full mt-auto bg-green-700 enabled:hover:bg-green-800"
-						onClick={handleSearch}
-						isProcessing={loadingEvents}
-						processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}
-						disabled={loadingEvents}
-					>
-						Get Events
-					</Button>
+					<LoadingButton onClick={handleSearch} loading={loadingEvents} text="Get Events" />
 				</div>
 			</div>
 			{events && (

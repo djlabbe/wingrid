@@ -4,19 +4,24 @@ import { RegistrationRequestDto } from "../models/RegistrationRequestDto";
 import { useNavigate } from "react-router-dom";
 import { toastifyError, toastifySuccess } from "../services/toastService";
 import { ResponseDto } from "../models/ResponseDto";
+import LoadingButton from "../components/LoadingButton";
 
 const SignUp = () => {
 	const [formData, setFormData] = useState<RegistrationRequestDto>();
+	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
+			setLoading(true);
 			await post<ResponseDto<null>>(`${AUTH_URI}/api/auth/register`, formData);
 			await post<ResponseDto<null>>(`${AUTH_URI}/api/auth/AssignRole`, { ...formData, role: "USER" });
+			setLoading(false);
 			toastifySuccess("Registration successful. Please login.");
 			navigate("/login");
 		} catch (e) {
+			setLoading(false);
 			toastifyError(`${e}`);
 			console.error(e);
 		}
@@ -88,12 +93,7 @@ const SignUp = () => {
 						</div>
 
 						<div>
-							<button
-								type="submit"
-								className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-							>
-								Sign Up
-							</button>
+							<LoadingButton type="submit" loading={loading} text="Sign Up" />
 						</div>
 						<div>
 							<a
