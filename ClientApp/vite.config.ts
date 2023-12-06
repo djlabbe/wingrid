@@ -13,8 +13,5 @@ export default defineConfig((env) => ({
 			cert: env.command === "serve" ? fs.readFileSync("./localhost.pem") : "",
 		},
 		strictPort: true,
-		// proxy: {
-		// 	"/api": { target: "https://localhost:7000", secure: false },
-		// },
 	},
 }));

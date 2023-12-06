@@ -45,6 +45,7 @@ export const post = <T>(url: string, body: unknown): Promise<T> => {
 };
 
 export const GATEWAY_URI =
-	import.meta.env.MODE === "development" ? "https://localhost:7777" : import.meta.env.API_GATEWAY_URI;
+	import.meta.env.MODE === "development" ? "https://localhost:7777" : "https://wingridgateway.azurewebsites.net";
 
-export const AUTH_URI = import.meta.env.MODE === "development" ? "https://localhost:7001" : import.meta.env.AUTH_URI;
+export const AUTH_URI =
+	import.meta.env.MODE === "development" ? "https://localhost:7001" : "https://wingridauthapi.azurewebsites.net";
