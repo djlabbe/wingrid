@@ -77,8 +77,8 @@ const FixtureIndex = () => {
 	const renderEvent = (ev: EventDto) => {
 		return (
 			<>
-				{renderTeam(ev.awayTeam, ev.id, true)}
-				{renderTeam(ev.homeTeam, ev.id, false)}
+				{renderTeam(ev.awayTeam, ev.id, false)}
+				{renderTeam(ev.homeTeam, ev.id, true)}
 			</>
 		);
 	};
@@ -98,7 +98,6 @@ const FixtureIndex = () => {
 					className="p-5 rounded-t-lg text-center"
 					style={{
 						backgroundColor: `#${team.color}`,
-						// backgroundImage: `linear-gradient(to bottom right, #${team.color} , #${team.color} 40%, #${team.alternateColor} 60%, #${team.alternateColor})`,
 						backgroundImage: `linear-gradient(45deg, 
 							rgba(255, 255, 255, 0.5) 0px, 
 							rgba(255, 255, 255, 0.5) 18%, 

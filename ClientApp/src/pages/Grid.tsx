@@ -44,6 +44,7 @@ const Grid = () => {
 						(ee: EventEntryDto) => ee.eventId === ev.id,
 					)?.homeWinnerSelected;
 					const selectedTeam = isHomeSelected ? ev.homeTeam.abbreviation : ev.awayTeam.abbreviation;
+					console.log(selectedTeam);
 					return selectedTeam;
 				},
 			} as ColDef),
