@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Wingrid.Services.FixtureAPI.Data;
 using Wingrid.Services.FixtureAPI.Models;

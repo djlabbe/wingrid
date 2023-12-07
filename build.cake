@@ -5,7 +5,8 @@ var env = Argument("env", "Development");
 
 Setup(context =>
 {
-    if (target != "Default"){
+    if (target != "Default")
+    {
         Information($"Running target {target} for environment {env}.");
     }
 });
@@ -14,60 +15,37 @@ Setup(context =>
 Task("Default")
     .IsDependentOn("Database:Run");
 
-Task("Database:Run").Does(() => 
+Task("Database:Run").Does(() =>
 {
     DockerRunPostgres("wingrid-auth", "wingrid-auth", port: 5432);
     DockerRunPostgres("wingrid-events", "wingrid-events", port: 5433);
     DockerRunPostgres("wingrid-fixtures", "wingrid-fixtures", port: 5434);
 });
 
-private void DockerRunPostgres(string appName, string databaseName, int port=5432, string username="postgres", string password="passW0rd")
+private void DockerRunPostgres(string appName, string databaseName, int port = 5432, string username = "postgres", string password = "passW0rd")
 {
-    if(string.IsNullOrWhiteSpace(appName))
+    if (string.IsNullOrWhiteSpace(appName))
         throw new Exception("DockerRunPostgres Error: appName is required.");
-    if(string.IsNullOrWhiteSpace(databaseName))
+    if (string.IsNullOrWhiteSpace(databaseName))
         throw new Exception("DockerRunPostgres Error: databaseName is required.");
-    if(port < 0)
+    if (port < 0)
         throw new Exception("DockerRunPostgres Error: port must be greater than 0.");
-    if(string.IsNullOrWhiteSpace(username))
+    if (string.IsNullOrWhiteSpace(username))
         throw new Exception("DockerRunPostgres Error: username is required.");
-    if(string.IsNullOrWhiteSpace(password))
+    if (string.IsNullOrWhiteSpace(password))
         throw new Exception("DockerRunPostgres Error: password is required.");
 
     var settings = new DockerContainerRunSettings
     {
         Name = $"{appName}-db",
-        Env = new [] { $"POSTGRES_USER={username}", $"POSTGRES_PASSWORD={password}", $"POSTGRES_DB={databaseName}"},
-        Publish = new [] { $"{port}:5432"},
-        Volume = new [] { $"{appName}-data:/var/lib/postgresql/data"},
+        Env = new[] { $"POSTGRES_USER={username}", $"POSTGRES_PASSWORD={password}", $"POSTGRES_DB={databaseName}" },
+        Publish = new[] { $"{port}:5432" },
+        Volume = new[] { $"{appName}-data:/var/lib/postgresql/data" },
         Detach = true
-     };
-    
+    };
+
     DockerRunWithoutResult(settings, $"postgres:latest", null);
     Information($"Postgres is starting up. Connect at localhost,{port}");
 }
-
-// private void DockerRunSqlServer(string appName, int port = 1433, string password="passW0rd")
-// {
-//     if(string.IsNullOrWhiteSpace(appName))
-//         throw new Exception("DockerRunSqlServer Error: appName is required.");
-//     if(port < 0)
-//         throw new Exception("DockerRunSqlServer Error: port must be greater than 0.");
-//     if(string.IsNullOrWhiteSpace(password))
-//         throw new Exception("DockerRunSqlServer Error: password is required.");
-    
-//     var settings = new DockerContainerRunSettings
-//     {
-//         Name = $"{appName}-db",
-//         Env = new [] { "ACCEPT_EULA=Y", $"SA_PASSWORD={password}"},
-//         Publish = new [] { $"{port}:1433"},
-//         Volume = new [] { $"{appName}-data:/var/opt/mysql"},
-//         Detach = true
-//      };
-
-//      DockerRunWithoutResult(settings, $"mcr.microsoft.com/azure-sql-edge:latest", null);
-
-//      Information($"SQL server is starting up. Connect at localhost,{port}");
-// }
 
 RunTarget(target);
