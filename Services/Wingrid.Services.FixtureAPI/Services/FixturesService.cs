@@ -21,15 +21,28 @@ namespace Wingrid.Services.FixtureAPI.Services
             var events = await LoadEventsAsync(fixture);
 
             var invalidIds = fixture.EventIds.Where(id => events.FirstOrDefault(e => e.Id == id) == null);
+
+            if (fixture.EventIds.Count == 0)
+            {
+                throw new Exception("Request must contain at least one event.");
+            }
+
             if (invalidIds.Any())
             {
-                throw new Exception($"Request contains invalid events ids. ({string.Join(",", invalidIds)})");
+                throw new Exception($"Request contains invalid event ids. ({string.Join(",", invalidIds)})");
             }
 
             if (!events.Exists(e => e.Id == fixture.TiebreakerEventId))
             {
-                throw new Exception($"Tiebreaker event must exist in the Fixture.");
+                throw new Exception("Request contains invalid Tiebreaker event. Tiebreaker event must be included in events.");
             }
+
+            var timesValid = events.All(e => e.TimeValid == true);
+            if (!timesValid) throw new Exception("Request contains events which have not been scheduled. Please try again soon.");
+            var firstEventStartTime = events.First().Date ?? throw new Exception("Unable to determine fixture deadline based on selected events.");
+
+            var lockTime = firstEventStartTime.AddHours(-2);
+            fixture.Deadline = lockTime;
 
             _context.Fixtures.Add(fixture);
             await _context.SaveChangesAsync();

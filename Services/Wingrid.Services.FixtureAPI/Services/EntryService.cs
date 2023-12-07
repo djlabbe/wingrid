@@ -23,6 +23,10 @@ namespace Wingrid.Services.FixtureAPI.Services
         public async Task<Entry> SubmitEntryAsync(Entry entry)
         {
             var existingEntry = await _context.Entries.FirstOrDefaultAsync(e => e.UserId == entry.UserId && e.FixtureId == entry.FixtureId);
+            var fixture = await _context.Fixtures.FirstOrDefaultAsync(f => f.Id == entry.FixtureId) ?? throw new Exception($"Fixture {entry.FixtureId} not found.");
+
+            if (fixture.Locked) throw new Exception("Entry submission deadline has passed.");
+
             if (existingEntry == null)
             {
                 _context.Entries.Add(entry);

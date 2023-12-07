@@ -8,6 +8,6 @@ export interface FixtureDto {
 	events?: EventDto[];
 	entries?: EntryDto[];
 	locked: boolean;
-	lockedAt?: string;
+	deadline?: string;
 	tiebreakerEventId: string;
 }

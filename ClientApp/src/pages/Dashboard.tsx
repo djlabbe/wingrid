@@ -75,7 +75,7 @@ const Dashboard = () => {
 								{fixture.name}
 							</Table.Cell>
 							<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-								{fixture.lockedAt ? new Date(fixture.lockedAt).toLocaleString() : ""}
+								{fixture.deadline ? new Date(fixture.deadline).toLocaleString() : ""}
 							</Table.Cell>
 							<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
 								{fixture.eventIds.length}
