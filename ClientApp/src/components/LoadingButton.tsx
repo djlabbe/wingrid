@@ -6,9 +6,10 @@ interface Props {
 	loading: boolean;
 	text: string;
 	type?: "button" | "submit" | "reset" | undefined;
+	disabled?: boolean;
 }
 
-const LoadingButton = ({ onClick, loading, text, type = undefined }: Props) => {
+const LoadingButton = ({ onClick, loading, text, disabled, type = undefined }: Props) => {
 	return (
 		<Button
 			type={type}
@@ -16,7 +17,7 @@ const LoadingButton = ({ onClick, loading, text, type = undefined }: Props) => {
 			onClick={onClick}
 			isProcessing={loading}
 			processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}
-			disabled={loading}
+			disabled={disabled || loading}
 		>
 			{text}
 		</Button>

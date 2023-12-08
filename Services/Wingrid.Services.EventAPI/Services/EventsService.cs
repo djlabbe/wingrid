@@ -13,7 +13,7 @@ namespace Wingrid.Services.EventAPI.Services
         public Task<IEnumerable<Event>> GetEventsAsync(EventQueryParams eventQueryParams);
         public Task<IEnumerable<Event>> GetEventsAsync(IEnumerable<string> ids);
         public Task<Event?> GetEventAsync(string id);
-        public Task<Event> AddOrUpdateEventAsync(EspnEvent espnEvent);
+        public Task<Event> AddOrUpdateEventAsync(League league, EspnEvent espnEvent);
         public Task<int> SaveChangesAsync();
         public Task DispatchEventComplete(EventDto evnt);
     }
@@ -27,26 +27,22 @@ namespace Wingrid.Services.EventAPI.Services
 
         public async Task<IEnumerable<Event>> GetEventsAsync(EventQueryParams eventQueryParams)
         {
-            var season = eventQueryParams.Season;
-            var week = eventQueryParams.Week;
+            var start = eventQueryParams.Start;
+            var end = eventQueryParams.End;
             var ids = eventQueryParams.Id?.Split(",") ?? [];
 
             List<Event> events;
-            if (season == null && week == null)
+            if (start == null && end == null)
             {
                 events = await _context.Events.Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ToListAsync();
             }
-            else if (week == null)
+            else if (start != null && end == null || start == null && end != null)
             {
-                events = await _context.Events.Where(e => e.Season == season).Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ToListAsync();
-            }
-            else if (season == null)
-            {
-                events = await _context.Events.Where(e => e.Week == week).Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ToListAsync();
+                throw new Exception("Must provide both start and end");
             }
             else
             {
-                events = await _context.Events.Where(e => e.Season == season && e.Week == week).Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ToListAsync();
+                events = await _context.Events.Where(e => e.Date >= start && e.Date <= end).Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ToListAsync();
             }
 
             if (ids.Length != 0)
@@ -69,18 +65,25 @@ namespace Wingrid.Services.EventAPI.Services
             return evnt;
         }
 
-        public async Task<Event> AddOrUpdateEventAsync(EspnEvent espnEvent)
+        public async Task<Event> AddOrUpdateEventAsync(League league, EspnEvent espnEvent)
         {
             var evnt = await _context.Events.FirstOrDefaultAsync(e => e.Id == espnEvent.Id);
 
             if (evnt == null)
             {
-                evnt = _context.Add(new Event(espnEvent)).Entity;
+                evnt = new Event(espnEvent);
+
+                var homeTeamEspnId = espnEvent.Competitions?.FirstOrDefault()?.Competitors?.FirstOrDefault(c => c.HomeAway == "home")?.Team?.Id;
+                var awayTeamEspnId = espnEvent.Competitions?.FirstOrDefault()?.Competitors?.FirstOrDefault(c => c.HomeAway == "away")?.Team?.Id;
+
+                evnt.HomeTeamId = _context.Teams.FirstOrDefault(t => t.League == league && t.EspnId == homeTeamEspnId)?.Id;
+                evnt.AwayTeamId = _context.Teams.FirstOrDefault(t => t.League == league && t.EspnId == awayTeamEspnId)?.Id;
+
+                _context.Add(evnt);
             }
             else
             {
                 var prevStatus = evnt.StatusCompleted;
-
                 evnt.UpdateFrom(espnEvent);
 
                 // Publish a message that the event is now complete

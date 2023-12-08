@@ -8,6 +8,7 @@ namespace Wingrid.Services.EventAPI.Services
     public interface ITeamsService
     {
         public Task<IEnumerable<Team>> GetTeamsAsync();
+        public Task<IEnumerable<Team>> GetTeamsByLeagueAsync(League league);
         public Task<Team?> GetTeamAsync(string id);
         public Team AddTeam(Team team);
         public Task<int> SaveChangesAsync();
@@ -22,6 +23,13 @@ namespace Wingrid.Services.EventAPI.Services
             var teams = await _context.Teams.ToListAsync();
             return teams;
         }
+
+        public async Task<IEnumerable<Team>> GetTeamsByLeagueAsync(League league)
+        {
+            var teams = await _context.Teams.Where(t => t.League == league).ToListAsync();
+            return teams;
+        }
+
 
         public Team AddTeam(Team team)
         {

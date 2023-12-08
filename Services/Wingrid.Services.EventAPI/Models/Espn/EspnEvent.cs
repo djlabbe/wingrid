@@ -1,8 +1,8 @@
 namespace Wingrid.Services.EventAPI.Models.Espn
 {
-    public class EspnEvent
+    public class EspnEvent(string id)
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = id;
         public string? Uid { get; set; }
         public DateTime? Date { get; set; }
         public string? Name { get; set; }
@@ -10,11 +10,6 @@ namespace Wingrid.Services.EventAPI.Models.Espn
         public Season? Season { get; set; }
         public Week? Week { get; set; }
         public Status? Status { get; set; }
-        public IEnumerable<Competition>? Competitions {get; set;}
- 
-        public EspnEvent(string id)
-        {
-            Id = id;
-        }
+        public IEnumerable<Competition>? Competitions { get; set; }
     }
 }

@@ -9,11 +9,11 @@ using Wingrid.Services.EventAPI.Data;
 
 #nullable disable
 
-namespace Wingrid.EventAPI.Migrations
+namespace Wingrid.Services.EventAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231205044906_TeamLogo")]
-    partial class TeamLogo
+    [Migration("20231208061138_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,8 +36,8 @@ namespace Wingrid.EventAPI.Migrations
                     b.Property<string>("AwayScore")
                         .HasColumnType("text");
 
-                    b.Property<string>("AwayTeamId")
-                        .HasColumnType("text");
+                    b.Property<int?>("AwayTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<bool?>("AwayWinner")
                         .HasColumnType("boolean");
@@ -54,8 +54,8 @@ namespace Wingrid.EventAPI.Migrations
                     b.Property<string>("HomeScore")
                         .HasColumnType("text");
 
-                    b.Property<string>("HomeTeamId")
-                        .HasColumnType("text");
+                    b.Property<int?>("HomeTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<bool?>("HomeWinner")
                         .HasColumnType("boolean");
@@ -128,8 +128,11 @@ namespace Wingrid.EventAPI.Migrations
 
             modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Team", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Abbreviation")
                         .HasColumnType("text");
@@ -143,11 +146,17 @@ namespace Wingrid.EventAPI.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
+                    b.Property<string>("EspnId")
+                        .HasColumnType("text");
+
                     b.Property<bool?>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool?>("IsAllStar")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("League")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Location")
                         .HasColumnType("text");
@@ -168,6 +177,9 @@ namespace Wingrid.EventAPI.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("League", "EspnId")
+                        .IsUnique();
 
                     b.ToTable("Teams");
                 });

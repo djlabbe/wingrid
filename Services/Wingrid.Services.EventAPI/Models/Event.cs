@@ -36,13 +36,13 @@ namespace Wingrid.Services.EventAPI.Models
 
         // Home Competitor
         public bool? HomeWinner { get; set; }
-        public string? HomeTeamId { get; set; }
+        public int? HomeTeamId { get; set; }
         public Team? HomeTeam { get; set; }
         public string? HomeScore { get; set; }
 
         // Away Competitor
         public bool? AwayWinner { get; set; }
-        public string? AwayTeamId { get; set; }
+        public int? AwayTeamId { get; set; }
         public Team? AwayTeam { get; set; }
         public string? AwayScore { get; set; }
 
@@ -65,6 +65,8 @@ namespace Wingrid.Services.EventAPI.Models
             UpdateFrom(espnEvent);
         }
 
+
+        // Updates all properties, except Teams (foreign keys)
         public void UpdateFrom(EspnEvent espn)
         {
             var season = espn.Season;
@@ -92,13 +94,12 @@ namespace Wingrid.Services.EventAPI.Models
             ConferenceCompetition = competition?.ConferenceCompetition;
             PlayByPlayAvailable = competition?.PlayByPlayAvailable;
             Recent = competition?.Recent;
-            HomeTeamId = homeTeamId;
+            // HomeTeamId = homeTeamId;
             HomeWinner = homeCompetitor?.Winner;
             HomeScore = homeCompetitor?.Score;
-            AwayTeamId = awayTeamId;
+            // AwayTeamId = awayTeamId;
             AwayWinner = awayCompetitor?.Winner;
             AwayScore = awayCompetitor?.Score;
-            // Clock = eventStatus?.Clock;
             DisplayClock = eventStatus?.DisplayClock;
             Period = eventStatus?.Period;
             StatusId = eventStatus?.Type?.Id;

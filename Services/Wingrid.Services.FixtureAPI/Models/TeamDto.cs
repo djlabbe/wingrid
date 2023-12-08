@@ -3,6 +3,8 @@ namespace Wingrid.Services.FixtureAPI.Models
     public class TeamDto(string id)
     {
         public string Id { get; set; } = id;
+        public int? League { get; set; }
+        public string? EspnId { get; set; }
         public string? Uid { get; set; }
         public string? Location { get; set; }
         public string? Name { get; set; }

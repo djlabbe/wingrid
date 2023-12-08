@@ -2,31 +2,27 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Wingrid.Services.EventAPI;
 using Wingrid.Services.EventAPI.Data;
 
 #nullable disable
 
-namespace Wingrid.EventAPI.Migrations
+namespace Wingrid.Services.EventAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231122034000_Initial")]
-    partial class Initial
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Wingrid.EventAPI.Models.Event", b =>
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Event", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -37,8 +33,8 @@ namespace Wingrid.EventAPI.Migrations
                     b.Property<string>("AwayScore")
                         .HasColumnType("text");
 
-                    b.Property<string>("AwayTeamId")
-                        .HasColumnType("text");
+                    b.Property<int?>("AwayTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<bool?>("AwayWinner")
                         .HasColumnType("boolean");
@@ -55,8 +51,8 @@ namespace Wingrid.EventAPI.Migrations
                     b.Property<string>("HomeScore")
                         .HasColumnType("text");
 
-                    b.Property<string>("HomeTeamId")
-                        .HasColumnType("text");
+                    b.Property<int?>("HomeTeamId")
+                        .HasColumnType("integer");
 
                     b.Property<bool?>("HomeWinner")
                         .HasColumnType("boolean");
@@ -127,10 +123,13 @@ namespace Wingrid.EventAPI.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Wingrid.EventAPI.Models.Team", b =>
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Team", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Abbreviation")
                         .HasColumnType("text");
@@ -144,13 +143,22 @@ namespace Wingrid.EventAPI.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
+                    b.Property<string>("EspnId")
+                        .HasColumnType("text");
+
                     b.Property<bool?>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<bool?>("IsAllStar")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("League")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Location")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Logo")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -167,16 +175,19 @@ namespace Wingrid.EventAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("League", "EspnId")
+                        .IsUnique();
+
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("Wingrid.EventAPI.Models.Event", b =>
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Event", b =>
                 {
-                    b.HasOne("Wingrid.EventAPI.Models.Team", "AwayTeam")
+                    b.HasOne("Wingrid.Services.EventAPI.Models.Team", "AwayTeam")
                         .WithMany()
                         .HasForeignKey("AwayTeamId");
 
-                    b.HasOne("Wingrid.EventAPI.Models.Team", "HomeTeam")
+                    b.HasOne("Wingrid.Services.EventAPI.Models.Team", "HomeTeam")
                         .WithMany()
                         .HasForeignKey("HomeTeamId");
 

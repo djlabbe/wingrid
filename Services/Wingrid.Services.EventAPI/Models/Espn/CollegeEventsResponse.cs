@@ -1,9 +1,7 @@
 namespace Wingrid.Services.EventAPI.Models.Espn
 {
-    public class EventsResponse
+    public class CollegeEventsResponse
     {
         public IEnumerable<EspnEvent>? Events { get; set; }
-        public Season? Season { get; set; }
-        public Week? Week { get; set; }
     }
 }

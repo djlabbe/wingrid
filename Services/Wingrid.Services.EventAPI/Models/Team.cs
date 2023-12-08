@@ -2,15 +2,11 @@ using Wingrid.Services.EventAPI.Models.Espn;
 
 namespace Wingrid.Services.EventAPI.Models
 {
-    public class Team
+    public class Team(League league, int id)
     {
-        // Do not change constructor (yet) wont deserialize from ESPN
-        public Team(string id)
-        {
-            Id = id;
-        }
-
-        public string Id { get; set; }
+        public int Id { get; set; } = id;
+        public League League { get; set; } = league;
+        public string? EspnId { get; set; }
         public string? Uid { get; set; }
         public string? Location { get; set; }
         public string? Name { get; set; }
@@ -24,13 +20,14 @@ namespace Wingrid.Services.EventAPI.Models
         public bool? IsAllStar { get; set; }
         public string? Logo { get; set; }
 
-        public Team(EspnTeam espnTeam) : this(espnTeam.Id)
+        public Team(League league, EspnTeam espnTeam) : this(league, 0)
         {
             UpdateFrom(espnTeam);
         }
 
         public void UpdateFrom(EspnTeam espnTeam)
         {
+            EspnId = espnTeam.Id;
             Uid = espnTeam.Uid;
             Location = espnTeam.Location;
             Name = espnTeam.Name;

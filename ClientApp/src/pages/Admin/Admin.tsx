@@ -1,4 +1,4 @@
-import { Button, Checkbox, Label, Radio, Select, Table } from "flowbite-react";
+import { Button, Checkbox, Datepicker, Label, Radio, Select, Table } from "flowbite-react";
 import { useState } from "react";
 import { GATEWAY_URI, get, post } from "../../services/api";
 import { EventDto } from "../../models/EventDto";
@@ -12,6 +12,10 @@ import LoadingButton from "../../components/LoadingButton";
 const Admin = () => {
 	const [season, setSeason] = useState<string>("2023");
 	const [week, setWeek] = useState<number>(1);
+
+	const [start, setStart] = useState<Date>();
+	const [end, setEnd] = useState<Date>();
+
 	const [loadingEvents, setLoadingEvents] = useState(false);
 	const [saving, setSaving] = useState(false);
 	const [events, setEvents] = useState<EventDto[]>();
@@ -23,7 +27,9 @@ const Admin = () => {
 	const handleSearch = async () => {
 		try {
 			setLoadingEvents(true);
-			const apiResponse = await get<ResponseDto<EventDto[]>>(`${GATEWAY_URI}/api/events?season=${season}&week=${week}`);
+			const apiResponse = await get<ResponseDto<EventDto[]>>(
+				`${GATEWAY_URI}/api/events?start=${start?.toISOString()}&end=${end?.toISOString()}`,
+			);
 			setLoadingEvents(false);
 			if (apiResponse.isSuccess) {
 				setEvents(apiResponse.result);
@@ -77,29 +83,22 @@ const Admin = () => {
 	};
 
 	return (
-		<div className="mx-auto max-w-screen-xl lg:py-8">
+		<div className="mx-auto max-w-screen-xl py-8">
 			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end py-4 px-4 pb-8">
 				<div className="col-span-4">
-					<Label htmlFor="season" value="Season" />
-					<Select id="season" value={season} onChange={(e) => setSeason(e.target.value)} required disabled>
-						<option value="2023">2023</option>
-					</Select>
+					<Label htmlFor="start" value="Start Date" />
+					<Datepicker showClearButton={false} onSelectedDateChanged={(date) => setStart(date)} required />
 				</div>
 				<div className="col-span-4">
-					<Label htmlFor="week" value="Week" />
-					<Select id="week" value={week} onChange={(e) => setWeek(parseInt(e.target.value))} required>
-						{[...Array(18)].map((_, i) => (
-							<option key={i} value={i + 1}>
-								{i + 1}
-							</option>
-						))}
-					</Select>
+					<Label htmlFor="end" value="End Date" />
+					<Datepicker showClearButton={false} onSelectedDateChanged={(date) => setEnd(date)} required />
 				</div>
 				<div className="col-span-2">
-					<LoadingButton onClick={handleSearch} loading={loadingEvents} text="Get Events" />
+					<LoadingButton onClick={handleSearch} loading={loadingEvents} text="Get Events" disabled={!start || !end} />
 				</div>
 			</div>
-			{events && (
+			{events && events.length === 0 && <div className="mb-8 overflow-x-auto">No events found.</div>}
+			{events && events.length > 0 && (
 				<>
 					<div className="mb-8 overflow-x-auto">
 						<Table>

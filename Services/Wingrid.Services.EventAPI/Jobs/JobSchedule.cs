@@ -9,14 +9,14 @@ namespace Wingrid.Services.EventAPI.Jobs
             {
                 "Development", new Dictionary<string, string>
                 {
-                    { nameof(TeamsJob), "0 0 * * *" }, // Every day at 12:00 AM
+                    { nameof(TeamsJob), "0 0 * * 2" }, // “At 00:00 on Tuesday.”
                     { nameof(EventsJob), "7 * * * *" }, // Every hour at :07
                 }
             },
             {
                 "Production", new Dictionary<string, string>
                 {
-                    { nameof(TeamsJob), "0 0 * * *" }, // Every day at 12:00 AM
+                    { nameof(TeamsJob), "0 0 * * *" }, // “At 00:00 on Tuesday.”
                     { nameof(EventsJob), "7 * * * *" }, // Every hour at :07
                 }
             }

@@ -97,7 +97,7 @@ const FixtureIndex = () => {
 				<div
 					className="p-5 rounded-t-lg text-center"
 					style={{
-						backgroundColor: `#${team.color}`,
+						backgroundColor: `#${team.color}CC`,
 						backgroundImage: `linear-gradient(45deg, 
 							rgba(255, 255, 255, 0.5) 0px, 
 							rgba(255, 255, 255, 0.5) 18%, 

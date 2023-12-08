@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Wingrid.EventAPI.Migrations
+namespace Wingrid.Services.EventAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -15,7 +16,10 @@ namespace Wingrid.EventAPI.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    League = table.Column<int>(type: "integer", nullable: false),
+                    EspnId = table.Column<string>(type: "text", nullable: true),
                     Uid = table.Column<string>(type: "text", nullable: true),
                     Location = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
@@ -26,7 +30,8 @@ namespace Wingrid.EventAPI.Migrations
                     Color = table.Column<string>(type: "text", nullable: true),
                     AlternateColor = table.Column<string>(type: "text", nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: true),
-                    IsAllStar = table.Column<bool>(type: "boolean", nullable: true)
+                    IsAllStar = table.Column<bool>(type: "boolean", nullable: true),
+                    Logo = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,10 +58,10 @@ namespace Wingrid.EventAPI.Migrations
                     PlayByPlayAvailable = table.Column<bool>(type: "boolean", nullable: true),
                     Recent = table.Column<bool>(type: "boolean", nullable: true),
                     HomeWinner = table.Column<bool>(type: "boolean", nullable: true),
-                    HomeTeamId = table.Column<string>(type: "text", nullable: true),
+                    HomeTeamId = table.Column<int>(type: "integer", nullable: true),
                     HomeScore = table.Column<string>(type: "text", nullable: true),
                     AwayWinner = table.Column<bool>(type: "boolean", nullable: true),
-                    AwayTeamId = table.Column<string>(type: "text", nullable: true),
+                    AwayTeamId = table.Column<int>(type: "integer", nullable: true),
                     AwayScore = table.Column<string>(type: "text", nullable: true),
                     DisplayClock = table.Column<string>(type: "text", nullable: true),
                     Period = table.Column<int>(type: "integer", nullable: true),
@@ -92,6 +97,12 @@ namespace Wingrid.EventAPI.Migrations
                 name: "IX_Events_HomeTeamId",
                 table: "Events",
                 column: "HomeTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_League_EspnId",
+                table: "Teams",
+                columns: new[] { "League", "EspnId" },
+                unique: true);
         }
 
         /// <inheritdoc />
