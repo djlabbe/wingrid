@@ -1,4 +1,4 @@
-import { Button, Checkbox, Datepicker, Label, Radio, Select, Table } from "flowbite-react";
+import { Button, Checkbox, Datepicker, Label, Radio, Table } from "flowbite-react";
 import { useState } from "react";
 import { GATEWAY_URI, get, post } from "../../services/api";
 import { EventDto } from "../../models/EventDto";
@@ -10,11 +10,9 @@ import { ResponseDto } from "../../models/ResponseDto";
 import LoadingButton from "../../components/LoadingButton";
 
 const Admin = () => {
-	const [season, setSeason] = useState<string>("2023");
-	const [week, setWeek] = useState<number>(1);
-
 	const [start, setStart] = useState<Date>();
 	const [end, setEnd] = useState<Date>();
+	const [name, setName] = useState("");
 
 	const [loadingEvents, setLoadingEvents] = useState(false);
 	const [saving, setSaving] = useState(false);
@@ -61,7 +59,7 @@ const Admin = () => {
 
 			const fixture: FixtureDto = {
 				id: 0,
-				name: `${season} - Week ${week}`,
+				name: name.trim(),
 				eventIds: selectedEventIds,
 				tiebreakerEventId: tiebreakEvent,
 				locked: false,
@@ -84,7 +82,7 @@ const Admin = () => {
 
 	return (
 		<div className="mx-auto max-w-screen-xl py-8">
-			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end py-4 px-4 pb-8">
+			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end py-4 px-4">
 				<div className="col-span-4">
 					<Label htmlFor="start" value="Start Date" />
 					<Datepicker showClearButton={false} onSelectedDateChanged={(date) => setStart(date)} required />
@@ -95,6 +93,19 @@ const Admin = () => {
 				</div>
 				<div className="col-span-2">
 					<LoadingButton onClick={handleSearch} loading={loadingEvents} text="Get Events" disabled={!start || !end} />
+				</div>
+			</div>
+			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end px-4 pb-8">
+				<div className="col-span-10">
+					<Label htmlFor="name" value="Fixture Display Name" />
+					<input
+						id="name"
+						value={name || ""}
+						onChange={(e) => setName(e.target.value)}
+						placeholder="Provide a descriptive name / title"
+						required
+						className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+					/>
 				</div>
 			</div>
 			{events && events.length === 0 && <div className="mb-8 overflow-x-auto">No events found.</div>}
