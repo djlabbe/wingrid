@@ -13,6 +13,8 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Logs;
 using Wingrid.MessageBus;
 using Hangfire.PostgreSql;
+using System.Security.Claims;
+using Microsoft.Extensions.Primitives;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +34,7 @@ builder.Logging.AddOpenTelemetry(options =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => 
+builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
     {
@@ -74,8 +76,9 @@ builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<ITeamsService, TeamsService>();
 builder.Services.AddScoped<IMessageBus, MessageBus>();
 
-builder.Services.AddHangfire(config => {
-    config.UseConsole(); 
+builder.Services.AddHangfire(config =>
+{
+    config.UseConsole();
     config.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString));
 }).AddHangfireServer(options => { options.WorkerCount = 10; });
 
@@ -93,7 +96,12 @@ app.UseSwaggerUI(options =>
 });
 
 
-app.UseHangfireDashboard();
+app.UseHangfireDashboard(options: new DashboardOptions
+{
+    Authorization = new[] { new JobDashboardAuthorizationFilter(ClaimTypes.Role, new StringValues("ADMIN_JOBS")) },
+    AppPath = "/"
+});
+
 AddRecurringJob<TeamsJob>(TeamsJob.JobId);
 AddRecurringJob<EventsJob>(EventsJob.JobId);
 
