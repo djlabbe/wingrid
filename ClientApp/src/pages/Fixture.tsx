@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GATEWAY_URI, get, post } from "../services/api";
 import { useEffect, useState } from "react";
 import { FixtureDto } from "../models/FixtureDto";
-import { Button } from "flowbite-react";
 import { TeamDto } from "../models/TeamDto";
 import { useLoginContext } from "../hooks/useLoginContext";
 import { EventDto } from "../models/EventDto";
@@ -10,12 +9,14 @@ import { toastifyError, toastifySuccess } from "../services/toastService";
 import { EntryDto } from "../models/EntryDto";
 import { ResponseDto } from "../models/ResponseDto";
 import LoadingContainer from "../components/LoadingContainer";
+import LoadingButton from "../components/LoadingButton";
 
-const FixtureIndex = () => {
+const Fixture = () => {
 	const { loginResult } = useLoginContext();
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
 	const [fixture, setFixture] = useState<FixtureDto>();
 	const [choices, setChoices] = useState(new Map<string, boolean>());
 	const [tiebreaker, setTiebreaker] = useState<number>();
@@ -65,10 +66,18 @@ const FixtureIndex = () => {
 			tiebreaker,
 		};
 		try {
-			await post(`${GATEWAY_URI}/api/entries`, entry);
-			toastifySuccess(`${fixture?.name} entry saved.`);
-			navigate("/dashboard");
+			setSubmitting(true);
+			var response = await post<ResponseDto<EntryDto>>(`${GATEWAY_URI}/api/entries`, entry);
+			setSubmitting(false);
+			if (response.isSuccess) {
+				toastifySuccess(`${fixture?.name} entry saved. Good luck!`);
+				navigate("/dashboard");
+			} else {
+				setSubmitting(false);
+				toastifyError(response.message);
+			}
 		} catch (e) {
+			setSubmitting(false);
 			console.error(e);
 			toastifyError(`Error submitting entry. Please try again later. ${e}`);
 		}
@@ -91,13 +100,13 @@ const FixtureIndex = () => {
 			<div
 				className={`md:w-1/2 rounded-lg hover:ring-8 hover:ring-amber-400 hover:cursor-pointer my-4 ${
 					isSelected && "ring-amber-400 ring-8"
-				} ${hasChosen && !isSelected && "opacity-40"}`}
+				} ${hasChosen && !isSelected && "opacity-50"}`}
 				onClick={() => handleSelectTeam(eventId, isHome)}
 			>
 				<div
 					className="p-5 rounded-t-lg text-center"
 					style={{
-						backgroundColor: `#${team.color}CC`,
+						backgroundColor: `#${team?.color}CC`,
 						backgroundImage: `linear-gradient(${isHome ? "" : "-"}45deg, 
 							rgba(255, 255, 255, 0.5) 0px, 
 							rgba(255, 255, 255, 0.5) 18%, 
@@ -115,7 +124,7 @@ const FixtureIndex = () => {
 					<img src={team.logo} width={"100px"} height={"100px"} className="mx-auto" />
 				</div>
 				<div className="w-full rounded-b-lg bg-zinc-800 p-2 text-white text-center text-sm font-bold">
-					{team.displayName.toLocaleUpperCase()}
+					{team.displayName?.toLocaleUpperCase()}
 				</div>
 			</div>
 		);
@@ -163,16 +172,11 @@ const FixtureIndex = () => {
 					</div>
 				</div>
 			</div>
-			<Button
-				fullSized
-				className="bg-green-700 enabled:hover:bg-green-800 mb-8"
-				disabled={!isValid}
-				onClick={handleSubmit}
-			>
+			<LoadingButton loading={submitting} disabled={!isValid} onClick={handleSubmit}>
 				Submit Entry
-			</Button>
+			</LoadingButton>
 		</div>
 	);
 };
 
-export default FixtureIndex;
+export default Fixture;

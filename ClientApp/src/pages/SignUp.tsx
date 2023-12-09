@@ -93,7 +93,9 @@ const SignUp = () => {
 						</div>
 
 						<div>
-							<LoadingButton type="submit" loading={loading} text="Sign Up" />
+							<LoadingButton type="submit" loading={loading}>
+								Sign Up
+							</LoadingButton>
 						</div>
 						<div>
 							<a

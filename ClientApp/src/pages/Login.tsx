@@ -74,9 +74,9 @@ const Login = () => {
 							</div>
 							<div className="text-sm text-right mt-2"></div>
 						</div>
-						<div>
-							<LoadingButton type="submit" loading={loginResult?.isLoggingIn || false} text="Log In" />
-						</div>
+						<LoadingButton type="submit" loading={loginResult?.isLoggingIn || false}>
+							Log In
+						</LoadingButton>
 						<div className="flex justify-between">
 							<a href="#" className="text-sm font-semibold text-green-600 hover:text-green-500">
 								Forgot password?

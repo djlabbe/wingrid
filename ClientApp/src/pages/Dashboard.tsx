@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { FixtureDto } from "../models/FixtureDto";
 import { GATEWAY_URI, get } from "../services/api";
-import { Button, Table } from "flowbite-react";
+import { Table } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { ResponseDto } from "../models/ResponseDto";
 import { toastifyError } from "../services/toastService";
 import LoadingContainer from "../components/LoadingContainer";
+import LoadingButton from "../components/LoadingButton";
 
 const Dashboard = () => {
 	const [fixtures, setFixtures] = useState<FixtureDto[]>();
@@ -58,18 +59,14 @@ const Dashboard = () => {
 							<Table.Row key={fixture.id} className="dark:border-gray-700 dark:bg-gray-800">
 								<Table.Cell>
 									<div className="flex">
-										<Button
-											className="mt-auto bg-green-700 enabled:hover:bg-green-800 text-sm"
-											onClick={() => handleMakePicks(fixture.id)}
-										>
-											<p className="text-xs">Make Picks</p>
-										</Button>
-										<Button
-											className="mt-auto bg-green-700 enabled:hover:bg-green-800 ms-2"
-											onClick={() => handleClickGrid(fixture.id)}
-										>
+										{!fixture.locked && (
+											<LoadingButton onClick={() => handleMakePicks(fixture.id)}>
+												<p className="text-xs">Make Picks</p>
+											</LoadingButton>
+										)}
+										<LoadingButton className="ms-2" onClick={() => handleClickGrid(fixture.id)}>
 											<p className="text-xs">View Grid</p>
-										</Button>
+										</LoadingButton>
 									</div>
 								</Table.Cell>
 								<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">

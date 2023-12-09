@@ -9,7 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import LoadingOverlay from "./components/LoadingOverlay";
 import Admin from "./pages/Admin/Admin";
 import About from "./pages/About";
-import FixtureIndex from "./pages/Fixture";
+import Fixture from "./pages/Fixture";
 import Grid from "./pages/Grid";
 
 interface AuthRequiredProps {
@@ -46,7 +46,7 @@ const AppRoutes = () => {
 				path="fixtures/:id"
 				element={
 					<AuthRequired authorizedRoles={["USER"]}>
-						<FixtureIndex />
+						<Fixture />
 					</AuthRequired>
 				}
 			/>

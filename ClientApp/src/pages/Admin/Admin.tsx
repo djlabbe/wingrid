@@ -1,8 +1,7 @@
-import { Button, Checkbox, Datepicker, Label, Radio, Table } from "flowbite-react";
+import { Checkbox, Datepicker, Label, Radio, Table } from "flowbite-react";
 import { useState } from "react";
 import { GATEWAY_URI, get, post } from "../../services/api";
 import { EventDto } from "../../models/EventDto";
-import { AiOutlineLoading } from "react-icons/ai";
 import { FixtureDto } from "../../models/FixtureDto";
 import { toastifyError, toastifySuccess } from "../../services/toastService";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ const Admin = () => {
 	const [events, setEvents] = useState<EventDto[]>();
 	const [selectedEventIds, setSelectedEventIds] = useState<string[]>([]);
 	const [tiebreakEvent, setTiebreakEvent] = useState<string>();
-	const isValid = tiebreakEvent && selectedEventIds?.length > 0;
+	const isValid = name && tiebreakEvent && selectedEventIds?.length > 0;
 	const navigate = useNavigate();
 
 	const handleSearch = async () => {
@@ -92,7 +91,9 @@ const Admin = () => {
 					<Datepicker showClearButton={false} onSelectedDateChanged={(date) => setEnd(date)} required />
 				</div>
 				<div className="col-span-2">
-					<LoadingButton onClick={handleSearch} loading={loadingEvents} text="Get Events" disabled={!start || !end} />
+					<LoadingButton onClick={handleSearch} loading={loadingEvents} disabled={!start || !end}>
+						Get Events
+					</LoadingButton>
 				</div>
 			</div>
 			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end px-4 pb-8">
@@ -162,15 +163,9 @@ const Admin = () => {
 							</Table.Body>
 						</Table>
 					</div>
-					<Button
-						className="w-full mt-auto bg-green-700 enabled:hover:bg-green-800"
-						disabled={!isValid || saving}
-						onClick={handleSubmit}
-						isProcessing={saving}
-						processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}
-					>
+					<LoadingButton disabled={!isValid || saving} onClick={handleSubmit} loading={saving}>
 						{`Create Fixture with ${selectedEventIds.length} Event${selectedEventIds.length === 1 ? "" : "s"}`}
-					</Button>
+					</LoadingButton>
 				</>
 			)}
 		</div>
