@@ -11,9 +11,9 @@ namespace Wingrid.Services.FixtureAPI.Models
         public required int FixtureId { get; set; }
         public List<EventEntry> EventEntries { get; set; } = [];
         public int Tiebreaker { get; set; }
-        public int Score => EventEntries.Where(ee => ee.IsCorrect).Count();
         public DateTime SubmittedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public int Score => EventEntries.Where(ee => ee.IsCorrect).Count();
     }
 
     public class EventEntry

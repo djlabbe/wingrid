@@ -1,6 +1,7 @@
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
+using Microsoft.VisualBasic;
 using Wingrid.Services.EventAPI.Models;
 using Wingrid.Services.EventAPI.Services;
 
@@ -16,7 +17,10 @@ namespace Wingrid.Services.EventAPI.Jobs
         public async Task ExecuteAsync(PerformContext? performContext)
         {
             await SyncNflEvents(performContext);
-            await SyncNcaaEvents(performContext);
+
+            var currentYear = DateTime.UtcNow.Year;
+            await SyncNcaaEvents(currentYear, performContext);
+            await SyncNcaaEvents(currentYear + 1, performContext);
         }
 
         private async Task SyncNflEvents(PerformContext? performContext)
@@ -45,11 +49,11 @@ namespace Wingrid.Services.EventAPI.Jobs
             performContext.WriteLine($"Created or modified {changeCount} Events.");
         }
 
-        private async Task SyncNcaaEvents(PerformContext? performContext)
+        private async Task SyncNcaaEvents(int year, PerformContext? performContext)
         {
-            performContext.WriteLine("Fetching current NCAA season events...");
+            performContext.WriteLine($"Fetching NCAA events for {year}...");
+            var espnEventResponses = await _espnService.GetNcaaSeasonEvents(year, performContext);
 
-            var espnEventResponses = await _espnService.GetNcaaSeasonEvents(2023, performContext);
             performContext.WriteLine($"Retrieved {espnEventResponses.Count()} responses from ESPN.");
             foreach (var response in espnEventResponses)
             {

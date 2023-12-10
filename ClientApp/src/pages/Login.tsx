@@ -74,7 +74,11 @@ const Login = () => {
 							</div>
 							<div className="text-sm text-right mt-2"></div>
 						</div>
-						<LoadingButton type="submit" loading={loginResult?.isLoggingIn || false}>
+						<LoadingButton
+							type="submit"
+							loading={loginResult?.isLoggingIn || false}
+							disabled={loginResult?.isLoggingIn}
+						>
 							Log In
 						</LoadingButton>
 						<div className="flex justify-between">

@@ -1,4 +1,4 @@
-import { Checkbox, Datepicker, Label, Radio, Table } from "flowbite-react";
+import { Checkbox, Datepicker, Label, Table } from "flowbite-react";
 import { useState } from "react";
 import { GATEWAY_URI, get, post } from "../../services/api";
 import { EventDto } from "../../models/EventDto";
@@ -7,6 +7,7 @@ import { toastifyError, toastifySuccess } from "../../services/toastService";
 import { useNavigate } from "react-router-dom";
 import { ResponseDto } from "../../models/ResponseDto";
 import LoadingButton from "../../components/LoadingButton";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const Admin = () => {
 	const [start, setStart] = useState<Date>();
@@ -84,11 +85,11 @@ const Admin = () => {
 			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end py-4 px-4">
 				<div className="col-span-4">
 					<Label htmlFor="start" value="Start Date" />
-					<Datepicker showClearButton={false} onSelectedDateChanged={(date) => setStart(date)} required />
+					<Datepicker weekStart={2} onSelectedDateChanged={(date) => setStart(date)} required />
 				</div>
 				<div className="col-span-4">
 					<Label htmlFor="end" value="End Date" />
-					<Datepicker showClearButton={false} onSelectedDateChanged={(date) => setEnd(date)} required />
+					<Datepicker weekStart={0} onSelectedDateChanged={(date) => setEnd(date)} required />
 				</div>
 				<div className="col-span-2">
 					<LoadingButton onClick={handleSearch} loading={loadingEvents} disabled={!start || !end}>
@@ -119,7 +120,7 @@ const Admin = () => {
 								<Table.HeadCell className="bg-gray-200">Date</Table.HeadCell>
 								<Table.HeadCell className="bg-gray-200">Away Team</Table.HeadCell>
 								<Table.HeadCell className="bg-gray-200">Home Team</Table.HeadCell>
-								<Table.HeadCell className="bg-gray-200">Neutral Site</Table.HeadCell>
+								<Table.HeadCell className="bg-gray-200 text-center">Neutral Site</Table.HeadCell>
 								<Table.HeadCell className="bg-gray-200 text-center">Tiebreak</Table.HeadCell>
 							</Table.Head>
 							<Table.Body className="divide-y">
@@ -145,16 +146,20 @@ const Admin = () => {
 										<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
 											{event.homeTeam.displayName}
 										</Table.Cell>
-										<Table.Cell>{event.neutralSite}</Table.Cell>
+										<Table.Cell className="flex justify-center text-green-600 text-lg">
+											{event.neutralSite && <AiFillCheckCircle />}
+										</Table.Cell>
 										<Table.Cell className="text-center">
 											{selectedEventIds.includes(event.id) && (
-												<Radio
+												<input
+													type="radio"
 													name="tiebreak"
 													id={event.id}
 													value={event.id}
 													checked={tiebreakEvent === event.id}
 													// disabled={tiebreakEvent != undefined && tiebreakEvent !== event.id}
 													onChange={(e) => handleSelectTiebreak(event.id, e.target.checked)}
+													className="h-4 w-4 border border-gray-300 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:bg-green-600 dark:focus:ring-green-600 text-green-600"
 												/>
 											)}
 										</Table.Cell>
