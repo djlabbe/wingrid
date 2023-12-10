@@ -52,7 +52,7 @@ namespace Wingrid.Services.EventAPI.Services
         {
             string fmt = "00";
             List<CollegeEventsResponse> events = [];
-            for (var m = 8; m <= 12; m++)
+            for (var m = 1; m <= 12; m++)
             {
                 var query = $"{NCAA_SCOREBOARD_URL}?limit=1000&dates={season}{m.ToString(fmt)}01-{season}{m.ToString(fmt)}{DateTime.DaysInMonth(season, m)}";
                 performContext.WriteLine(query);
