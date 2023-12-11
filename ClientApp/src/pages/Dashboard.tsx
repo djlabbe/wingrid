@@ -58,13 +58,13 @@ const Dashboard = () => {
 						{fixtures?.map((fixture) => (
 							<Table.Row key={fixture.id} className="dark:border-gray-700 dark:bg-gray-800">
 								<Table.Cell>
-									<div className="flex">
+									<div className="flex space-between">
 										{!fixture.locked && (
-											<LoadingButton onClick={() => handleMakePicks(fixture.id)}>
+											<LoadingButton className="me-2" onClick={() => handleMakePicks(fixture.id)}>
 												<p className="text-xs">Make Picks</p>
 											</LoadingButton>
 										)}
-										<LoadingButton className="ms-2" onClick={() => handleClickGrid(fixture.id)}>
+										<LoadingButton onClick={() => handleClickGrid(fixture.id)}>
 											<p className="text-xs">View Grid</p>
 										</LoadingButton>
 									</div>

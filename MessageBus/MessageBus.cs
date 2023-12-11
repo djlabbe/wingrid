@@ -8,13 +8,12 @@ namespace Wingrid.MessageBus
 {
     public interface IMessageBus
     {
-        Task PublishMessage(object message, string topic_queue_Name);
+        Task PublishMessage(object message, string connectionString, string topic_queue_Name);
     }
 
     public class MessageBus : IMessageBus
     {
-        private readonly string connectionString = "Endpoint=sb://wingrid.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SPpLslOgEAW1E4Bf9jvbzC4RmBzqwc1/G+ASbG+De/0=";
-        public async Task PublishMessage(object message, string topic_queue_Name)
+        public async Task PublishMessage(object message, string connectionString, string topic_queue_Name)
         {
             await using var client = new ServiceBusClient(connectionString);
             ServiceBusSender sender = client.CreateSender(topic_queue_Name);

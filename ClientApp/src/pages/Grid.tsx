@@ -19,12 +19,13 @@ const Grid = () => {
 
 	const cellClassRules = (event: EventDto) => {
 		return {
-			"bg-yellow-100": (p: CellClassParams<EntryDto>) => {
-				const homeWinner = event.homeWinner;
-				const selectedWinner = p.data?.eventEntries.find(
-					(ee: EventEntryDto) => ee.eventId === event.id,
-				)?.homeWinnerSelected;
-				return homeWinner === selectedWinner;
+			"bg-yellow-300": (p: CellClassParams<EntryDto>) => {
+				const isCorrect = p.data?.eventEntries.find((ee: EventEntryDto) => ee.eventId === event.id)?.isCorrect;
+				return isCorrect;
+			},
+			"bg-red-100": (p: CellClassParams<EntryDto>) => {
+				const isCorrect = p.data?.eventEntries.find((ee: EventEntryDto) => ee.eventId === event.id)?.isCorrect;
+				return event.statusCompleted && isCorrect === false;
 			},
 		};
 	};

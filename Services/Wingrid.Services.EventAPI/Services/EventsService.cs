@@ -98,9 +98,11 @@ namespace Wingrid.Services.EventAPI.Services
 
         public async Task DispatchEventComplete(EventDto evnt)
         {
+            var connectionString = _configuration.GetValue<string>("ServiceBusConnectionString") ??
+                throw new Exception("Missing configuration for ServiceBusConnectionString");
             var queueName = _configuration.GetValue<string>("TopicAndQueueNames:EventFinalQueue") ??
                 throw new Exception("Missing configuration for TopicAndQueueNames:EventFinalQueue");
-            await _messageBus.PublishMessage(evnt, queueName);
+            await _messageBus.PublishMessage(evnt, connectionString, queueName);
         }
 
         public Task<int> SaveChangesAsync()
