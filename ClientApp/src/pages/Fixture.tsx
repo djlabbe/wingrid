@@ -20,8 +20,9 @@ const Fixture = () => {
 	const [fixture, setFixture] = useState<FixtureDto>();
 	const [choices, setChoices] = useState(new Map<string, boolean>());
 	const [tiebreaker, setTiebreaker] = useState<number>();
+
 	const isValid =
-		fixture?.eventIds.every((id) => choices.get(id) !== undefined) && tiebreaker !== undefined && tiebreaker >= 0;
+		fixture?.events?.every((f) => choices.get(f.id) !== undefined) && tiebreaker !== undefined && tiebreaker >= 0;
 
 	useEffect(() => {
 		const getFixture = async () => {
@@ -29,7 +30,7 @@ const Fixture = () => {
 				setLoading(true);
 				const apiFixtureData = await get<ResponseDto<FixtureDto>>(`${GATEWAY_URI}/api/fixtures/${id}`);
 				setFixture(apiFixtureData.result);
-				const apiEntryData = await get<ResponseDto<EntryDto>>(`${GATEWAY_URI}/api/entries/${id}`);
+				const apiEntryData = await get<ResponseDto<EntryDto>>(`${GATEWAY_URI}/api/fixtures/${id}/entry`);
 				if (apiEntryData.isSuccess) {
 					const existingChoices = new Map<string, boolean>();
 					apiEntryData.result.eventEntries.forEach((ee) => {
@@ -67,7 +68,7 @@ const Fixture = () => {
 		};
 		try {
 			setSubmitting(true);
-			var response = await post<ResponseDto<EntryDto>>(`${GATEWAY_URI}/api/entries`, entry);
+			var response = await post<ResponseDto<EntryDto>>(`${GATEWAY_URI}/api/fixtures/submitentry`, entry);
 			setSubmitting(false);
 			if (response.isSuccess) {
 				toastifySuccess(`${fixture?.name} entry saved. Good luck!`);

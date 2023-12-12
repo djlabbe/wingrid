@@ -74,6 +74,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IEspnService, EspnService>();
 builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<ITeamsService, TeamsService>();
+builder.Services.AddScoped<IFixturesService, FixturesService>();
 builder.Services.AddScoped<IMessageBus, MessageBus>();
 
 builder.Services.AddHangfire(config =>
@@ -104,6 +105,7 @@ app.UseHangfireDashboard(options: new DashboardOptions
 
 AddRecurringJob<TeamsJob>(TeamsJob.JobId);
 AddRecurringJob<EventsJob>(EventsJob.JobId);
+AddRecurringJob<WinnerDeterminationJob>(WinnerDeterminationJob.JobId);
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

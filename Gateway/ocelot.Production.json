@@ -43,34 +43,6 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/entries",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "wingridfixtureapi.azurewebsites.net"
-        }
-      ],
-      "UpstreamPathTemplate": "/api/entries",
-      "UpstreamHttpMethod": ["Get", "Post", "Put", "Patch", "Delete"],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/entries/{url}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "wingridfixtureapi.azurewebsites.net"
-        }
-      ],
-      "UpstreamPathTemplate": "/api/entries/{url}",
-      "UpstreamHttpMethod": ["Get", "Post", "Put", "Patch", "Delete"],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer"
-      }
-    },
-    {
       "DownstreamPathTemplate": "/api/fixtures",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

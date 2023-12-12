@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{57
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wingrid.Services.Auth", "Services\Wingrid.Services.Auth\Wingrid.Services.Auth.csproj", "{3D282DD8-BB3C-49B7-9D6F-3789B991AEB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wingrid.Services.Fixture", "Services\Wingrid.Services.FixtureAPI\Wingrid.Services.FixtureAPI.csproj", "{5EFE6415-1CB0-457E-A9D8-237DA5E0D337}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wingrid.MessageBus", "MessageBus\Wingrid.MessageBus.csproj", "{3B2DA625-146F-4E23-8274-B353E03B01AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wingrid.Gateway", "Gateway\Wingrid.Gateway.csproj", "{A77BFBB1-A84E-4A5F-ABA7-546F2EF82C6C}"

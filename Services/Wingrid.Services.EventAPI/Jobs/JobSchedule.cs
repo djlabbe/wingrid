@@ -11,6 +11,7 @@ namespace Wingrid.Services.EventAPI.Jobs
                 {
                     { nameof(TeamsJob), "0 0 * * 2" }, // “At 00:00 on Tuesday.”
                     { nameof(EventsJob), "7 * * * *" }, // Every hour at :07
+                    { nameof(WinnerDeterminationJob), "0 3 * * *" }, // Every day at 03:00
                 }
             },
             {
@@ -18,14 +19,13 @@ namespace Wingrid.Services.EventAPI.Jobs
                 {
                     { nameof(TeamsJob), "0 * * * *" }, // “At 00:00 on Tuesday.”
                     { nameof(EventsJob), "7 * * * *" }, // Every hour at :07
+                    { nameof(WinnerDeterminationJob), "0 3 * * *" }, // Every day at 03:00
                 }
             }
         };
 
         public static string GetCronExpression<T>(string envName)
         {
-            // if (envName == "Development")
-            //     return Cron.Never();
 
             if (!CronMaps.TryGetValue(envName, out var envSchedule))
                 return Cron.Never();

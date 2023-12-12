@@ -38,13 +38,13 @@ namespace Wingrid.Services.EventAPI.Models
         public bool? HomeWinner { get; set; }
         public int? HomeTeamId { get; set; }
         public Team? HomeTeam { get; set; }
-        public string? HomeScore { get; set; }
+        public int? HomeScore { get; set; }
 
         // Away Competitor
         public bool? AwayWinner { get; set; }
         public int? AwayTeamId { get; set; }
         public Team? AwayTeam { get; set; }
-        public string? AwayScore { get; set; }
+        public int? AwayScore { get; set; }
 
         // Status
         // public int? Clock { get; set; }
@@ -71,11 +71,11 @@ namespace Wingrid.Services.EventAPI.Models
         {
             var season = espn.Season;
             var week = espn.Week;
-            var competition = espn.Competitions?.FirstOrDefault();
-            var homeCompetitor = competition?.Competitors?.FirstOrDefault(c => c.HomeAway == "home");
-            var awayCompetitor = competition?.Competitors?.FirstOrDefault(c => c.HomeAway == "away");
-            var homeTeamId = homeCompetitor?.Team?.Id;
-            var awayTeamId = awayCompetitor?.Team?.Id;
+            var competition = espn.Competitions!.First();
+            var homeCompetitor = competition.Competitors!.First(c => c.HomeAway == "home");
+            var awayCompetitor = competition.Competitors!.First(c => c.HomeAway == "away");
+            var homeTeamId = homeCompetitor.Team!.Id;
+            var awayTeamId = awayCompetitor.Team!.Id;
             var eventStatus = espn.Status;
 
             if (Id != espn.Id) throw new Exception("Event ids must match.");
@@ -94,12 +94,10 @@ namespace Wingrid.Services.EventAPI.Models
             ConferenceCompetition = competition?.ConferenceCompetition;
             PlayByPlayAvailable = competition?.PlayByPlayAvailable;
             Recent = competition?.Recent;
-            // HomeTeamId = homeTeamId;
-            HomeWinner = homeCompetitor?.Winner;
-            HomeScore = homeCompetitor?.Score;
-            // AwayTeamId = awayTeamId;
-            AwayWinner = awayCompetitor?.Winner;
-            AwayScore = awayCompetitor?.Score;
+            HomeWinner = homeCompetitor.Winner;
+            HomeScore = homeCompetitor.Score == null ? null : int.Parse(homeCompetitor.Score);
+            AwayWinner = awayCompetitor.Winner;
+            AwayScore = awayCompetitor.Score == null ? null : int.Parse(awayCompetitor.Score);
             DisplayClock = eventStatus?.DisplayClock;
             Period = eventStatus?.Period;
             StatusId = eventStatus?.Type?.Id;

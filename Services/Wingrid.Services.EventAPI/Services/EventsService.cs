@@ -86,10 +86,33 @@ namespace Wingrid.Services.EventAPI.Services
                 var prevStatus = evnt.StatusCompleted;
                 evnt.UpdateFrom(espnEvent);
 
-                // Publish a message that the event is now complete
-                if (prevStatus != true && evnt.StatusCompleted == true)
+
+                if (prevStatus != true && evnt.StatusCompleted == true) // Event is now completed
                 {
-                    await DispatchEventComplete(_mapper.Map<EventDto>(evnt));
+                    // Score all Entries for this Event
+                    var entries = _context.Entries.Where(e => e.EventEntries.Any(ee => ee.EventId == evnt.Id));
+                    foreach (var entry in entries)
+                    {
+                        var eeToUpdate = entry.EventEntries.FirstOrDefault(ee => ee.EventId == evnt.Id);
+                        if (eeToUpdate != null)
+                        {
+                            eeToUpdate.HomeWinner = evnt.HomeWinner;
+                            eeToUpdate.AwayWinner = evnt.AwayWinner;
+                        }
+                    }
+
+                    // Find all Fixtures where this event is the tiebreaker and update entry tiebreaker results
+                    var fixturesWithTiebreak = _context.Fixtures.Include(f => f.Entries).Where(f => f.TiebreakerEventId == evnt.Id);
+                    var totalScore = evnt.HomeScore + evnt.AwayScore;
+                    foreach (var fixture in fixturesWithTiebreak)
+                    {
+                        foreach (var e in fixture.Entries)
+                        {
+                            e.TiebreakerResult = e.Tiebreaker - totalScore;
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
                 }
             }
 

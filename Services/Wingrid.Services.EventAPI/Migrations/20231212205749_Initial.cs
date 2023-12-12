@@ -13,6 +13,22 @@ namespace Wingrid.Services.EventAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Fixtures",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TiebreakerEventId = table.Column<string>(type: "text", nullable: false),
+                    IsComplete = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fixtures", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
                 {
@@ -39,6 +55,31 @@ namespace Wingrid.Services.EventAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Entries",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    FixtureId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    UserName = table.Column<string>(type: "text", nullable: false),
+                    Tiebreaker = table.Column<int>(type: "integer", nullable: false),
+                    TiebreakerResult = table.Column<int>(type: "integer", nullable: true),
+                    SubmittedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Winner = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Entries", x => new { x.UserId, x.FixtureId });
+                    table.ForeignKey(
+                        name: "FK_Entries_Fixtures_FixtureId",
+                        column: x => x.FixtureId,
+                        principalTable: "Fixtures",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
@@ -59,10 +100,10 @@ namespace Wingrid.Services.EventAPI.Migrations
                     Recent = table.Column<bool>(type: "boolean", nullable: true),
                     HomeWinner = table.Column<bool>(type: "boolean", nullable: true),
                     HomeTeamId = table.Column<int>(type: "integer", nullable: true),
-                    HomeScore = table.Column<string>(type: "text", nullable: true),
+                    HomeScore = table.Column<int>(type: "integer", nullable: true),
                     AwayWinner = table.Column<bool>(type: "boolean", nullable: true),
                     AwayTeamId = table.Column<int>(type: "integer", nullable: true),
-                    AwayScore = table.Column<string>(type: "text", nullable: true),
+                    AwayScore = table.Column<int>(type: "integer", nullable: true),
                     DisplayClock = table.Column<string>(type: "text", nullable: true),
                     Period = table.Column<int>(type: "integer", nullable: true),
                     StatusId = table.Column<string>(type: "text", nullable: true),
@@ -71,11 +112,17 @@ namespace Wingrid.Services.EventAPI.Migrations
                     StatusCompleted = table.Column<bool>(type: "boolean", nullable: true),
                     StatusDescription = table.Column<string>(type: "text", nullable: true),
                     StatusDetail = table.Column<string>(type: "text", nullable: true),
-                    StatusShortDetail = table.Column<string>(type: "text", nullable: true)
+                    StatusShortDetail = table.Column<string>(type: "text", nullable: true),
+                    FixtureId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_Fixtures_FixtureId",
+                        column: x => x.FixtureId,
+                        principalTable: "Fixtures",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Events_Teams_AwayTeamId",
                         column: x => x.AwayTeamId,
@@ -88,10 +135,44 @@ namespace Wingrid.Services.EventAPI.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EventEntry",
+                columns: table => new
+                {
+                    EntryUserId = table.Column<string>(type: "text", nullable: false),
+                    EntryFixtureId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EventId = table.Column<string>(type: "text", nullable: false),
+                    HomeWinnerSelected = table.Column<bool>(type: "boolean", nullable: false),
+                    HomeWinner = table.Column<bool>(type: "boolean", nullable: true),
+                    AwayWinner = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventEntry", x => new { x.EntryUserId, x.EntryFixtureId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_EventEntry_Entries_EntryUserId_EntryFixtureId",
+                        columns: x => new { x.EntryUserId, x.EntryFixtureId },
+                        principalTable: "Entries",
+                        principalColumns: new[] { "UserId", "FixtureId" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Entries_FixtureId",
+                table: "Entries",
+                column: "FixtureId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Events_AwayTeamId",
                 table: "Events",
                 column: "AwayTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_FixtureId",
+                table: "Events",
+                column: "FixtureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_HomeTeamId",
@@ -109,10 +190,19 @@ namespace Wingrid.Services.EventAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "EventEntry");
+
+            migrationBuilder.DropTable(
                 name: "Events");
 
             migrationBuilder.DropTable(
+                name: "Entries");
+
+            migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "Fixtures");
         }
     }
 }

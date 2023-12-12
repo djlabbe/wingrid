@@ -4,6 +4,7 @@ export interface EntryDto {
 	fixtureId: number;
 	eventEntries: EventEntryDto[];
 	tiebreaker?: number;
+	tiebreakerResult?: number;
 	score?: number;
 	submittedAt?: string;
 	updatedAt?: string;

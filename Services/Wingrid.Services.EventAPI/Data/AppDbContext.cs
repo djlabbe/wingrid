@@ -7,10 +7,14 @@ namespace Wingrid.Services.EventAPI.Data
     {
         public DbSet<Team> Teams { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Entry> Entries { get; set; }
+        public DbSet<Fixture> Fixtures { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Entry>().OwnsMany(p => p.EventEntries);
 
             modelBuilder.Entity<Team>(entity =>
             {

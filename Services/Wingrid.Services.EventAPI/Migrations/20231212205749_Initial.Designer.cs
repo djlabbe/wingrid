@@ -12,7 +12,7 @@ using Wingrid.Services.EventAPI.Data;
 namespace Wingrid.Services.EventAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231208061138_Initial")]
+    [Migration("20231212205749_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,6 +25,43 @@ namespace Wingrid.Services.EventAPI.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Entry", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FixtureId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Tiebreaker")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TiebreakerResult")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Winner")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("UserId", "FixtureId");
+
+                    b.HasIndex("FixtureId");
+
+                    b.ToTable("Entries");
+                });
+
             modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Event", b =>
                 {
                     b.Property<string>("Id")
@@ -33,8 +70,8 @@ namespace Wingrid.Services.EventAPI.Migrations
                     b.Property<int?>("Attendance")
                         .HasColumnType("integer");
 
-                    b.Property<string>("AwayScore")
-                        .HasColumnType("text");
+                    b.Property<int?>("AwayScore")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("AwayTeamId")
                         .HasColumnType("integer");
@@ -51,8 +88,11 @@ namespace Wingrid.Services.EventAPI.Migrations
                     b.Property<string>("DisplayClock")
                         .HasColumnType("text");
 
-                    b.Property<string>("HomeScore")
-                        .HasColumnType("text");
+                    b.Property<int?>("FixtureId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("HomeScore")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("HomeTeamId")
                         .HasColumnType("integer");
@@ -121,9 +161,38 @@ namespace Wingrid.Services.EventAPI.Migrations
 
                     b.HasIndex("AwayTeamId");
 
+                    b.HasIndex("FixtureId");
+
                     b.HasIndex("HomeTeamId");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Fixture", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TiebreakerEventId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Fixtures");
                 });
 
             modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Team", b =>
@@ -184,11 +253,61 @@ namespace Wingrid.Services.EventAPI.Migrations
                     b.ToTable("Teams");
                 });
 
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Entry", b =>
+                {
+                    b.HasOne("Wingrid.Services.EventAPI.Models.Fixture", null)
+                        .WithMany("Entries")
+                        .HasForeignKey("FixtureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("Wingrid.Services.EventAPI.Models.EventEntry", "EventEntries", b1 =>
+                        {
+                            b1.Property<string>("EntryUserId")
+                                .HasColumnType("text");
+
+                            b1.Property<int>("EntryFixtureId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<bool?>("AwayWinner")
+                                .HasColumnType("boolean");
+
+                            b1.Property<string>("EventId")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<bool?>("HomeWinner")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("HomeWinnerSelected")
+                                .HasColumnType("boolean");
+
+                            b1.HasKey("EntryUserId", "EntryFixtureId", "Id");
+
+                            b1.ToTable("EventEntry");
+
+                            b1.WithOwner()
+                                .HasForeignKey("EntryUserId", "EntryFixtureId");
+                        });
+
+                    b.Navigation("EventEntries");
+                });
+
             modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Event", b =>
                 {
                     b.HasOne("Wingrid.Services.EventAPI.Models.Team", "AwayTeam")
                         .WithMany()
                         .HasForeignKey("AwayTeamId");
+
+                    b.HasOne("Wingrid.Services.EventAPI.Models.Fixture", null)
+                        .WithMany("Events")
+                        .HasForeignKey("FixtureId");
 
                     b.HasOne("Wingrid.Services.EventAPI.Models.Team", "HomeTeam")
                         .WithMany()
@@ -197,6 +316,13 @@ namespace Wingrid.Services.EventAPI.Migrations
                     b.Navigation("AwayTeam");
 
                     b.Navigation("HomeTeam");
+                });
+
+            modelBuilder.Entity("Wingrid.Services.EventAPI.Models.Fixture", b =>
+                {
+                    b.Navigation("Entries");
+
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

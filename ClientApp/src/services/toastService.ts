@@ -9,7 +9,7 @@ const toastifyError = (message = "Error") => {
 		pauseOnHover: false,
 		draggable: false,
 		progress: undefined,
-		theme: "light",
+		theme: "colored",
 	});
 };
 
@@ -22,7 +22,7 @@ const toastifySuccess = (message = "Success", autoClose: number | false = 5000) 
 		pauseOnHover: false,
 		draggable: false,
 		progress: undefined,
-		theme: "light",
+		theme: "colored",
 	});
 };
 
@@ -35,7 +35,7 @@ const toastifyInfo = (message = "Info", autoClose: number | false = 5000) => {
 		pauseOnHover: false,
 		draggable: false,
 		progress: undefined,
-		theme: "light",
+		theme: "colored",
 	});
 };
 
@@ -48,7 +48,7 @@ const toastifyWarning = (message = "Warning", autoClose: number | false = 5000) 
 		pauseOnHover: false,
 		draggable: false,
 		progress: undefined,
-		theme: "light",
+		theme: "colored",
 	});
 };
 

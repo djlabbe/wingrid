@@ -56,8 +56,10 @@ const Grid = () => {
 			headerName: "Events",
 			children: [...eventCols],
 		},
-		{ field: "tiebreaker", headerName: "Tiebreak", suppressMovable: true, width: 130 },
+		{ field: "tiebreaker", headerName: "TB", suppressMovable: true, width: 90 },
 		{ field: "score", headerName: "Score", suppressMovable: true, width: 130 },
+		{ field: "tiebreakerResult", headerName: "TB Res.", suppressMovable: true, width: 90 },
+		{ field: "", headerName: "Winner", suppressMovable: true, width: 90 },
 	] as ColDef[];
 
 	useEffect(() => {
@@ -72,7 +74,7 @@ const Grid = () => {
 			}
 		};
 		getFixture();
-	}, []);
+	}, [id]);
 
 	return (
 		<div className="w-full p-8">

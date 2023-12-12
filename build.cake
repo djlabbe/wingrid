@@ -18,9 +18,19 @@ Task("Default")
 Task("Database:Run").Does(() =>
 {
     DockerRunPostgres("wingrid-auth", "wingrid-auth", port: 5432);
-    DockerRunPostgres("wingrid-events", "wingrid-events", port: 5433);
-    DockerRunPostgres("wingrid-fixtures", "wingrid-fixtures", port: 5434);
+    DockerRunPostgres("wingrid-game", "wingrid-game", port: 5433);
 });
+
+Task("Database:Run:Auth").Does(() =>
+{
+    DockerRunPostgres("wingrid-auth", "wingrid-auth", port: 5432);
+});
+
+Task("Database:Run:Game").Does(() =>
+{
+    DockerRunPostgres("wingrid-game", "wingrid-game", port: 5433);
+});
+
 
 private void DockerRunPostgres(string appName, string databaseName, int port = 5432, string username = "postgres", string password = "passW0rd")
 {

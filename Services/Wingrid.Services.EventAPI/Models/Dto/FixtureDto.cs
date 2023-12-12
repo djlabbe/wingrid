@@ -1,17 +1,14 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Wingrid.Services.FixtureAPI.Models
+namespace Wingrid.Services.EventAPI.Models.Dto
 {
-    public class Fixture
+    public class FixtureDto
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public List<string> EventIds { get; set; } = [];
-        [NotMapped]
         public List<EventDto> Events { get; set; } = [];
         public List<Entry> Entries { get; set; } = [];
         public DateTime Deadline { get; set; }
-        public bool Locked => DateTime.UtcNow > Deadline;
+        public bool Locked { get; set; }
         public required string TiebreakerEventId { get; set; }
+        public bool IsComplete { get; set; }
     }
 }

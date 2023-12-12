@@ -1,4 +1,4 @@
-namespace Wingrid.Services.FixtureAPI.Models.Dto
+namespace Wingrid.Services.EventAPI.Models.Dto
 {
     public class EntryDto
     {
@@ -8,6 +8,7 @@ namespace Wingrid.Services.FixtureAPI.Models.Dto
         public required int FixtureId { get; set; }
         public List<EventEntry> EventEntries { get; set; } = [];
         public int Tiebreaker { get; set; }
+        public int? TiebreakerResult { get; set; }
         public int Score { get; set; }
         public DateTime SubmittedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

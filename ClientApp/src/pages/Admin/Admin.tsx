@@ -1,4 +1,4 @@
-import { Checkbox, Datepicker, Label, Table } from "flowbite-react";
+import { Checkbox, Table } from "flowbite-react";
 import { useState } from "react";
 import { GATEWAY_URI, get, post } from "../../services/api";
 import { EventDto } from "../../models/EventDto";
@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { ResponseDto } from "../../models/ResponseDto";
 import LoadingButton from "../../components/LoadingButton";
 import { AiFillCheckCircle } from "react-icons/ai";
+import { CreateFixtureDto } from "../../models/CreateFixtureDto";
 
 const Admin = () => {
-	const [start, setStart] = useState<Date>();
-	const [end, setEnd] = useState<Date>();
+	const [start, setStart] = useState<string>();
+	const [end, setEnd] = useState<string>();
 	const [name, setName] = useState("");
 
 	const [loadingEvents, setLoadingEvents] = useState(false);
@@ -23,15 +24,24 @@ const Admin = () => {
 	const navigate = useNavigate();
 
 	const handleSearch = async () => {
+		if (!start || !end) {
+			toastifyError("Must specify start and end dates.");
+			return;
+		}
+
+		var startDate = new Date(start);
+		var endDate = new Date(end);
+
 		try {
 			setLoadingEvents(true);
 			const apiResponse = await get<ResponseDto<EventDto[]>>(
-				`${GATEWAY_URI}/api/events?start=${start?.toISOString()}&end=${end?.toISOString()}`,
+				`${GATEWAY_URI}/api/events?start=${startDate.toISOString()}&end=${endDate.toISOString()}`,
 			);
 			setLoadingEvents(false);
 			if (apiResponse.isSuccess) {
 				setEvents(apiResponse.result);
 				setSelectedEventIds([]);
+				setTiebreakEvent(undefined);
 			} else toastifyError(apiResponse.message);
 		} catch (e) {
 			setLoadingEvents(false);
@@ -57,12 +67,10 @@ const Admin = () => {
 		try {
 			setSaving(true);
 
-			const fixture: FixtureDto = {
-				id: 0,
+			const fixture: CreateFixtureDto = {
 				name: name.trim(),
 				eventIds: selectedEventIds,
 				tiebreakerEventId: tiebreakEvent,
-				locked: false,
 			};
 
 			var apiResponse = await post<ResponseDto<FixtureDto>>(`${GATEWAY_URI}/api/fixtures`, fixture);
@@ -84,12 +92,28 @@ const Admin = () => {
 		<div className="mx-auto max-w-screen-xl py-8">
 			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end py-4 px-4">
 				<div className="col-span-4">
-					<Label htmlFor="start" value="Start Date" />
-					<Datepicker weekStart={2} onSelectedDateChanged={(date) => setStart(date)} required />
+					<label className="text-sm font-medium text-gray-900 dark:text-white" htmlFor="start">
+						Start Date
+					</label>
+					<input
+						type="date"
+						value={start || ""}
+						onChange={(e) => setStart(e.target.value)}
+						required
+						className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+					/>
 				</div>
 				<div className="col-span-4">
-					<Label htmlFor="end" value="End Date" />
-					<Datepicker weekStart={0} onSelectedDateChanged={(date) => setEnd(date)} required />
+					<label className="text-sm font-medium text-gray-900 dark:text-white" htmlFor="end">
+						End Date
+					</label>
+					<input
+						type="date"
+						value={end || ""}
+						onChange={(e) => setEnd(e.target.value)}
+						required
+						className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+					/>
 				</div>
 				<div className="col-span-2">
 					<LoadingButton onClick={handleSearch} loading={loadingEvents} disabled={!start || !end}>
@@ -97,20 +121,10 @@ const Admin = () => {
 					</LoadingButton>
 				</div>
 			</div>
-			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end px-4 pb-8">
-				<div className="col-span-10">
-					<Label htmlFor="name" value="Fixture Display Name" />
-					<input
-						id="name"
-						value={name || ""}
-						onChange={(e) => setName(e.target.value)}
-						placeholder="Provide a descriptive name / title"
-						required
-						className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
-					/>
-				</div>
-			</div>
-			{events && events.length === 0 && <div className="mb-8 overflow-x-auto">No events found.</div>}
+
+			{events && events.length === 0 && (
+				<div className="mb-8 overflow-x-auto text-center text-xl">No events found.</div>
+			)}
 			{events && events.length > 0 && (
 				<>
 					<div className="mb-8 overflow-x-auto">
@@ -127,7 +141,7 @@ const Admin = () => {
 								{events.map((event) => (
 									<Table.Row
 										className={`${
-											selectedEventIds.includes(event.id) ? "bg-amber-50" : "bg-white"
+											selectedEventIds.includes(event.id) ? "bg-amber-100" : "bg-white"
 										} dark:border-gray-700 dark:bg-gray-800`}
 										key={event.id}
 									>
@@ -168,9 +182,24 @@ const Admin = () => {
 							</Table.Body>
 						</Table>
 					</div>
-					<LoadingButton disabled={!isValid || saving} onClick={handleSubmit} loading={saving}>
-						{`Create Fixture with ${selectedEventIds.length} Event${selectedEventIds.length === 1 ? "" : "s"}`}
-					</LoadingButton>
+					<div className="grid grid-cols-10 grid-flow-col gap-4 items-end px-4 pb-8">
+						<div className="col-span-10">
+							<label className="text-sm font-medium text-gray-900 dark:text-white" htmlFor="name">
+								Fixture Display Name
+							</label>
+							<input
+								id="name"
+								value={name || ""}
+								onChange={(e) => setName(e.target.value)}
+								placeholder="Provide a descriptive name / title"
+								required
+								className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+							/>
+						</div>
+						<LoadingButton disabled={!isValid || saving} onClick={handleSubmit} loading={saving}>
+							{`Create Fixture with ${selectedEventIds.length} Event${selectedEventIds.length === 1 ? "" : "s"}`}
+						</LoadingButton>
+					</div>
 				</>
 			)}
 		</div>
