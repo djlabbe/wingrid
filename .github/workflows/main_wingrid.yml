@@ -97,30 +97,6 @@ jobs:
           name: wingridEventAPI-app
           path: ${{env.DOTNET_ROOT}}/wingridEventAPI
 
-  build-fixtureapi:
-    runs-on: windows-latest
-    needs: unittest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "8.x"
-          include-prerelease: true
-
-      - name: Build with dotnet
-        run: cd Services/Wingrid.Services.FixtureAPI && dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: cd Services/Wingrid.Services.FixtureAPI && dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/wingridFixtureAPI
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: wingridFixtureAPI-app
-          path: ${{env.DOTNET_ROOT}}/wingridFixtureAPI
-
   deploy-gateway:
     runs-on: windows-latest
     needs: build-gateway
@@ -185,28 +161,6 @@ jobs:
           app-name: "wingridEventAPI"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9BEEEBCA43AC45B5B5C66CABAC7C9BF2 }}
-          package: .
-
-  deploy-fixtureapi:
-    runs-on: windows-latest
-    needs: build-fixtureapi
-    environment:
-      name: "Production"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: wingridFixtureAPI-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: "wingridFixtureAPI"
-          slot-name: "Production"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6A2AC4F4F176402181F0B7378A711D0C }}
           package: .
 
   build_and_deploy_client:
