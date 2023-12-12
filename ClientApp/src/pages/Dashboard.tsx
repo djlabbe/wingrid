@@ -23,7 +23,7 @@ const Dashboard = () => {
 				else toastifyError(apiResponse.message);
 			} catch (e) {
 				setLoading(false);
-				toastifyError("Error loading fixture. Please try again later.");
+				toastifyError("Error loading fixtures. Please try again later.");
 				console.error(e);
 			}
 		};

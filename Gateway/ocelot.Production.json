@@ -47,7 +47,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "wingridfixtureapi.azurewebsites.net"
+          "Host": "wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/fixtures",
@@ -61,7 +61,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "wingridfixtureapi.azurewebsites.net"
+          "Host": "wingrideventapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/fixtures/{url}",
