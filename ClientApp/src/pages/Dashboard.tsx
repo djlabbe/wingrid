@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { FixtureDto } from "../models/FixtureDto";
 import { GATEWAY_URI, get } from "../services/api";
-import { Table } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { ResponseDto } from "../models/ResponseDto";
 import { toastifyError } from "../services/toastService";
@@ -43,21 +42,34 @@ const Dashboard = () => {
 	return (
 		<div className="mx-auto max-w-screen-xl py-8">
 			<div className="mb-8 overflow-x-auto">
-				<Table>
-					<Table.Head>
-						<Table.HeadCell className="bg-gray-200" style={{ width: "20%" }}></Table.HeadCell>
-						<Table.HeadCell className="bg-gray-200">Name</Table.HeadCell>
-						<Table.HeadCell className="bg-gray-200" style={{ width: "20%" }}>
-							Deadline
-						</Table.HeadCell>
-						<Table.HeadCell className="bg-gray-200" style={{ width: "15%" }}>
-							Event Count
-						</Table.HeadCell>
-					</Table.Head>
-					<Table.Body className="divide-y">
+				<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+					<thead className="group/head text-xs uppercase text-gray-700 dark:text-gray-400">
+						<tr>
+							<th
+								className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200"
+								style={{ width: "20%" }}
+							></th>
+							<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
+								Name
+							</th>
+							<th
+								className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200"
+								style={{ width: "20%" }}
+							>
+								Deadline
+							</th>
+							<th
+								className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200"
+								style={{ width: "15%" }}
+							>
+								Event Count
+							</th>
+						</tr>
+					</thead>
+					<tbody className="group/body divide-y">
 						{fixtures?.map((fixture) => (
-							<Table.Row key={fixture.id} className="dark:border-gray-700 dark:bg-gray-800">
-								<Table.Cell>
+							<tr key={fixture.id} className="group/row dark:border-gray-700 dark:bg-gray-800">
+								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
 									<div className="flex space-between">
 										{!fixture.locked && (
 											<LoadingButton className="me-2" onClick={() => handleMakePicks(fixture.id)}>
@@ -68,20 +80,20 @@ const Dashboard = () => {
 											<p className="text-xs">View Grid</p>
 										</LoadingButton>
 									</div>
-								</Table.Cell>
-								<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+								</td>
+								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
 									{fixture.name}
-								</Table.Cell>
-								<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+								</td>
+								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
 									{fixture.deadline ? new Date(fixture.deadline).toLocaleString() : ""}
-								</Table.Cell>
-								<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+								</td>
+								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
 									{fixture.events?.length}
-								</Table.Cell>
-							</Table.Row>
+								</td>
+							</tr>
 						))}
-					</Table.Body>
-				</Table>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	);

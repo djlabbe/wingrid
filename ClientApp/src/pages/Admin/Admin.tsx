@@ -1,4 +1,3 @@
-import { Checkbox, Table } from "flowbite-react";
 import { useState } from "react";
 import { GATEWAY_URI, get, post } from "../../services/api";
 import { EventDto } from "../../models/EventDto";
@@ -128,42 +127,58 @@ const Admin = () => {
 			{events && events.length > 0 && (
 				<>
 					<div className="mb-8 overflow-x-auto">
-						<Table>
-							<Table.Head>
-								<Table.HeadCell className="bg-gray-200 text-center">Select</Table.HeadCell>
-								<Table.HeadCell className="bg-gray-200">Date</Table.HeadCell>
-								<Table.HeadCell className="bg-gray-200">Away Team</Table.HeadCell>
-								<Table.HeadCell className="bg-gray-200">Home Team</Table.HeadCell>
-								<Table.HeadCell className="bg-gray-200 text-center">Neutral Site</Table.HeadCell>
-								<Table.HeadCell className="bg-gray-200 text-center">Tiebreak</Table.HeadCell>
-							</Table.Head>
-							<Table.Body className="divide-y">
+						<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+							<thead className="group/head text-xs uppercase text-gray-700 dark:text-gray-400">
+								<tr>
+									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200 text-center">
+										Select
+									</th>
+									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
+										Date
+									</th>
+									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
+										Away Team
+									</th>
+									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
+										Home Team
+									</th>
+									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200 text-center">
+										Neutral Site
+									</th>
+									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200 text-center">
+										Tiebreak
+									</th>
+								</tr>
+							</thead>
+							<tbody className="group/body divide-y">
 								{events.map((event) => (
-									<Table.Row
-										className={`${
+									<tr
+										className={`group/row ${
 											selectedEventIds.includes(event.id) ? "bg-amber-100" : "bg-white"
 										} dark:border-gray-700 dark:bg-gray-800`}
 										key={event.id}
 									>
-										<Table.Cell className="text-center">
-											<Checkbox
+										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 text-center">
+											<input
+												type="checkbox"
 												id={event.id}
 												checked={selectedEventIds.includes(event.id)}
 												onChange={(e) => handleSelectEvent(event.id, e.target.checked)}
+												className="h-4 w-4 rounded focus:ring-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 bg-gray-100 focus:ring-green-600 dark:ring-offset-green-600 dark:focus:ring-green-600 text-green-600"
 											/>
-										</Table.Cell>
+										</td>
 
-										<Table.Cell>{new Date(event.date).toLocaleDateString()}</Table.Cell>
-										<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+										<td>{new Date(event.date).toLocaleDateString()}</td>
+										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4whitespace-nowrap font-medium text-gray-900 dark:text-white">
 											{event.awayTeam.displayName}
-										</Table.Cell>
-										<Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+										</td>
+										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
 											{event.homeTeam.displayName}
-										</Table.Cell>
-										<Table.Cell className="flex justify-center text-green-600 text-lg">
+										</td>
+										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 flex justify-center text-green-600 text-lg">
 											{event.neutralSite && <AiFillCheckCircle />}
-										</Table.Cell>
-										<Table.Cell className="text-center">
+										</td>
+										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 text-center">
 											{selectedEventIds.includes(event.id) && (
 												<input
 													type="radio"
@@ -176,11 +191,11 @@ const Admin = () => {
 													className="h-4 w-4 border border-gray-300 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:bg-green-600 dark:focus:ring-green-600 text-green-600"
 												/>
 											)}
-										</Table.Cell>
-									</Table.Row>
+										</td>
+									</tr>
 								))}
-							</Table.Body>
-						</Table>
+							</tbody>
+						</table>
 					</div>
 					<div className="grid grid-cols-10 grid-flow-col gap-4 items-end px-4 pb-8">
 						<div className="col-span-10">

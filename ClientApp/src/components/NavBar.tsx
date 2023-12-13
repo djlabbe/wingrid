@@ -16,26 +16,12 @@ const NavBar = () => {
 
 	return (
 		<Navbar fluid rounded className="bg-gray-200">
+			<Navbar.Toggle />
 			<div className="flex flex-wrap items-center">
 				<Navbar.Brand as={NavLink} to={user ? "/dashboard" : "/"} className="me-8">
 					<img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Wingrid Logo" />
 					<span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">WINGRID</span>
 				</Navbar.Brand>
-				{user && (
-					<Navbar.Collapse>
-						<Navbar.Link as={NavLink} to="/dashboard" className="md:hover:text-green-600">
-							Dashboard
-						</Navbar.Link>
-						{isAdmin && (
-							<Navbar.Link as={NavLink} to="/admin" className="md:hover:text-green-600">
-								Create Fixture
-							</Navbar.Link>
-						)}
-						<Navbar.Link as={NavLink} to="/about" className="md:hover:text-green-600">
-							About
-						</Navbar.Link>
-					</Navbar.Collapse>
-				)}
 			</div>
 			<div className="sm:order-last">
 				{user && (
@@ -50,8 +36,22 @@ const NavBar = () => {
 						<Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
 					</Dropdown>
 				)}
-				<Navbar.Toggle />
 			</div>
+			{user && (
+				<Navbar.Collapse>
+					<Navbar.Link as={NavLink} to="/dashboard" className="md:hover:text-green-600">
+						Dashboard
+					</Navbar.Link>
+					{isAdmin && (
+						<Navbar.Link as={NavLink} to="/admin" className="md:hover:text-green-600">
+							Create Fixture
+						</Navbar.Link>
+					)}
+					<Navbar.Link as={NavLink} to="/about" className="md:hover:text-green-600">
+						About
+					</Navbar.Link>
+				</Navbar.Collapse>
+			)}
 		</Navbar>
 	);
 };
