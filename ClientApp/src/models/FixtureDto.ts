@@ -6,7 +6,8 @@ export interface FixtureDto {
 	name: string;
 	events?: EventDto[];
 	entries?: EntryDto[];
-	locked: boolean;
 	deadline?: string;
+	locked: boolean;
 	tiebreakerEventId: string;
+	isComplete: boolean;
 }

@@ -50,17 +50,17 @@ const Grid = () => {
 			} as ColDef),
 	);
 
-	const colDefs = [
+	const colDefs: ColDef<EntryDto>[] = [
 		{ field: "userName", headerName: "Player", suppressMovable: true },
 		{
 			headerName: "Events",
 			children: [...eventCols],
 		},
 		{ field: "tiebreaker", headerName: "TB", suppressMovable: true, width: 90 },
-		{ field: "score", headerName: "Score", suppressMovable: true, width: 130 },
+		{ field: "score", headerName: "Score", suppressMovable: true, width: 90 },
 		{ field: "tiebreakerResult", headerName: "TB Res.", suppressMovable: true, width: 90 },
-		{ field: "", headerName: "Winner", suppressMovable: true, width: 90 },
-	] as ColDef[];
+		{ field: "winner", headerName: "Win", suppressMovable: true, width: 90 },
+	] as ColDef<EntryDto>[];
 
 	useEffect(() => {
 		const getFixture = async () => {

@@ -5,9 +5,10 @@ export interface EntryDto {
 	eventEntries: EventEntryDto[];
 	tiebreaker?: number;
 	tiebreakerResult?: number;
-	score?: number;
 	submittedAt?: string;
 	updatedAt?: string;
+	score?: number;
+	winner?: boolean;
 }
 
 export interface EventEntryDto {
