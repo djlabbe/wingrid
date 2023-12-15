@@ -10,7 +10,6 @@ namespace Wingrid.Services.EventAPI.Services
         public Task<Fixture> CreateFixture(CreateFixtureDto fixture);
         public Task<IEnumerable<Fixture>> GetFixturesAsync();
         public Task<Fixture?> GetFixtureAsync(int id);
-
         public Task<Entry> SubmitEntryAsync(Entry entry);
         public Task<Entry?> GetEntryAsync(string userId, int fixtureId);
 
@@ -89,7 +88,9 @@ namespace Wingrid.Services.EventAPI.Services
             if (existingEntry == null)
             {
                 _context.Entries.Add(entry);
-                entry.SubmittedAt = DateTime.UtcNow;
+                var now = DateTime.UtcNow;
+                entry.SubmittedAt = now;
+                entry.UpdatedAt = now;
             }
             else
             {

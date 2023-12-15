@@ -10,9 +10,11 @@ import { EntryDto, EventEntryDto } from "../models/EntryDto";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { EventDto } from "../models/EventDto";
+import LoadingContainer from "../components/LoadingContainer";
 
 const Grid = () => {
 	const { id } = useParams();
+	const [loadingInitial, setLoadingInitial] = useState(true);
 	const [fixture, setFixture] = useState<FixtureDto>();
 	const entries = fixture?.entries || [];
 	const events = fixture?.events || [];
@@ -33,6 +35,7 @@ const Grid = () => {
 	const eventCols = events.map(
 		(ev, i) =>
 			({
+				colId: `e${i + 1}`,
 				headerName: `${i + 1}`,
 				headerClass: "event-grid-col",
 				headerTooltip: `${ev.name} - ${new Date(ev.date).toLocaleString()}`,
@@ -65,12 +68,15 @@ const Grid = () => {
 	useEffect(() => {
 		const getFixture = async () => {
 			try {
+				setLoadingInitial(true);
 				const apiResponse = await get<ResponseDto<FixtureDto>>(`${GATEWAY_URI}/api/fixtures/${id}`);
 				if (apiResponse.isSuccess) setFixture(apiResponse.result);
 				else toastifyError(apiResponse.message);
+				setLoadingInitial(false);
 			} catch (e) {
 				console.error(e);
 				toastifyError(`${e}`);
+				setLoadingInitial(false);
 			}
 		};
 		getFixture();
@@ -79,9 +85,12 @@ const Grid = () => {
 	return (
 		<div className="w-full p-8">
 			<h1 className="text-2xl mb-2">{fixture?.name}</h1>
-			<div className="ag-theme-quartz" style={{ height: "80vh" }}>
-				<AgGridReact<EntryDto> rowData={entries} columnDefs={colDefs} />
-			</div>
+			{loadingInitial && <LoadingContainer />}
+			{!loadingInitial && (
+				<div className="ag-theme-quartz" style={{ height: "80vh" }}>
+					<AgGridReact<EntryDto> rowData={entries} columnDefs={colDefs} />
+				</div>
+			)}
 		</div>
 	);
 };

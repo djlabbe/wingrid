@@ -103,12 +103,16 @@ namespace Wingrid.Services.EventAPI.Services
 
                     // Find all Fixtures where this event is the tiebreaker and update entry tiebreaker results
                     var fixturesWithTiebreak = _context.Fixtures.Include(f => f.Entries).Where(f => f.TiebreakerEventId == evnt.Id);
+
                     var totalScore = evnt.HomeScore + evnt.AwayScore;
-                    foreach (var fixture in fixturesWithTiebreak)
+                    if (totalScore != null)
                     {
-                        foreach (var e in fixture.Entries)
+                        foreach (var fixture in fixturesWithTiebreak)
                         {
-                            e.TiebreakerResult = e.Tiebreaker - totalScore;
+                            foreach (var e in fixture.Entries)
+                            {
+                                e.TiebreakerResult = Math.Abs(e.Tiebreaker - totalScore.Value);
+                            }
                         }
                     }
 

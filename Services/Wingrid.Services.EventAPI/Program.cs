@@ -128,7 +128,24 @@ static string GetConnectionString(WebApplicationBuilder builder, string name)
 
 void AddRecurringJob<T>(string jobId) where T : IBatchJob
 {
-    RecurringJob.AddOrUpdate<T>(jobId, j => j.ExecuteAsync(null), JobSchedule.GetCronExpression<T>(builder.Environment.EnvironmentName));
+    var options = new RecurringJobOptions
+    {
+        TimeZone = GetJobTimeZone()
+    };
+
+    RecurringJob.AddOrUpdate<T>(jobId, j => j.ExecuteAsync(null), JobSchedule.GetCronExpression<T>(builder.Environment.EnvironmentName), options);
+}
+
+TimeZoneInfo GetJobTimeZone()
+{
+    TimeZoneInfo? tz = null;
+    try
+    {
+        tz = TimeZoneInfo.GetSystemTimeZones().Where(z => z.BaseUtcOffset.TotalHours == -7.0d && (z.Id.Contains("Phoenix", StringComparison.OrdinalIgnoreCase) ||
+            z.Id.Contains("Mountain Standard Time", StringComparison.OrdinalIgnoreCase))).FirstOrDefault();
+    }
+    catch { }
+    return tz ?? TimeZoneInfo.Utc;
 }
 
 void ApplyMigrations()
