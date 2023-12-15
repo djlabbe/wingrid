@@ -72,8 +72,8 @@ namespace Wingrid.Services.EventAPI.Services
         public async Task<Fixture?> GetFixtureAsync(int id)
         {
             var fixture = await _context.Fixtures.Include(f => f.Entries)
-                .Include(f => f.Events).ThenInclude(e => e.HomeTeam)
-                .Include(f => f.Events).ThenInclude(e => e.AwayTeam)
+                .Include(f => f.Events.OrderBy(e => e.Date)).ThenInclude(e => e.HomeTeam)
+                .Include(f => f.Events.OrderBy(e => e.Date)).ThenInclude(e => e.AwayTeam)
                 .FirstOrDefaultAsync(e => e.Id == id);
             return fixture;
         }
