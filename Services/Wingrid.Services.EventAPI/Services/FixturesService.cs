@@ -66,7 +66,7 @@ namespace Wingrid.Services.EventAPI.Services
 
         public async Task<IEnumerable<Fixture>> GetFixturesAsync()
         {
-            return await _context.Fixtures.Include(f => f.Events).ToListAsync();
+            return await _context.Fixtures.OrderByDescending(f => f.Deadline).Include(f => f.Events).ToListAsync();
         }
 
         public async Task<Fixture?> GetFixtureAsync(int id)

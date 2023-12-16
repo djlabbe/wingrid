@@ -30,11 +30,13 @@ const Admin = () => {
 
 		var startDate = new Date(start);
 		var endDate = new Date(end);
+		var correctedEndDate = new Date(endDate);
+		correctedEndDate.setDate(endDate.getDate() + 1);
 
 		try {
 			setLoadingEvents(true);
 			const apiResponse = await get<ResponseDto<EventDto[]>>(
-				`${GATEWAY_URI}/api/events?start=${startDate.toISOString()}&end=${endDate.toISOString()}`,
+				`${GATEWAY_URI}/api/events?start=${startDate.toISOString()}&end=${correctedEndDate.toISOString()}`,
 			);
 			setLoadingEvents(false);
 			if (apiResponse.isSuccess) {
