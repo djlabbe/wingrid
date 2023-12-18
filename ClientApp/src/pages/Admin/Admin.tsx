@@ -172,10 +172,10 @@ const Admin = () => {
 
 										<td>{new Date(event.date).toLocaleDateString()}</td>
 										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4whitespace-nowrap font-medium text-gray-900 dark:text-white">
-											{event.awayTeam.displayName}
+											{event.awayTeam?.displayName || "TBD"}
 										</td>
 										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
-											{event.homeTeam.displayName}
+											{event.homeTeam?.displayName || "TBD"}
 										</td>
 										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 flex justify-center text-green-600 text-lg">
 											{event.neutralSite && <AiFillCheckCircle />}
