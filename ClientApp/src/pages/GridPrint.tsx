@@ -38,7 +38,7 @@ const GridPrint = ({ title, events, entries }: Props) => {
 									</td>
 								);
 							})}
-							<td className="p-1">{ent.tiebreaker}</td>
+							<td className="border-solid border-2 border-neutral-800 text-center p-1">{ent.tiebreaker}</td>
 						</tr>
 					))}
 				</tbody>

@@ -92,18 +92,19 @@ const Grid = () => {
 	return (
 		<>
 			<div className="w-full p-8 print:hidden">
-				<div className="flex justify-between">
-					<h1 className="text-2xl mb-2">{fixture?.name}</h1>
-					<button className="text-xl print:hidden" onClick={onBtPrint}>
-						<AiFillPrinter />
-					</button>
-				</div>
-
 				{loadingInitial && <LoadingContainer />}
 				{!loadingInitial && (
-					<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
-						<AgGridReact<EntryDto> ref={gridRef} rowData={entries} columnDefs={colDefs} />
-					</div>
+					<>
+						<div className="flex justify-between">
+							<h1 className="text-2xl mb-2">{fixture?.name}</h1>
+							<button className="text-xl print:hidden" onClick={onBtPrint}>
+								<AiFillPrinter />
+							</button>
+						</div>
+						<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
+							<AgGridReact<EntryDto> ref={gridRef} rowData={entries} columnDefs={colDefs} />
+						</div>
+					</>
 				)}
 			</div>
 			<GridPrint entries={entries} events={events} title={fixture?.name || "The Grid"} />
