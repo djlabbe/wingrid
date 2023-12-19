@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@media print {
+	html,
+	body {
+		height: 100vh;
+		margin: 0 !important;
+		padding: 0 !important;
+		overflow: hidden;
+	}
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -13,11 +23,6 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
 	appearance: textfield;
 	-moz-appearance: textfield;
-}
-
-.fixture-card {
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
 }
 
 .event-grid-col .ag-header-cell-label {
