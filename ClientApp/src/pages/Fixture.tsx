@@ -56,6 +56,7 @@ const Fixture = () => {
 
 	const handleSubmit = async () => {
 		const entry: EntryDto = {
+			id: 0,
 			userId: loginResult?.user?.id || "",
 			userName: loginResult?.user?.name || "",
 			fixtureId: fixture?.id || 0,
