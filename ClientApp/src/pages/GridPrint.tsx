@@ -17,7 +17,7 @@ const GridPrint = ({ title, events, entries }: Props) => {
 						<th className="border-solid border-2 border-neutral-800 p-1">Name</th>
 						{events.map((_, i) => (
 							<th key={i} className="border-solid border-2 border-neutral-800 p-1" style={{ width: "50px" }}>
-								{i}
+								{i + 1}
 							</th>
 						))}
 						<th className="border-solid border-2 border-neutral-800 p-1" style={{ width: "50px" }}>
