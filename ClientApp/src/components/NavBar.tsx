@@ -49,9 +49,9 @@ const NavBar = () => {
 								<span className="block text-sm">{user.name}</span>
 								<span className="block truncate text-sm font-medium">{user.email}</span>
 							</Dropdown.Header>
-							<Dropdown.Item>Profile</Dropdown.Item>
-							<Dropdown.Item>Settings</Dropdown.Item>
-							<Dropdown.Divider />
+							{/* <Dropdown.Item>Profile</Dropdown.Item>
+							<Dropdown.Item>Settings</Dropdown.Item> */}
+							{/* <Dropdown.Divider /> */}
 							<Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
 						</Dropdown>
 					)}

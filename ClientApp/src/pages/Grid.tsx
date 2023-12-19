@@ -13,6 +13,7 @@ import { EventDto } from "../models/EventDto";
 import LoadingContainer from "../components/LoadingContainer";
 import { AiFillPrinter } from "react-icons/ai";
 import GridPrint from "./GridPrint";
+import WinnerRenderer from "../components/grid/WinnerRenderer";
 
 const Grid = () => {
 	const { id } = useParams();
@@ -65,7 +66,14 @@ const Grid = () => {
 		{ field: "tiebreaker", headerName: "TB", suppressMovable: true, width: 70 },
 		{ field: "score", headerName: "Score", suppressMovable: true, width: 80 },
 		{ field: "tiebreakerResult", headerName: "TB Res.", suppressMovable: true, width: 90 },
-		{ field: "winner", headerName: "Win", suppressMovable: true, width: 65 },
+		{
+			field: "winner",
+			headerName: "Win",
+			suppressMovable: true,
+			width: 65,
+			cellRenderer: WinnerRenderer,
+			cellClass: "text-center text-green-600 justify-center",
+		},
 	] as ColDef<EntryDto>[];
 
 	useEffect(() => {

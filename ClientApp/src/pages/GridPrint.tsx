@@ -14,15 +14,15 @@ const GridPrint = ({ title, events, entries }: Props) => {
 			<table className="table-auto text-xs border-solid border-2 border-neutral-800">
 				<thead>
 					<tr>
-						<th className="border-solid border-2 border-neutral-800 p-1" style={{ width: "10%" }}>
-							Name
-						</th>
+						<th className="border-solid border-2 border-neutral-800 p-1">Name</th>
 						{events.map((_, i) => (
 							<th key={i} className="border-solid border-2 border-neutral-800 p-1" style={{ width: "50px" }}>
 								{i}
 							</th>
 						))}
-						<th className="border-solid border-2 border-neutral-800 p-1">TB</th>
+						<th className="border-solid border-2 border-neutral-800 p-1" style={{ width: "50px" }}>
+							TB
+						</th>
 					</tr>
 				</thead>
 				<tbody>
