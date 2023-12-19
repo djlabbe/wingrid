@@ -4,7 +4,7 @@ import { GATEWAY_URI, get } from "../services/api";
 import { ResponseDto } from "../models/ResponseDto";
 import { toastifyError } from "../services/toastService";
 import { useParams } from "react-router-dom";
-import { CellClassParams, ColDef, GridApi, ValueGetterParams } from "ag-grid-community";
+import { CellClassParams, ColDef, ValueGetterParams } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { EntryDto, EventEntryDto } from "../models/EntryDto";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
@@ -12,12 +12,12 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { EventDto } from "../models/EventDto";
 import LoadingContainer from "../components/LoadingContainer";
 import { AiFillPrinter } from "react-icons/ai";
+import GridPrint from "./GridPrint";
 
 const Grid = () => {
 	const { id } = useParams();
 	const [loadingInitial, setLoadingInitial] = useState(true);
 	const [fixture, setFixture] = useState<FixtureDto>();
-	const [isPrinting, setIsPrinting] = useState(false);
 	const entries = fixture?.entries || [];
 	const events = fixture?.events || [];
 	const gridRef = useRef<AgGridReact<EntryDto>>(null);
@@ -86,45 +86,29 @@ const Grid = () => {
 	}, [id]);
 
 	const onBtPrint = useCallback(() => {
-		setIsPrinting(true);
-		setPrinterFriendly(gridRef.current!.api);
-		setTimeout(() => {
-			print();
-			setNormal(gridRef.current!.api);
-			setIsPrinting(false);
-		}, 2000);
+		print();
 	}, [print]);
 
 	return (
-		<div className="w-full p-8">
-			<div className="flex justify-between">
-				<h1 className="text-2xl mb-2">{fixture?.name}</h1>
-				<button className="text-xl print:hidden" onClick={onBtPrint} disabled={isPrinting}>
-					<AiFillPrinter />
-				</button>
-			</div>
-
-			{loadingInitial && <LoadingContainer />}
-			{!loadingInitial && (
-				<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
-					<AgGridReact<EntryDto> ref={gridRef} rowData={entries} columnDefs={colDefs} />
+		<>
+			<div className="w-full p-8 print:hidden">
+				<div className="flex justify-between">
+					<h1 className="text-2xl mb-2">{fixture?.name}</h1>
+					<button className="text-xl print:hidden" onClick={onBtPrint}>
+						<AiFillPrinter />
+					</button>
 				</div>
-			)}
-		</div>
+
+				{loadingInitial && <LoadingContainer />}
+				{!loadingInitial && (
+					<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
+						<AgGridReact<EntryDto> ref={gridRef} rowData={entries} columnDefs={colDefs} />
+					</div>
+				)}
+			</div>
+			<GridPrint entries={entries} events={events} title={fixture?.name || "The Grid"} />
+		</>
 	);
 };
-
-function setPrinterFriendly(api: GridApi) {
-	const eGridDiv = document.querySelector<HTMLElement>("#myGrid")! as any;
-	eGridDiv.style.width = "";
-	eGridDiv.style.height = "";
-	api.setGridOption("domLayout", "print");
-}
-
-function setNormal(api: GridApi) {
-	const eGridDiv = document.querySelector<HTMLElement>("#myGrid")! as any;
-	eGridDiv.style.height = "80vh";
-	api.setGridOption("domLayout", undefined);
-}
 
 export default Grid;

@@ -1,4 +1,5 @@
 export interface EntryDto {
+	id: number;
 	userId: string;
 	userName: string;
 	fixtureId: number;
