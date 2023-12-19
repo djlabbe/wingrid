@@ -15,7 +15,7 @@ const NavBar = () => {
 	const isAdmin = loginResult?.roles?.includes("ADMIN");
 
 	return (
-		<Navbar fluid rounded className="bg-gray-200">
+		<Navbar fluid rounded className="bg-gray-200 print:hidden">
 			<div className="flex flex-wrap items-center justify-between w-full">
 				<div className="flex flex-wrap items-center ">
 					<Navbar.Toggle className="me-2" />
