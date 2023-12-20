@@ -25,11 +25,11 @@ const Grid = () => {
 
 	const cellClassRules = (event: EventDto) => {
 		return {
-			"bg-yellow-300": (p: CellClassParams<EntryDto>) => {
+			"bg-green-200": (p: CellClassParams<EntryDto>) => {
 				const isCorrect = p.data?.eventEntries.find((ee: EventEntryDto) => ee.eventId === event.id)?.isCorrect;
 				return isCorrect;
 			},
-			"bg-red-100": (p: CellClassParams<EntryDto>) => {
+			"bg-neutral-300": (p: CellClassParams<EntryDto>) => {
 				const isCorrect = p.data?.eventEntries.find((ee: EventEntryDto) => ee.eventId === event.id)?.isCorrect;
 				return event.statusCompleted && isCorrect === false;
 			},
@@ -114,6 +114,10 @@ const Grid = () => {
 						</div>
 					</>
 				)}
+				<div className="text-xs text-center mt-3">
+					Events will automatically update approximately hourly by 10 minutes past the hour. The overwill winner(s) will
+					be determined at midnight (00:00 MST) following the completion of all events.
+				</div>
 			</div>
 			<GridPrint entries={entries} events={events} title={fixture?.name || "The Grid"} />
 		</>
