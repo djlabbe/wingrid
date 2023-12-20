@@ -115,8 +115,8 @@ const Grid = () => {
 					</>
 				)}
 				<div className="text-xs text-center mt-3">
-					Events will automatically update approximately hourly by 10 minutes past the hour. The overwill winner(s) will
-					be determined at midnight (00:00 MST) following the completion of all events.
+					Events are automatically updated approximately every hour at 8 minutes past the hour. Overwill winner(s) are
+					determined at midnight (00:00 MST) following the completion of all events.
 				</div>
 			</div>
 			<GridPrint entries={entries} events={events} title={fixture?.name || "The Grid"} />
