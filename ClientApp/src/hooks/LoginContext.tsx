@@ -21,7 +21,7 @@ export const LoginProvider = ({ children }: Props) => {
 	const token = localStorage.getItem("jwt");
 
 	const [state, setState] = useState<LoginResult>({
-		isLoggingIn: true,
+		isLoggingIn: false,
 		loginError: undefined,
 	});
 

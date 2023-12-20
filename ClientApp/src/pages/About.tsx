@@ -1,4 +1,8 @@
+import { useLoginContext } from "../hooks/useLoginContext";
+
 const About = () => {
+	const { loginResult } = useLoginContext();
+
 	return (
 		<div className="py-16 bg-white">
 			<div className="container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
@@ -31,6 +35,29 @@ const About = () => {
 							your ultimate destination for gridiron excitement. Start making your picks today and experience football
 							fandom like never before!
 						</p>
+						{!loginResult?.user && (
+							<a
+								href="/signup"
+								className="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-500 focus:ring-offset-green-200 my-8"
+							>
+								Get Started
+								<svg
+									className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+									aria-hidden="true"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 14 10"
+								>
+									<path
+										stroke="currentColor"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth="2"
+										d="M1 5h12m0 0L9 1m4 4L9 9"
+									/>
+								</svg>
+							</a>
+						)}
 					</div>
 				</div>
 			</div>

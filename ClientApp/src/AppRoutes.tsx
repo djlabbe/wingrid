@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
-import Splash from "./pages/Splash";
 import { ReactElement, useEffect } from "react";
 import { useLoginContext } from "./hooks/useLoginContext";
 import NotAuthorized from "./pages/NotAuthorized";
@@ -11,6 +10,7 @@ import Admin from "./pages/Admin/Admin";
 import About from "./pages/About";
 import Fixture from "./pages/Fixture";
 import Grid from "./pages/Grid";
+import Hero from "./components/Hero";
 
 interface AuthRequiredProps {
 	authorizedRoles: string[];
@@ -74,7 +74,7 @@ const AppRoutes = () => {
 					</AuthRequired>
 				}
 			/>
-			<Route path="/" element={<Splash />} />
+			<Route path="/" element={<Hero />} />
 			<Route path="*" element={<Navigate to="/" replace />} />
 		</Routes>
 	);
