@@ -19,9 +19,6 @@ interface AuthRequiredProps {
 
 const AuthRequired = ({ authorizedRoles, children }: AuthRequiredProps) => {
 	const { loginResult } = useLoginContext();
-	if (loginResult?.isLoggingIn) {
-		return <LoadingOverlay message="Signing in" />;
-	}
 	const canNavigate = loginResult?.roles?.some((ur) => authorizedRoles.some((ar) => ar === ur));
 	return canNavigate ? children : <NotAuthorized />;
 };
@@ -36,6 +33,10 @@ const AppRoutes = () => {
 			navigate("/dashboard");
 		}
 	}, [loginResult]);
+
+	if (loginResult?.isLoggingIn) {
+		return <LoadingOverlay message="Signing in" />;
+	}
 
 	return (
 		<Routes>
