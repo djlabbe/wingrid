@@ -11,6 +11,8 @@ import About from "./pages/About";
 import Fixture from "./pages/Fixture";
 import Grid from "./pages/Grid";
 import Hero from "./components/Hero";
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 interface AuthRequiredProps {
 	authorizedRoles: string[];
@@ -42,6 +44,8 @@ const AppRoutes = () => {
 		<Routes>
 			<Route path="signup" element={<SignUp />} />
 			<Route path="login" element={<Login />} />
+			<Route path="forgotpassword" element={<ForgotPassword />} />
+			<Route path="resetpassword" element={<ResetPassword />} />
 			<Route path="about" element={<About />} />
 			<Route
 				path="fixtures/:id"

@@ -1,10 +1,13 @@
 using System.Security.Claims;
+using System.Net;
 using Auth.Models;
 using Auth.Models.Dto;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Wingrid.Auth.Data;
 using Wingrid.Services.Auth.Models.Dto;
+using System.Web;
 
 namespace Wingrid.Services.Auth.Services
 {
@@ -14,14 +17,19 @@ namespace Wingrid.Services.Auth.Services
         Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
         Task<LoginResponseDto> GetCurrentUser(string? email);
         Task<bool> AssignRole(string email, string roleName);
+        Task ForgotPassword(string email);
+        Task<IdentityResult> ResetPassword(string email, string token, string newPassword);
     }
 
-    public class AuthService(AppDbContext db, IJwtTokenGenerator jwtTokenGenerator, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) : IAuthService
+    public class AuthService(IConfiguration configuration, AppDbContext db, IJwtTokenGenerator jwtTokenGenerator, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender) : IAuthService
     {
+        private readonly IConfiguration _configuration = configuration;
         private readonly AppDbContext _db = db;
         private readonly IJwtTokenGenerator _jwtTokenGenerator = jwtTokenGenerator;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+        private readonly IEmailSender _emailSender = emailSender;
+
 
         public async Task<LoginResponseDto> GetCurrentUser(string? email)
         {
@@ -134,6 +142,35 @@ namespace Wingrid.Services.Auth.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task ForgotPassword(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var appUrl = _configuration.GetValue<string>("AppUrl") ??
+                throw new Exception("Missing configuration for AppUrl");
+
+            if (user != null && user.Email != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var encodedToken = HttpUtility.UrlEncode(token);
+                var url = $"{appUrl}/resetpassword?email={user.Email}&token={encodedToken}";
+                var resetLink = $"<a href='{url}'>Reset Your Password</a>";
+                await _emailSender.SendEmailAsync(user.Email, "Your Wingrid password reset request", $"Please use this link to {resetLink}");
+            }
+        }
+
+        public async Task<IdentityResult> ResetPassword(string email, string token, string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var resetPassResult = await _userManager.ResetPasswordAsync(user, token, newPassword);
+                return resetPassResult;
+            }
+
+            return IdentityResult.Success;
         }
     }
 }

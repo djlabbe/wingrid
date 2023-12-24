@@ -68,6 +68,23 @@ namespace Wingrid.Services.Auth.Controllers
             return Ok(new ResponseDto() { Result = loginResponse });
         }
 
+        [HttpPost("forgotpassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto request)
+        {
+            await _authService.ForgotPassword(request.Email);
+            return Ok();
+        }
+
+        [HttpPost("resetpassword")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
+        {
+            var result = await _authService.ResetPassword(request.Email, request.Token, request.Password);
+            if (result.Errors.Any()) return BadRequest(result.Errors.First().Description);
+            return Ok(result);
+        }
+
         [HttpPost("AssignRole")]
         public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDto model)
         {

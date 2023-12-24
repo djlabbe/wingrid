@@ -84,7 +84,7 @@ const Login = () => {
 							Log In
 						</LoadingButton>
 						<div className="flex justify-between">
-							<a href="#" className="text-sm font-semibold text-green-600 hover:text-green-500">
+							<a href="/forgotpassword" className="text-sm font-semibold text-green-600 hover:text-green-500">
 								Forgot password?
 							</a>
 							<a href="/signup" className="text-sm font-semibold text-green-600 hover:text-green-500">
