@@ -31,7 +31,7 @@ const ResetPassword = () => {
 			};
 			await post(`${AUTH_URI}/api/auth/resetpassword`, dto);
 			setLoading(false);
-			toastifySuccess("Password updated successfully. Please login to continue.");
+			toastifySuccess("Password saved successfully. Please log in to continue.");
 			navigate("/login");
 		} catch (e) {
 			setLoading(false);

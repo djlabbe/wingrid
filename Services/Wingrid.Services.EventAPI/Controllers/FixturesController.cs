@@ -72,4 +72,16 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
          return _mapper.Map<EntryDto>(entry);
       });
    }
+
+   [HttpPost]
+   [Route("test")]
+   public async Task<ResponseDto> Test()
+   {
+      return await ExecuteActionAsync(async () =>
+      {
+         await _fixturesService.Test();
+         return Ok();
+      });
+   }
+
 }

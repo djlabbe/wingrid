@@ -15,6 +15,7 @@ using Wingrid.MessageBus;
 using Hangfire.PostgreSql;
 using System.Security.Claims;
 using Microsoft.Extensions.Primitives;
+using Wingrid.Services.Auth.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +77,9 @@ builder.Services.AddScoped<IEventsService, EventsService>();
 builder.Services.AddScoped<ITeamsService, TeamsService>();
 builder.Services.AddScoped<IFixturesService, FixturesService>();
 builder.Services.AddScoped<IMessageBus, MessageBus>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+
 
 builder.Services.AddHangfire(config =>
 {
@@ -157,3 +161,4 @@ void ApplyMigrations()
         context.Database.Migrate();
     }
 }
+

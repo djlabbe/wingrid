@@ -13,11 +13,14 @@ namespace Wingrid.Services.EventAPI.Services
         public Task<Entry> SubmitEntryAsync(Entry entry);
         public Task<Entry?> GetEntryAsync(string userId, int fixtureId);
 
+        public Task Test();
+
     }
 
-    public class FixturesService(AppDbContext context) : IFixturesService
+    public class FixturesService(AppDbContext context, IEmailService emailClient) : IFixturesService
     {
         private readonly AppDbContext _context = context;
+        private readonly IEmailService _emailClient = emailClient;
 
         public async Task<Fixture> CreateFixture(CreateFixtureDto fixture)
         {
@@ -111,6 +114,11 @@ namespace Wingrid.Services.EventAPI.Services
         {
             var entry = await _context.Entries.FirstOrDefaultAsync(e => e.UserId == userId && e.FixtureId == fixtureId);
             return entry;
+        }
+
+        public async Task Test()
+        {
+            await _emailClient.SendEmailAsync("dougjlabbe@gmail.com", "You won!", "You won the grid!", 23681);
         }
     }
 }

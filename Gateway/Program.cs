@@ -1,6 +1,5 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Values;
 using Wingrid.Gateway.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

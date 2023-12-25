@@ -2,15 +2,18 @@
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Wingrid.Services.EventAPI.Data;
+using Wingrid.Services.EventAPI.Services;
 
 namespace Wingrid.Services.EventAPI.Jobs
 {
     [AutomaticRetry(Attempts = 0)]
-    public class WinnerDeterminationJob(AppDbContext context) : IBatchJob
+    public class WinnerDeterminationJob(AppDbContext context, IEmailService emailClient) : IBatchJob
     {
         private readonly AppDbContext _context = context;
+        private readonly IEmailService _emailClient = emailClient;
 
         public static string JobId => "WinnerDetermination";
 
@@ -45,6 +48,7 @@ namespace Wingrid.Services.EventAPI.Jobs
                     {
                         performContext.WriteLine($"Winning entry: {entry.Id}");
                         entry.Winner = true;
+                        await _emailClient.SendEmailAsync("dougjlabbe@gmail.com", "You won!", "You won the grid!", 23681);
                     }
                 }
                 else
