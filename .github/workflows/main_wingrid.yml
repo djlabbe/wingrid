@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - WingridAuthAPI
+name: Build and deploy ASP.Net Core app to Azure Web App - Wingrid
 
 on:
   push:
@@ -10,178 +10,48 @@ on:
   workflow_dispatch:
 
 jobs:
-  unittest:
+  build:
     runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 8.0.x
-      - name: Restore dependencies
-        run: dotnet restore
-      - name: Build
-        run: dotnet build --no-restore
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
 
-  build-gateway:
-    runs-on: windows-latest
-    needs: unittest
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: "8.x"
+          dotnet-version: '8.x'
           include-prerelease: true
 
       - name: Build with dotnet
-        run: cd Gateway && dotnet build --configuration Release
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: cd Gateway && dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/wingridGateway
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: wingridGateway-app
-          path: ${{env.DOTNET_ROOT}}/wingridGateway
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
-  build-auth:
+  deploy:
     runs-on: windows-latest
-    needs: unittest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "8.x"
-          include-prerelease: true
-
-      - name: Build with dotnet
-        run: cd Services/Wingrid.Services.Auth && dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: cd Services/Wingrid.Services.Auth && dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/wingridAuthAPI
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: wingridAuthAPI-app
-          path: ${{env.DOTNET_ROOT}}/wingridAuthAPI
-
-  build-eventapi:
-    runs-on: windows-latest
-    needs: unittest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "8.x"
-          include-prerelease: true
-
-      - name: Build with dotnet
-        run: cd Services/Wingrid.Services.EventAPI && dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: cd Services/Wingrid.Services.EventAPI && dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/wingridEventAPI
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: wingridEventAPI-app
-          path: ${{env.DOTNET_ROOT}}/wingridEventAPI
-
-  deploy-gateway:
-    runs-on: windows-latest
-    needs: build-gateway
+    needs: build
     environment:
-      name: "Production"
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: wingridGateway-app
+          name: .net-app
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "WingridGateway"
-          slot-name: "Production"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_403FFCA611DB4ABAAA758DACF4FC4A7E }}
+          app-name: 'Wingrid'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_489E8B29F5464C2A8EC3FBA68A84F7AB }}
           package: .
-
-  deploy-auth:
-    runs-on: windows-latest
-    needs: build-auth
-    environment:
-      name: "Production"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: wingridAuthAPI-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: "WingridAuthAPI"
-          slot-name: "Production"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BB2A031FE29C4B97A61BFF013C0A2A6F }}
-          package: .
-
-  deploy-eventapi:
-    runs-on: windows-latest
-    needs: build-eventapi
-    environment:
-      name: "Production"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: wingridEventAPI-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: "wingridEventAPI"
-          slot-name: "Production"
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9BEEEBCA43AC45B5B5C66CABAC7C9BF2 }}
-          package: .
-
-  build_and_deploy_client:
-    runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    needs: [deploy-eventapi, deploy-auth, deploy-gateway]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_AGREEABLE_POND_0B06D0010 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/ClientApp" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "dist" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
