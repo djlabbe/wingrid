@@ -39,9 +39,12 @@ namespace Wingrid.Jobs
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
 
-            var isAuthorized = jwtSecurityToken.Claims.Any(t => t.Type.Equals(_claimType) && _permittedValues.Any(pv => t.Value.Equals(pv)));
+            var hasIssuer = jwtSecurityToken.Issuer.Equals("wingrid-auth");
+            var hasAudience = jwtSecurityToken.Audiences.Any(a => a.Equals("wingrid-client"));
+            var hasRole = jwtSecurityToken.Claims.Any(t => t.Type.Equals(_claimType) && _permittedValues.Any(pv => t.Value.Equals(pv)));
+            var authorized = hasIssuer && hasAudience && hasRole;
 
-            return isAuthorized;
+            return authorized;
         }
 
         private static void SetCookie(HttpContext? httpContext, string jwtToken)

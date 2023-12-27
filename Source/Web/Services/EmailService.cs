@@ -41,7 +41,6 @@ public class EmailService(IOptions<AuthMessageSenderOptions> optionsAccessor,
         if (groupId.HasValue)
         {
             msg.SetAsm(groupId.Value, [23680, 23681]);
-            msg.HtmlContent += "<p><a href=\"<%asm_group_unsubscribe_raw_url%>\">Unsubscribe</a> <a href=\"<%asm_preferences_raw_url%>\">Preferences</a></p>";
         }
 
 
