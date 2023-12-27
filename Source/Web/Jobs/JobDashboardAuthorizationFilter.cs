@@ -11,25 +11,6 @@ namespace Wingrid.Jobs
         private readonly string _claimType = claimType ?? throw new ArgumentNullException(nameof(claimType));
         private readonly StringValues _permittedValues = permittedValues;
 
-        // public bool Authorize(DashboardContext context)
-        // {
-        //     var httpContext = context.GetHttpContext();
-        //     if (httpContext != null && IsLocal(httpContext.Connection))
-        //         return true;
-
-        //     if (StringValues.IsNullOrEmpty(_permittedValues))
-        //         return true;
-
-        //     if (httpContext?.User == null)
-        //         return false;
-
-        //     return _permittedValues.Any(v => httpContext.User.HasClaim(c =>
-        //         string.Equals(c.Type, _claimType, StringComparison.OrdinalIgnoreCase) &&
-        //         c.Value != null &&
-        //         string.Equals(c.Value, v, StringComparison.OrdinalIgnoreCase)
-        //     ));
-        // }
-
         public bool Authorize(DashboardContext context)
         {
             var httpContext = context.GetHttpContext();
@@ -58,7 +39,9 @@ namespace Wingrid.Jobs
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
 
-            return jwtSecurityToken.Claims.Any(t => t.Type == _claimType && t.Value.Equals("ADMIN_JOBS"));
+            var isAuthorized = jwtSecurityToken.Claims.Any(t => t.Type.Equals(_claimType) && _permittedValues.Any(pv => t.Value.Equals(pv)));
+
+            return isAuthorized;
         }
 
         private static void SetCookie(HttpContext? httpContext, string jwtToken)

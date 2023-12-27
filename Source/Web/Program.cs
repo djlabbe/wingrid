@@ -12,7 +12,6 @@ using Wingrid.Extensions;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Logs;
 using Hangfire.PostgreSql;
-using System.Security.Claims;
 using Microsoft.Extensions.Primitives;
 using Wingrid.Models;
 using Microsoft.AspNetCore.Identity;
@@ -118,7 +117,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHangfireDashboard(options: new DashboardOptions
 {
-    Authorization = new[] { new JobDashboardAuthorizationFilter(ClaimTypes.Role, new StringValues("ADMIN_JOBS")) },
+    Authorization = new[] { new JobDashboardAuthorizationFilter("role", new StringValues("ADMIN_JOBS")) },
     AppPath = "/"
 });
 
