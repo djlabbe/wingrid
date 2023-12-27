@@ -106,13 +106,15 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.jon", "Event v1");
-    options.RoutePrefix = string.Empty;
-});
-
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.jon", "Event v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
 
 app.UseHangfireDashboard(options: new DashboardOptions
 {
