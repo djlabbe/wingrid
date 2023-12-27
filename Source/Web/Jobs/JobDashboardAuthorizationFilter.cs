@@ -5,16 +5,10 @@ using Microsoft.Extensions.Primitives;
 
 namespace Wingrid.Jobs
 {
-    public class JobDashboardAuthorizationFilter : IDashboardAuthorizationFilter
+    public class JobDashboardAuthorizationFilter(string claimType, StringValues permittedValues) : IDashboardAuthorizationFilter
     {
-        private readonly string _claimType;
-        private readonly StringValues _permittedValues;
-
-        public JobDashboardAuthorizationFilter(string claimType, StringValues permittedValues)
-        {
-            _claimType = claimType ?? throw new ArgumentNullException(nameof(claimType));
-            _permittedValues = permittedValues;
-        }
+        private readonly string _claimType = claimType ?? throw new ArgumentNullException(nameof(claimType));
+        private readonly StringValues _permittedValues = permittedValues;
 
         public bool Authorize(DashboardContext context)
         {
@@ -35,7 +29,7 @@ namespace Wingrid.Jobs
             ));
         }
 
-        private bool IsLocal(ConnectionInfo connection)
+        private static bool IsLocal(ConnectionInfo connection)
         {
             if (connection == null) return true;
             if (HasValue(connection.RemoteIpAddress))

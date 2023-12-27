@@ -36,9 +36,12 @@ const NavBar = () => {
 									<Navbar.Link as={NavLink} to="/admin" className="md:hover:text-green-600">
 										Create Fixture
 									</Navbar.Link>
-									<Navbar.Link as={NavLink} to="/hangfire" className="md:hover:text-green-600">
+									<a
+										href="/hangfire"
+										className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white md:hover:text-green-600"
+									>
 										Jobs
-									</Navbar.Link>
+									</a>
 								</>
 							)}
 							<Navbar.Link as={NavLink} to="/about" className="md:hover:text-green-600">
@@ -54,9 +57,6 @@ const NavBar = () => {
 								<span className="block text-sm">{user.name}</span>
 								<span className="block truncate text-sm font-medium">{user.email}</span>
 							</Dropdown.Header>
-							{/* <Dropdown.Item>Profile</Dropdown.Item>
-							<Dropdown.Item>Settings</Dropdown.Item> */}
-							{/* <Dropdown.Divider /> */}
 							<Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
 						</Dropdown>
 					)}

@@ -14,7 +14,7 @@ export default defineConfig((env) => ({
 		},
 		proxy: {
 			"/api": { target: "https://localhost:7002", changeOrigin: true, secure: false },
-			"/hangfire": { target: "https://localhost:7002", changeOrigin: false, secure: false },
+			"/hangfire": { target: "https://localhost:7002", changeOrigin: true, secure: false },
 		},
 		strictPort: true,
 	},
