@@ -1,8 +1,0 @@
-.dockerignore
-.git
-.vscode
-.vs
-**/obj
-**/bin
-**/node_modules
-**/Tests

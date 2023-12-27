@@ -1,4 +1,5 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+
 <a name="readme-top"></a>
 
 <!-- PROJECT SHIELDS -->
@@ -9,6 +10,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -18,7 +20,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/djlabbe/wingrid">
-    <img src="images/wingrid.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Wingrid</h3>
@@ -36,8 +38,6 @@
     <a href="https://github.com/djlabbe/wingrid/issues">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -60,33 +60,33 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://wingrid.io)
 
 Wingrid is in the early stages of development, but will become a platform to play football "pick-em" competitions. Currently, the EventAPI service collects data on all available NFL games from ESPN APIs. Eventually, this data will be used
 to generate a subset of games each week for users to predict the winner of. As the games are completed, EventAPI records
-the final score and game winner. Wingrid will determine which user correctly predicted the winner for the most games each week. 
+the final score and game winner. Wingrid will determine which user correctly predicted the winner for the most games each week.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
-To get a local copy up and running follow these  steps.
+
+To get a local copy up and running follow these steps.
 
 ### Prerequisites
 
 Wingrid requires the following tools:
 
-* dotnet 8.0+
+- dotnet 8.0+
   ```sh
   https://dotnet.microsoft.com/en-us/
   ```
-* docker
+- docker
   ```sh
   https://www.docker.com/products/docker-desktop/
   ```
@@ -101,17 +101,17 @@ Wingrid requires the following tools:
    ```sh
    docker run --name dev -e POSTGRES_USER=wingrid_app -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:latest
    ```
-2. Start the Authentication Service
+1. Start the Authentication Service
    ```sh
    cd Services/Auth
    dotnet run
    ```
-3. Start the EventAPI Service
+1. Start the EventAPI Service
    ```sh
    cd Services/EventAPI
    dotnet run
    ```
-4. Start the Web Application
+1. Start the Web Application
    ```sh
    cd FrontEnd/Wingrid.Web
    dotnet run
@@ -119,8 +119,8 @@ Wingrid requires the following tools:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 With the EventAPI service running, navigate to https://localhost:7002/hangfire to view the Hangfire dashboard and control EventAPI batch jobs. Click on "Recurring Jobs", first execute the Teams job, and then the Events job to populate the database. Subsequent runs of the events job will update any existing events (eg. populating the score once the event is in progress or completed.)
@@ -128,7 +128,6 @@ With the EventAPI service running, navigate to https://localhost:7002/hangfire t
 _For more examples, please refer to the [Documentation](https://wingrid.io)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- ROADMAP
 ## Roadmap
@@ -142,8 +141,8 @@ See the [open issues](https://github.com/djlabbe/wingrid/issues) for a full list
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
-
 <!-- CONTACT -->
+
 ## Contact
 
 Douglas Labbe - dougjlabbe@gmail.com
@@ -151,8 +150,6 @@ Douglas Labbe - dougjlabbe@gmail.com
 Project Link: [https://github.com/djlabbe/wingrid](https://github.com/djlabbe/wingrid)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- ACKNOWLEDGMENTS -->
 <!-- ## Acknowledgments
@@ -163,10 +160,9 @@ Project Link: [https://github.com/djlabbe/wingrid](https://github.com/djlabbe/wi
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
 [contributors-url]: https://github.com/djlabbe/wingrid/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
@@ -195,4 +191,4 @@ Project Link: [https://github.com/djlabbe/wingrid](https://github.com/djlabbe/wi
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[JQuery-url]: https://jquery.com
