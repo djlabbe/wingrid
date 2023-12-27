@@ -58,7 +58,7 @@ namespace Wingrid.Jobs
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = tokenHandler.ReadJwtToken(jwtToken);
 
-            return jwtSecurityToken.Claims.Any(t => t.Type == _claimType && _permittedValues.Any(v => v == t.Value));
+            return jwtSecurityToken.Claims.Any(t => t.Type == _claimType && t.Value.Equals("ADMIN_JOBS"));
         }
 
         private static void SetCookie(HttpContext? httpContext, string jwtToken)
