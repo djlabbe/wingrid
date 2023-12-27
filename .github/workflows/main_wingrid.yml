@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: "Wingrid"
           slot-name: "production"
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_1234 }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_489E8B29F5464C2A8EC3FBA68A84F7AB }}
           package: .
