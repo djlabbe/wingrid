@@ -71,6 +71,7 @@
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>  
       </ResolvedFileToPublish>  
     </ItemGroup>
+  </Target>
 
 </Project>
  
