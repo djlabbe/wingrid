@@ -4,6 +4,8 @@ using Hangfire.Console;
 using Hangfire.Server;
 using Microsoft.EntityFrameworkCore;
 using Wingrid.Data;
+using Wingrid.Models;
+using Wingrid.Models.Dto;
 using Wingrid.Services;
 
 namespace Wingrid.Jobs
@@ -47,7 +49,13 @@ namespace Wingrid.Jobs
                     {
                         performContext.WriteLine($"Winning entry: {entry.Id}");
                         entry.Winner = true;
-                        await _emailClient.SendEmailAsync("dougjlabbe@gmail.com", "You won!", winMessage, 23681);
+
+                        var user = await _context.ApplicationUsers.Where(u => u.Id == entry.UserId).FirstAsync();
+
+                        if (user.Email != null)
+                        {
+                            await _emailClient.SendEmailAsync(user.Email, "You won!", winMessage(fixture), 23681);
+                        }
                     }
                 }
                 else
@@ -59,39 +67,41 @@ namespace Wingrid.Jobs
             var changeCount = await _context.SaveChangesAsync();
         }
 
-        private string winMessage = $"""
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Wingrid - Winner Notification</title>
-            </head>
-            <body style="font-family: 'Arial', sans-serif; background-color: #f4f4f4; color: #333;">
 
-            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                <img src="https://wingrid.io/logo.svg" alt="Wingrid Logo" style="width: 150px; margin-bottom: 20px;">
+        private string winMessage(Fixture fixture)
+        {
+            return $"""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Wingrid - Winner Notification</title>
+                </head>
+                <body style="font-family: 'Arial', sans-serif; background-color: #f4f4f4; color: #333;">
 
-                <h2 style="color: #007BFF;">Congratulations!</h2>
+                <div style="max-width: 250px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <img src="https://wingrid.io/logo.png" alt="Wingrid Logo" style="width: 150px; margin-bottom: 20px;">
 
-                <p>Congratulations,</p>
+                    <h2 style="color: rgb(22 163 74);">Congratulations!</h2>
 
-                <p>You are a winner on Wingrid! Your expertise in predicting football outcomes has paid off, and we're excited to announce that you've won this contest.</p>
+                    <p>You are a winner on Wingrid! Your expertise in predicting football outcomes has paid off, and we're excited to announce that you've won competition: "{fixture.Name}"</p>
 
-                <p>Please log in to your Wingrid account to view detailed results and enter new competitions.</p>
+                    <p>Please log in to your Wingrid account to view detailed results and enter new contests.</p>
 
-                <a href="https://wingrid.io" style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 20px;">Wingrid</a>
+                    <a href="https://wingrid.io" style="display: inline-block; padding: 10px 20px; background-color: rgb(22 163 74); color: #fff; text-decoration: none; border-radius: 5px;">Wingrid</a>
 
-                <p>If you have any questions or concerns, feel free to contact our support team at admin@wingridapp.io.</p>
+                    <p>If you have any questions or concerns, feel free to contact our support team at admin@wingridapp.io.</p>
 
-                <p>Thank you for participating in Wingrid!</p>
+                    <p>Thank you for participating in Wingrid!</p>
 
-                <p>Best regards,<br> The Wingrid Team</p>
-            </div>
-            <div><small><a href=\"<%asm_group_unsubscribe_raw_url%>\">Unsubscribe</a> <a href=\"<%asm_preferences_raw_url%>\">Preferences</a></small><div>
-            </body>
-            </html>
-        """;
+                    <p>Best regards,<br> The Wingrid Team</p>
+                </div>
+                <div><small><a href=\"<%asm_group_unsubscribe_raw_url%>\">Unsubscribe</a> <a href=\"<%asm_preferences_raw_url%>\">Preferences</a></small><div>
+                </body>
+                </html>
+            """;
+        }
     }
 
 
