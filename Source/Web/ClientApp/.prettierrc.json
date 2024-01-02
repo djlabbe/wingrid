@@ -1,7 +1,8 @@
 {
-    "trailingComma": "all",
-    "useTabs": true,
-    "printWidth": 120,
-    "arrowParens": "always",
-    "endOfLine": "auto"
+	"trailingComma": "all",
+	"useTabs": true,
+	"printWidth": 120,
+	"arrowParens": "always",
+	"endOfLine": "auto",
+	"plugins": ["prettier-plugin-tailwindcss"]
 }

@@ -19,6 +19,8 @@ const Grid = () => {
 	const { id } = useParams();
 	const [loadingInitial, setLoadingInitial] = useState(true);
 	const [fixture, setFixture] = useState<FixtureDto>();
+	const tbEventId = fixture?.tiebreakerEventId;
+	console.log(tbEventId);
 	const entries = fixture?.entries || [];
 	const events = fixture?.events || [];
 	const gridRef = useRef<AgGridReact<EntryDto>>(null);
@@ -36,25 +38,31 @@ const Grid = () => {
 		};
 	};
 
+	const getEventToolTip = (ev: EventDto) => {
+		if (ev.statusId === "3") {
+			return `${ev.awayTeam.displayName} ${ev.awayScore} @ ${ev.homeTeam.displayName} ${ev.homeScore}`;
+		}
+		return `${ev.name} - ${new Date(ev.date).toLocaleString()}`;
+	};
+
 	const eventCols = events.map(
 		(ev, i) =>
 			({
 				colId: `e${i + 1}`,
-				headerName: `${i + 1}`,
+				headerName: `${i + 1}${ev.id === tbEventId ? "*" : ""}`,
 				headerClass: "event-grid-col",
-				headerTooltip: `${ev.name} - ${new Date(ev.date).toLocaleString()}`,
+				headerTooltip: getEventToolTip(ev),
 				width: 70,
 				cellClass: "text-center font-bold text-[12px]",
 				cellClassRules: cellClassRules(ev),
 				suppressMovable: true,
 				valueGetter: (p: ValueGetterParams<EntryDto>) => {
-					const isHomeSelected = p.data?.eventEntries.find(
-						(ee: EventEntryDto) => ee.eventId === ev.id,
-					)?.homeWinnerSelected;
+					const isHomeSelected = p.data?.eventEntries.find((ee: EventEntryDto) => ee.eventId === ev.id)
+						?.homeWinnerSelected;
 					const selectedTeam = isHomeSelected ? ev.homeTeam.abbreviation : ev.awayTeam.abbreviation;
 					return selectedTeam;
 				},
-			} as ColDef),
+			}) as ColDef,
 	);
 
 	const colDefs: ColDef<EntryDto>[] = [
@@ -63,9 +71,15 @@ const Grid = () => {
 			headerName: "Events",
 			children: [...eventCols],
 		},
-		{ field: "tiebreaker", headerName: "TB", suppressMovable: true, width: 70 },
-		{ field: "score", headerName: "Score", suppressMovable: true, width: 80 },
-		{ field: "tiebreakerResult", headerName: "TB Res.", suppressMovable: true, width: 90 },
+		{ field: "tiebreaker", headerName: "Tb", headerTooltip: "Predicted Total Score", suppressMovable: true, width: 70 },
+		{ field: "score", headerName: "Score", headerTooltip: "Number of Correct Picks", suppressMovable: true, width: 80 },
+		{
+			field: "tiebreakerResult",
+			headerName: "Tb Err.",
+			headerTooltip: "Difference between predicted total score and actual total score",
+			suppressMovable: true,
+			width: 90,
+		},
 		{
 			field: "winner",
 			headerName: "Win",
@@ -104,7 +118,7 @@ const Grid = () => {
 				{!loadingInitial && (
 					<>
 						<div className="flex justify-between">
-							<h1 className="text-2xl mb-2">{fixture?.name}</h1>
+							<h1 className="mb-2 text-2xl">{fixture?.name}</h1>
 							<button className="text-xl print:hidden" onClick={onBtPrint}>
 								<AiFillPrinter />
 							</button>
@@ -112,7 +126,7 @@ const Grid = () => {
 						<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
 							<AgGridReact<EntryDto> ref={gridRef} rowData={entries} columnDefs={colDefs} />
 						</div>
-						<div className="text-xs text-center mt-3">
+						<div className="mt-3 text-center text-xs">
 							Events are automatically updated hourly at approximately 8 minutes past the hour. Overall results are
 							tabulated at midnight (00:00 MST) following the completion of all events.
 						</div>
