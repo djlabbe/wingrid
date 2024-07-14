@@ -1,7 +1,6 @@
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
-using Microsoft.VisualBasic;
 using Wingrid.Models;
 using Wingrid.Services;
 
@@ -16,18 +15,18 @@ namespace Wingrid.Jobs
         public static string JobId => "Events";
         public async Task ExecuteAsync(PerformContext? performContext)
         {
-            await SyncNflEvents(performContext);
-
             var currentYear = DateTime.UtcNow.Year;
+
+            await SyncNflEvents(currentYear, performContext);
             await SyncNcaaEvents(currentYear, performContext);
             await SyncNcaaEvents(currentYear + 1, performContext);
         }
 
-        private async Task SyncNflEvents(PerformContext? performContext)
+        private async Task SyncNflEvents(int year, PerformContext? performContext)
         {
             performContext.WriteLine("Fetching current NFL season events...");
 
-            var espnEventResponses = await _espnService.GetNflSeasonEvents(2023);
+            var espnEventResponses = await _espnService.GetNflSeasonEvents(2024);
             performContext.WriteLine($"Retrieved {espnEventResponses.Count()} responses from ESPN.");
 
             foreach (var response in espnEventResponses)
