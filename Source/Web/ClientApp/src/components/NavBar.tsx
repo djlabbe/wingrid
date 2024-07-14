@@ -15,8 +15,8 @@ const NavBar = () => {
 	const isAdmin = loginResult?.roles?.includes("ADMIN");
 
 	return (
-		<Navbar fluid rounded className="bg-gray-200 print:hidden">
-			<div className="flex flex-wrap items-center justify-between w-full">
+		<Navbar fluid className="bg-gray-200 dark:bg-gray-900 print:hidden">
+			<div className="flex w-full flex-wrap items-center justify-between">
 				<div className="flex flex-wrap items-center ">
 					<Navbar.Toggle className="me-2" />
 					<div className="flex flex-wrap items-center">
@@ -39,7 +39,7 @@ const NavBar = () => {
 									<a
 										href={`/hangfire?jwt_token=${loginResult.token}`}
 										target="_blank"
-										className="block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white md:hover:text-green-600"
+										className="block border-b border-gray-100 py-2 pl-3 pr-4 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-green-600 md:dark:hover:bg-transparent md:dark:hover:text-white"
 									>
 										Jobs
 									</a>
@@ -51,7 +51,7 @@ const NavBar = () => {
 						</Navbar.Collapse>
 					)}
 				</div>
-				<div className="sm:order-last self-start">
+				<div className="self-start sm:order-last">
 					{user && (
 						<Dropdown arrowIcon={false} inline label={<Avatar alt="User settings" img="/avatar.svg" rounded />}>
 							<Dropdown.Header>
