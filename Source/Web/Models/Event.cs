@@ -59,6 +59,7 @@ namespace Wingrid.Models
         public string? StatusDescription { get; set; }
         public string? StatusDetail { get; set; }
         public string? StatusShortDetail { get; set; }
+        public List<Fixture> Fixtures { get; set; } = [];
 
         public Event(EspnEvent espnEvent) : this(espnEvent.Id)
         {
