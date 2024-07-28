@@ -1,8 +1,6 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Wingrid.Data;
 using Wingrid.Models;
-using Wingrid.Models.Dto;
 using Wingrid.Models.Espn;
 
 namespace Wingrid.Services
@@ -16,22 +14,22 @@ namespace Wingrid.Services
         public Task<int> SaveChangesAsync();
     }
 
-    public class EventsService(AppDbContext context, IConfiguration configuration, IMapper mapper) : IEventsService
+    public class EventsService(AppDbContext context) : IEventsService
     {
         private readonly AppDbContext _context = context;
-        private readonly IConfiguration _configuration = configuration;
-        private readonly IMapper _mapper = mapper;
 
         public async Task<IEnumerable<Event>> GetEventsAsync(EventQueryParams eventQueryParams)
         {
+            var offset = eventQueryParams.TimezoneOffset;
             var start = eventQueryParams.Start;
             var end = eventQueryParams.End;
+
             var ids = eventQueryParams.Id?.Split(",") ?? [];
 
             List<Event> events;
             if (start == null && end == null)
             {
-                events = await _context.Events.Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ToListAsync();
+                events = await _context.Events.Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ThenBy(e => e.AwayTeam == null ? "" : e.AwayTeam.DisplayName).ToListAsync();
             }
             else if (start != null && end == null || start == null && end != null)
             {
@@ -39,7 +37,18 @@ namespace Wingrid.Services
             }
             else
             {
-                events = await _context.Events.Where(e => e.Date >= start && e.Date <= end).Include(e => e.HomeTeam).Include(e => e.AwayTeam).OrderBy(e => e.Date).ToListAsync();
+                if (start != null && offset != null)
+                    start = start.Value.AddMinutes((double)offset);
+
+                if (end != null && offset != null)
+                    end = end.Value.AddMinutes((double)offset);
+
+                events = await _context.Events.Where(e => e.Date >= start && e.Date <= end)
+                    .Include(e => e.HomeTeam)
+                    .Include(e => e.AwayTeam)
+                    .OrderBy(e => e.Date)
+                    .ThenBy(e => e.AwayTeam == null ? "" : e.AwayTeam.DisplayName)
+                    .ToListAsync();
             }
 
             if (ids.Length != 0)

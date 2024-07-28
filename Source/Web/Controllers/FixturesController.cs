@@ -40,7 +40,7 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
    [HttpGet]
    [Authorize]
    [Route("{id}/entry")]
-   public async Task<ResponseDto> GetEntryForSuer(int id)
+   public async Task<ResponseDto> GetEntryForUser(int id)
    {
       return await ExecuteActionAsync(async () =>
       {
@@ -72,16 +72,4 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
          return _mapper.Map<EntryDto>(entry);
       });
    }
-
-   [HttpPost]
-   [Route("test")]
-   public async Task<ResponseDto> Test()
-   {
-      return await ExecuteActionAsync(async () =>
-      {
-         await _fixturesService.Test();
-         return Ok();
-      });
-   }
-
 }

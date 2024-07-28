@@ -32,11 +32,12 @@ const Admin = () => {
 		var endDate = new Date(end);
 		var correctedEndDate = new Date(endDate);
 		correctedEndDate.setDate(endDate.getDate() + 1);
+		var offset = new Date().getTimezoneOffset();
 
 		try {
 			setLoadingEvents(true);
 			const apiResponse = await get<ResponseDto<EventDto[]>>(
-				`/api/events?start=${startDate.toISOString()}&end=${correctedEndDate.toISOString()}`,
+				`/api/events?Start=${startDate.toISOString()}&End=${correctedEndDate.toISOString()}&TimezoneOffset=${offset}`,
 			);
 			setLoadingEvents(false);
 			if (apiResponse.isSuccess) {
@@ -91,7 +92,7 @@ const Admin = () => {
 
 	return (
 		<div className="mx-auto max-w-screen-xl py-8">
-			<div className="grid grid-cols-10 grid-flow-col gap-4 items-end py-4 px-4">
+			<div className="grid grid-flow-col grid-cols-10 items-end gap-4 px-4 py-4">
 				<div className="col-span-4">
 					<label className="text-sm font-medium text-gray-900 dark:text-white" htmlFor="start">
 						Start Date
@@ -132,22 +133,22 @@ const Admin = () => {
 						<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 							<thead className="group/head text-xs uppercase text-gray-700 dark:text-gray-400">
 								<tr>
-									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200 text-center">
+									<th className="bg-gray-200 px-6 py-3 text-center group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700">
 										Select
 									</th>
-									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
-										Date
+									<th className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700">
+										Date / Time
 									</th>
-									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
+									<th className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700">
 										Away Team
 									</th>
-									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
+									<th className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700">
 										Home Team
 									</th>
-									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200 text-center">
+									<th className="bg-gray-200 px-6 py-3 text-center group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700">
 										Neutral Site
 									</th>
-									<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200 text-center">
+									<th className="bg-gray-200 px-6 py-3 text-center group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700">
 										Tiebreak
 									</th>
 								</tr>
@@ -160,27 +161,27 @@ const Admin = () => {
 										} dark:border-gray-700 dark:bg-gray-800`}
 										key={event.id}
 									>
-										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 text-center">
+										<td className="px-6 py-4 text-center group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 											<input
 												type="checkbox"
 												id={event.id}
 												checked={selectedEventIds.includes(event.id)}
 												onChange={(e) => handleSelectEvent(event.id, e.target.checked)}
-												className="h-4 w-4 rounded focus:ring-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 bg-gray-100 focus:ring-green-600 dark:ring-offset-green-600 dark:focus:ring-green-600 text-green-600"
+												className="h-4 w-4 rounded border border-gray-300 bg-gray-100 text-green-600 focus:ring-2 focus:ring-green-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-green-600 dark:focus:ring-green-600"
 											/>
 										</td>
 
-										<td>{new Date(event.date).toLocaleDateString()}</td>
-										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4whitespace-nowrap font-medium text-gray-900 dark:text-white">
+										<td>{new Date(event.date).toLocaleString()}</td>
+										<td className="py-4whitespace-nowrap px-6 font-medium text-gray-900 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg dark:text-white">
 											{event.awayTeam?.displayName || "TBD"}
 										</td>
-										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 whitespace-nowrap font-medium text-gray-900 dark:text-white">
+										<td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg dark:text-white">
 											{event.homeTeam?.displayName || "TBD"}
 										</td>
-										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 flex justify-center text-green-600 text-lg">
+										<td className="flex justify-center px-6 py-4 text-lg text-green-600 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 											{event.neutralSite && <AiFillCheckCircle />}
 										</td>
-										<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4 text-center">
+										<td className="px-6 py-4 text-center group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 											{selectedEventIds.includes(event.id) && (
 												<input
 													type="radio"
@@ -190,7 +191,7 @@ const Admin = () => {
 													checked={tiebreakEvent === event.id}
 													// disabled={tiebreakEvent != undefined && tiebreakEvent !== event.id}
 													onChange={(e) => handleSelectTiebreak(event.id, e.target.checked)}
-													className="h-4 w-4 border border-gray-300 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:bg-green-600 dark:focus:ring-green-600 text-green-600"
+													className="h-4 w-4 border border-gray-300 text-green-600 focus:ring-2 focus:ring-green-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:bg-green-600 dark:focus:ring-green-600"
 												/>
 											)}
 										</td>
@@ -199,7 +200,7 @@ const Admin = () => {
 							</tbody>
 						</table>
 					</div>
-					<div className="grid grid-cols-10 grid-flow-col gap-4 items-end px-4 pb-8">
+					<div className="grid grid-flow-col grid-cols-10 items-end gap-4 px-4 pb-8">
 						<div className="col-span-10">
 							<label className="text-sm font-medium text-gray-900 dark:text-white" htmlFor="name">
 								Fixture Display Name

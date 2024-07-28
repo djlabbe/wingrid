@@ -13,8 +13,6 @@ namespace Wingrid.Services
         public Task<Entry> SubmitEntryAsync(Entry entry);
         public Task<Entry?> GetEntryAsync(string userId, int fixtureId);
 
-        public Task Test();
-
     }
 
     public class FixturesService(AppDbContext context, IEmailService emailClient) : IFixturesService
@@ -114,11 +112,6 @@ namespace Wingrid.Services
         {
             var entry = await _context.Entries.FirstOrDefaultAsync(e => e.UserId == userId && e.FixtureId == fixtureId);
             return entry;
-        }
-
-        public async Task Test()
-        {
-            await _emailClient.SendEmailAsync("dougjlabbe@gmail.com", "You won!", "You won the grid!", 23681);
         }
     }
 }
