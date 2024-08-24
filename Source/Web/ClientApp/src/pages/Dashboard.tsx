@@ -46,20 +46,20 @@ const Dashboard = () => {
 					<thead className="group/head text-xs uppercase text-gray-700 dark:text-gray-400">
 						<tr>
 							<th
-								className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200"
+								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
 								style={{ width: "20%" }}
 							></th>
-							<th className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200">
+							<th className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700">
 								Name
 							</th>
 							<th
-								className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200"
+								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
 								style={{ width: "20%" }}
 							>
 								Deadline
 							</th>
 							<th
-								className="group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700 px-6 py-3 bg-gray-200"
+								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
 								style={{ width: "15%" }}
 							>
 								Event Count
@@ -69,8 +69,8 @@ const Dashboard = () => {
 					<tbody className="group/body divide-y">
 						{fixtures?.map((fixture) => (
 							<tr key={fixture.id} className="group/row dark:border-gray-700 dark:bg-gray-800">
-								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
-									<div className="flex space-between">
+								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
+									<div className="space-between flex">
 										{!fixture.locked && (
 											<LoadingButton className="me-2" onClick={() => handleMakePicks(fixture.id)}>
 												<p className="text-xs">Make Picks</p>
@@ -81,13 +81,13 @@ const Dashboard = () => {
 										</LoadingButton>
 									</div>
 								</td>
-								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
+								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.name}
 								</td>
-								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
+								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.deadline ? new Date(fixture.deadline).toLocaleString() : ""}
 								</td>
-								<td className="group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4">
+								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.events?.length}
 								</td>
 							</tr>

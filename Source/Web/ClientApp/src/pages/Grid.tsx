@@ -20,7 +20,6 @@ const Grid = () => {
 	const [loadingInitial, setLoadingInitial] = useState(true);
 	const [fixture, setFixture] = useState<FixtureDto>();
 	const tbEventId = fixture?.tiebreakerEventId;
-	console.log(tbEventId);
 	const entries = fixture?.entries || [];
 	const events = fixture?.events || [];
 	const gridRef = useRef<AgGridReact<EntryDto>>(null);
@@ -118,7 +117,9 @@ const Grid = () => {
 				{!loadingInitial && (
 					<>
 						<div className="flex justify-between">
-							<h1 className="mb-2 text-2xl">{fixture?.name}</h1>
+							<h1 className="mb-2 text-2xl">
+								{fixture?.name} ({fixture?.entries?.length || 0} entries)
+							</h1>
 							<button className="text-xl print:hidden" onClick={onBtPrint}>
 								<AiFillPrinter />
 							</button>
