@@ -128,7 +128,7 @@ const Grid = () => {
 							<AgGridReact<EntryDto> ref={gridRef} rowData={entries} columnDefs={colDefs} />
 						</div>
 						<div className="mt-3 text-center text-xs">
-							Events are automatically updated hourly at approximately 8 minutes past the hour. Overall results are
+							Events are automatically updated hourly at approximately 15 minutes past the hour. Overall results are
 							tabulated at midnight (00:00 MST) following the completion of all events.
 						</div>
 					</>
