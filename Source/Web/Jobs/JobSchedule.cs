@@ -17,7 +17,7 @@ namespace Wingrid.Jobs
             {
                 "Production", new Dictionary<string, string>
                 {
-                    { nameof(TeamsJob), "0 * * * *" },
+                    { nameof(TeamsJob), "0 0 * * 2" },
                     { nameof(EventsJob), "7 * * * *" },
                     { nameof(WinnerDeterminationJob), "0 3 * * *" }, // Every day at 03:00
                 }
