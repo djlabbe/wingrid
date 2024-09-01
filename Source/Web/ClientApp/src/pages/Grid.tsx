@@ -14,8 +14,10 @@ import LoadingContainer from "../components/LoadingContainer";
 import { AiFillPrinter } from "react-icons/ai";
 import GridPrint from "./GridPrint";
 import WinnerRenderer from "../components/grid/WinnerRenderer";
+import { useLoginContext } from "../hooks/useLoginContext";
 
 const Grid = () => {
+	const { loginResult } = useLoginContext();
 	const { id } = useParams();
 	const [loadingInitial, setLoadingInitial] = useState(true);
 	const [fixture, setFixture] = useState<FixtureDto>();
@@ -23,6 +25,8 @@ const Grid = () => {
 	const entries = fixture?.entries || [];
 	const events = fixture?.events || [];
 	const gridRef = useRef<AgGridReact<EntryDto>>(null);
+
+	const isAdmin = loginResult?.roles?.includes("ADMIN");
 
 	const cellClassRules = (event: EventDto) => {
 		return {
@@ -114,7 +118,9 @@ const Grid = () => {
 		<>
 			<div className="w-full p-8 print:hidden">
 				{loadingInitial && <LoadingContainer />}
-				{!loadingInitial && !fixture?.locked && <p>Please check back after {fixture?.deadline} to view the grid!</p>}
+				{!loadingInitial && !fixture?.locked && !isAdmin && (
+					<p>Please check back after {fixture?.deadline} to view the grid!</p>
+				)}
 				{!loadingInitial && fixture?.locked && (
 					<>
 						<div className="flex justify-between">

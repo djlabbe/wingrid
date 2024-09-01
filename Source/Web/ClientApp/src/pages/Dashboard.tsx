@@ -6,11 +6,14 @@ import { ResponseDto } from "../models/ResponseDto";
 import { toastifyError } from "../services/toastService";
 import LoadingContainer from "../components/LoadingContainer";
 import LoadingButton from "../components/LoadingButton";
+import { useLoginContext } from "../hooks/useLoginContext";
 
 const Dashboard = () => {
+	const { loginResult } = useLoginContext();
 	const [fixtures, setFixtures] = useState<FixtureDto[]>();
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+	const isAdmin = loginResult?.roles?.includes("ADMIN");
 
 	useEffect(() => {
 		const fetchFixtures = async () => {
@@ -71,11 +74,12 @@ const Dashboard = () => {
 							<tr key={fixture.id} className="group/row dark:border-gray-700 dark:bg-gray-800">
 								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									<div className="space-between flex">
-										{fixture.locked ? (
+										{(fixture.locked || isAdmin) && (
 											<LoadingButton onClick={() => handleClickGrid(fixture.id)}>
 												<p className="text-xs">View Grid</p>
 											</LoadingButton>
-										) : (
+										)}
+										{!fixture.locked && (
 											<LoadingButton className="me-2" onClick={() => handleMakePicks(fixture.id)}>
 												<p className="text-xs">Make Picks</p>
 											</LoadingButton>
