@@ -114,7 +114,8 @@ const Grid = () => {
 		<>
 			<div className="w-full p-8 print:hidden">
 				{loadingInitial && <LoadingContainer />}
-				{!loadingInitial && (
+				{!loadingInitial && !fixture?.locked && <p>Please check back after {fixture?.deadline} to view the grid!</p>}
+				{!loadingInitial && fixture?.locked && (
 					<>
 						<div className="flex justify-between">
 							<h1 className="mb-2 text-2xl">
