@@ -121,7 +121,7 @@ const Grid = () => {
 				{!loadingInitial && !fixture?.locked && !isAdmin && (
 					<p>Please check back after {fixture?.deadline} to view the grid!</p>
 				)}
-				{!loadingInitial && fixture?.locked && (
+				{!loadingInitial && (fixture?.locked || isAdmin) && (
 					<>
 						<div className="flex justify-between">
 							<h1 className="mb-2 text-2xl">

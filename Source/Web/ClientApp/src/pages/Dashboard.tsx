@@ -84,7 +84,11 @@ const Dashboard = () => {
 											</LoadingButton>
 										)}
 										{!fixture.locked && (
-											<LoadingButton onClick={() => handleMakePicks(fixture.id)} disabled={fixture.locked}>
+											<LoadingButton
+												className="me-2"
+												onClick={() => handleMakePicks(fixture.id)}
+												disabled={fixture.locked}
+											>
 												<p className="text-xs">Make Picks</p>
 											</LoadingButton>
 										)}

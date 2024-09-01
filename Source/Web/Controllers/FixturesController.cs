@@ -27,6 +27,7 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
    }
 
    [HttpGet]
+   [Authorize]
    [Route("{id}")]
    public async Task<ResponseDto> Get(int id)
    {
@@ -44,7 +45,6 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
    {
       return await ExecuteActionAsync(async () =>
       {
-         var x = User;
          var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Missing or invalid user id for event.");
          var entry = await _fixturesService.GetEntryAsync(userId, id);
          return _mapper.Map<EntryDto>(entry);
