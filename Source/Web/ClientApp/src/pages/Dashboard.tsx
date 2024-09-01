@@ -74,16 +74,20 @@ const Dashboard = () => {
 							<tr key={fixture.id} className="group/row dark:border-gray-700 dark:bg-gray-800">
 								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									<div className="space-between flex">
-										<LoadingButton onClick={() => handleClickGrid(fixture.id)} disabled={!fixture.locked && !isAdmin}>
-											<p className="text-xs">View Grid</p>
-										</LoadingButton>
-										<LoadingButton
-											className="me-2"
-											onClick={() => handleMakePicks(fixture.id)}
-											disabled={fixture.locked}
-										>
-											<p className="text-xs">Make Picks</p>
-										</LoadingButton>
+										{(fixture.locked || isAdmin) && (
+											<LoadingButton
+												className="me-2"
+												onClick={() => handleClickGrid(fixture.id)}
+												disabled={!fixture.locked && !isAdmin}
+											>
+												<p className="text-xs">View Grid</p>
+											</LoadingButton>
+										)}
+										{!fixture.locked && (
+											<LoadingButton onClick={() => handleMakePicks(fixture.id)} disabled={fixture.locked}>
+												<p className="text-xs">Make Picks</p>
+											</LoadingButton>
+										)}
 									</div>
 								</td>
 								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
