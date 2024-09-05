@@ -66,7 +66,8 @@ namespace Wingrid.Jobs
                         foreach (var entry in fixture.Entries)
                         {
                             performContext.WriteLine($"Updating statistics for user: {entry.UserId}");
-                            var userStats = await _context.UserStatistics.FirstAsync(us => us.UserId == entry.UserId);
+
+                            var userStats = await _context.UserStatistics.FirstOrDefaultAsync(us => us.UserId == entry.UserId) ?? new UserStatistics(entry.UserId);
 
                             userStats.TotalCollegePicks += ncaaEventIds.Count();
                             userStats.TotalProPicks += nflEventIds.Count();

@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Wingrid.Models
 {
     [PrimaryKey(nameof(UserId))]
-    public class UserStatistics
+    public class UserStatistics(string userId)
     {
         public ApplicationUser? User { get; set; }
-        public required string UserId { get; set; }
+        public string UserId { get; set; } = userId;
         public int TotalCollegePicks { get; set; }
         public int TotalProPicks { get; set; }
         public int CorrectCollegePicks { get; set; }
