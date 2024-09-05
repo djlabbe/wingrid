@@ -22,7 +22,7 @@ namespace Wingrid.Jobs
             var fixtures = await _context.Fixtures
                 .Include(f => f.Events)
                 .Include(f => f.Entries)
-                // .Where(f => !f.IsComplete)
+                .Where(f => !f.IsComplete)
                 .ToListAsync();
 
             performContext.WriteLine($"Found {fixtures.Count} open fixtures.");
@@ -53,10 +53,10 @@ namespace Wingrid.Jobs
 
                             var user = await _context.ApplicationUsers.Where(u => u.Id == entry.UserId).FirstAsync();
 
-                            // if (user.Email != null)
-                            // {
-                            //     await _emailClient.SendEmailAsync(user.Email, "You won!", WinMessage(fixture), 23681);
-                            // }
+                            if (user.Email != null)
+                            {
+                                await _emailClient.SendEmailAsync(user.Email, "You won!", WinMessage(fixture), 23681);
+                            }
                         }
 
                         // Done processing winner. Now update player statistics
@@ -74,7 +74,6 @@ namespace Wingrid.Jobs
 
                             if (userStats == null)
                             {
-                                performContext.WriteLine($"Creating new UserStatistics for user: {entry.UserId}");
                                 userStats = new UserStatistics(entry.UserId);
                                 _context.Add(userStats);
                             }
