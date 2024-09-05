@@ -22,7 +22,7 @@ namespace Wingrid.Jobs
             var fixtures = await _context.Fixtures
                 .Include(f => f.Events)
                 .Include(f => f.Entries)
-                .Where(f => !f.IsComplete)
+                // .Where(f => !f.IsComplete)
                 .ToListAsync();
 
             performContext.WriteLine($"Found {fixtures.Count} open fixtures.");
