@@ -60,14 +60,23 @@ namespace Wingrid.Jobs
                         }
 
                         // Done processing winner. Now update player statistics
+                        performContext.WriteLine($"Processing user statistics...");
                         var ncaaEventIds = fixture.Events.Where(e => e.League == League.NCAA).Select(e => e.Id);
                         var nflEventIds = fixture.Events.Where(e => e.League == League.NFL).Select(e => e.Id);
+                        performContext.WriteLine($"Fixture contains {ncaaEventIds.Count()} NCAA events and {nflEventIds.Count()} NFL events.");
+
 
                         foreach (var entry in fixture.Entries)
                         {
                             performContext.WriteLine($"Updating statistics for user: {entry.UserId}");
 
-                            var userStats = await _context.UserStatistics.FirstOrDefaultAsync(us => us.UserId == entry.UserId) ?? new UserStatistics(entry.UserId);
+                            var userStats = await _context.UserStatistics.FirstOrDefaultAsync(us => us.UserId == entry.UserId);
+
+                            if (userStats == null)
+                            {
+                                performContext.WriteLine($"Creating new UserStatistics for user: {entry.UserId}");
+                                userStats = new UserStatistics(entry.UserId);
+                            }
 
                             userStats.TotalCollegePicks += ncaaEventIds.Count();
                             userStats.TotalProPicks += nflEventIds.Count();
