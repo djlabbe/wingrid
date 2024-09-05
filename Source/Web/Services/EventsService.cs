@@ -77,7 +77,7 @@ namespace Wingrid.Services
 
             if (evnt == null)
             {
-                evnt = new Event(espnEvent);
+                evnt = new Event(league, espnEvent);
 
                 var homeTeamEspnId = espnEvent.Competitions?.FirstOrDefault()?.Competitors?.FirstOrDefault(c => c.HomeAway == "home")?.Team?.Id;
                 var awayTeamEspnId = espnEvent.Competitions?.FirstOrDefault()?.Competitors?.FirstOrDefault(c => c.HomeAway == "away")?.Team?.Id;
@@ -91,15 +91,13 @@ namespace Wingrid.Services
             {
                 var prevStatus = evnt.StatusCompleted;
 
-                evnt.UpdateFrom(espnEvent);
+                evnt.UpdateFrom(league, espnEvent);
 
                 var homeTeamEspnId = espnEvent.Competitions?.FirstOrDefault()?.Competitors?.FirstOrDefault(c => c.HomeAway == "home")?.Team?.Id;
                 var awayTeamEspnId = espnEvent.Competitions?.FirstOrDefault()?.Competitors?.FirstOrDefault(c => c.HomeAway == "away")?.Team?.Id;
 
                 evnt.HomeTeamId = _context.Teams.FirstOrDefault(t => t.League == league && t.EspnId == homeTeamEspnId)?.Id;
                 evnt.AwayTeamId = _context.Teams.FirstOrDefault(t => t.League == league && t.EspnId == awayTeamEspnId)?.Id;
-
-
 
                 if (prevStatus != true && evnt.StatusCompleted == true) // Event is now completed
                 {

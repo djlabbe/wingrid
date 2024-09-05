@@ -34,26 +34,45 @@ namespace Wingrid.Jobs
                 if (fixture.Events.All(e => e.StatusCompleted == true))
                 {
                     fixture.IsComplete = true;
+
                     if (fixture.Entries.Count == 0)
                     {
                         performContext.WriteLine($"Fixture has no entries. Marked complete and continuing.");
-                    };
-
-                    var maxScore = fixture.Entries.OrderByDescending(e => e.Score).First().Score;
-                    var tiedEntries = fixture.Entries.Where(e => e.Score == maxScore);
-                    var minTb = tiedEntries.OrderBy(e => e.TiebreakerResult).First().TiebreakerResult;
-                    var winningEntries = tiedEntries.Where(e => e.TiebreakerResult!.Value == minTb!.Value);
-                    performContext.WriteLine($"Found {winningEntries.Count()} winning entries with score of {maxScore} and TiebreakerResult of {minTb}.");
-                    foreach (var entry in winningEntries)
+                    }
+                    else
                     {
-                        performContext.WriteLine($"Winning entry: {entry.Id}");
-                        entry.Winner = true;
-
-                        var user = await _context.ApplicationUsers.Where(u => u.Id == entry.UserId).FirstAsync();
-
-                        if (user.Email != null)
+                        var maxScore = fixture.Entries.OrderByDescending(e => e.Score).First().Score;
+                        var tiedEntries = fixture.Entries.Where(e => e.Score == maxScore);
+                        var minTb = tiedEntries.OrderBy(e => e.TiebreakerResult).First().TiebreakerResult;
+                        var winningEntries = tiedEntries.Where(e => e.TiebreakerResult!.Value == minTb!.Value);
+                        performContext.WriteLine($"Found {winningEntries.Count()} winning entries with score of {maxScore} and TiebreakerResult of {minTb}.");
+                        foreach (var entry in winningEntries)
                         {
-                            await _emailClient.SendEmailAsync(user.Email, "You won!", winMessage(fixture), 23681);
+                            performContext.WriteLine($"Winning entry: {entry.Id}");
+                            entry.Winner = true;
+
+                            var user = await _context.ApplicationUsers.Where(u => u.Id == entry.UserId).FirstAsync();
+
+                            // if (user.Email != null)
+                            // {
+                            //     await _emailClient.SendEmailAsync(user.Email, "You won!", WinMessage(fixture), 23681);
+                            // }
+                        }
+
+                        // Done processing winner. Now update player statistics
+                        var ncaaEventIds = fixture.Events.Where(e => e.League == League.NCAA).Select(e => e.Id);
+                        var nflEventIds = fixture.Events.Where(e => e.League == League.NFL).Select(e => e.Id);
+
+                        foreach (var entry in fixture.Entries)
+                        {
+                            performContext.WriteLine($"Updating statistics for user: {entry.UserId}");
+                            var userStats = await _context.UserStatistics.FirstAsync(us => us.UserId == entry.UserId);
+
+                            userStats.TotalCollegePicks += ncaaEventIds.Count();
+                            userStats.TotalProPicks += nflEventIds.Count();
+
+                            userStats.CorrectCollegePicks += entry.EventEntries.Where(ee => ncaaEventIds.Contains(ee.EventId) && ee.IsCorrect).Count();
+                            userStats.CorrectProPicks += entry.EventEntries.Where(ee => nflEventIds.Contains(ee.EventId) && ee.IsCorrect).Count();
                         }
                     }
                 }
@@ -67,7 +86,7 @@ namespace Wingrid.Jobs
         }
 
 
-        private string winMessage(Fixture fixture)
+        private static string WinMessage(Fixture fixture)
         {
             return $"""
                 <!DOCTYPE html>

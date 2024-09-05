@@ -3,16 +3,13 @@ using Wingrid.Models.Espn;
 
 namespace Wingrid.Models
 {
-    public class Event
+    public class Event(League league, string id)
     {
-        // Do not change constructor (yet) wont deserialize from ESPN
-        public Event(string id)
-        {
-            Id = id;
-        }
+        // League
+        public League League { get; set; } = league;
 
         // Event
-        public string Id { get; set; }
+        public string Id { get; set; } = id;
         public string? Uid { get; set; }
         public DateTime? Date { get; set; }
         public string? Name { get; set; }
@@ -61,15 +58,17 @@ namespace Wingrid.Models
         public string? StatusShortDetail { get; set; }
         public List<Fixture> Fixtures { get; set; } = [];
 
-        public Event(EspnEvent espnEvent) : this(espnEvent.Id)
+        public Event(League league, EspnEvent espnEvent) : this(league, espnEvent.Id)
         {
-            UpdateFrom(espnEvent);
+            UpdateFrom(league, espnEvent);
         }
 
 
         // Updates all properties, except Teams (foreign keys)
-        public void UpdateFrom(EspnEvent espn)
+        public void UpdateFrom(League league, EspnEvent espn)
         {
+            League = league;
+
             var season = espn.Season;
             var week = espn.Week;
             var competition = espn.Competitions!.First();

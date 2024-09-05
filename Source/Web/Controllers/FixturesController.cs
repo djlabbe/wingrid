@@ -10,13 +10,13 @@ namespace Wingrid.Controllers;
 
 [Route("api/fixtures")]
 [ApiController]
-// [Authorize]
 public class FixturesController(IFixturesService fixturesService, IMapper mapper) : BaseController<FixturesController>
 {
    private readonly IFixturesService _fixturesService = fixturesService;
    private readonly IMapper _mapper = mapper;
 
    [HttpGet]
+   [Authorize]
    public async Task<ResponseDto> Get()
    {
       return await ExecuteActionAsync(async () =>
@@ -52,6 +52,7 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
    }
 
    [HttpPost]
+   [Authorize]
    public async Task<ResponseDto> Create([FromBody] CreateFixtureDto fixture)
    {
       return await ExecuteActionAsync(async () =>
@@ -62,6 +63,7 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
    }
 
    [HttpPost]
+   [Authorize]
    [Route("submitentry")]
    public async Task<ResponseDto> Submit(EntryDto ent)
    {

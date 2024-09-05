@@ -11,6 +11,7 @@ namespace Wingrid.Data
         public DbSet<Entry> Entries { get; set; }
         public DbSet<Fixture> Fixtures { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<UserStatistics> UserStatistics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,8 @@ namespace Wingrid.Data
             {
                 entity.HasIndex(e => new { e.League, e.EspnId }).IsUnique();
             });
+
+            modelBuilder.Entity<ApplicationUser>().HasOne(e => e.Statistics).WithOne(e => e.User);
         }
     }
 }
