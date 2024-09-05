@@ -48,7 +48,7 @@ namespace Wingrid.Jobs
                         performContext.WriteLine($"Found {winningEntries.Count()} winning entries with score of {maxScore} and TiebreakerResult of {minTb}.");
                         foreach (var entry in winningEntries)
                         {
-                            performContext.WriteLine($"Winning entry: {entry.Id}");
+                            performContext.WriteLine($"Winning entry: {entry.UserId}");
                             entry.Winner = true;
 
                             var user = await _context.ApplicationUsers.Where(u => u.Id == entry.UserId).FirstAsync();
@@ -76,6 +76,7 @@ namespace Wingrid.Jobs
                             {
                                 performContext.WriteLine($"Creating new UserStatistics for user: {entry.UserId}");
                                 userStats = new UserStatistics(entry.UserId);
+                                _context.Add(userStats);
                             }
 
                             userStats.TotalCollegePicks += ncaaEventIds.Count();

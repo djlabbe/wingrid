@@ -96,7 +96,9 @@ namespace Wingrid.Services
             }
             else
             {
+                var submittedAt = existingEntry.SubmittedAt;
                 _context.Entry(existingEntry).CurrentValues.SetValues(entry);
+                existingEntry.SubmittedAt = submittedAt;
 
                 foreach (var ev in existingEntry.EventEntries)
                 {
