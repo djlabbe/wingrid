@@ -23,6 +23,8 @@ const Grid = () => {
 	const [fixture, setFixture] = useState<FixtureDto>();
 	const tbEventId = fixture?.tiebreakerEventId;
 	const entries = fixture?.entries || [];
+	const myEntry = entries.find((e) => e.userId == loginResult?.user?.id);
+	const otherEntries = entries.filter((e) => e.userId !== loginResult?.user?.id);
 	const events = fixture?.events || [];
 	const gridRef = useRef<AgGridReact<EntryDto>>(null);
 
@@ -125,14 +127,19 @@ const Grid = () => {
 					<>
 						<div className="flex justify-between">
 							<h1 className="mb-2 text-2xl">
-								{fixture?.name} ({fixture?.entries?.length || 0} entries)
+								{fixture?.name} ({entries.length} entries)
 							</h1>
 							<button className="text-xl print:hidden" onClick={onBtPrint}>
 								<AiFillPrinter />
 							</button>
 						</div>
 						<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
-							<AgGridReact<EntryDto> ref={gridRef} rowData={entries} columnDefs={colDefs} />
+							<AgGridReact<EntryDto>
+								ref={gridRef}
+								pinnedTopRowData={[myEntry]}
+								rowData={otherEntries}
+								columnDefs={colDefs}
+							/>
 						</div>
 						<div className="mt-3 text-center text-xs">
 							Events are automatically updated hourly at approximately 15 minutes past the hour. Overall results are
