@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Wingrid.Models
 {
     public class Fixture(int id)
@@ -10,5 +12,8 @@ namespace Wingrid.Models
         public bool Locked => DateTime.UtcNow > Deadline;
         public required string TiebreakerEventId { get; set; }
         public bool IsComplete { get; set; }
+
+        [NotMapped]
+        public bool HasSubmitted { get; set; }
     }
 }

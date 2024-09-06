@@ -8,17 +8,16 @@ namespace Wingrid.Services
     public interface IFixturesService
     {
         public Task<Fixture> CreateFixture(CreateFixtureDto fixture);
-        public Task<IEnumerable<Fixture>> GetFixturesAsync();
-        public Task<Fixture?> GetFixtureAsync(int id);
+        public Task<IEnumerable<Fixture>> GetFixturesAsync(string userId);
+        public Task<Fixture?> GetFixtureAsync(int id, string userId);
         public Task<Entry> SubmitEntryAsync(Entry entry);
         public Task<Entry?> GetEntryAsync(string userId, int fixtureId);
 
     }
 
-    public class FixturesService(AppDbContext context, IEmailService emailClient) : IFixturesService
+    public class FixturesService(AppDbContext context) : IFixturesService
     {
         private readonly AppDbContext _context = context;
-        private readonly IEmailService _emailClient = emailClient;
 
         public async Task<Fixture> CreateFixture(CreateFixtureDto fixture)
         {
@@ -65,18 +64,36 @@ namespace Wingrid.Services
             return newFixture;
         }
 
-        public async Task<IEnumerable<Fixture>> GetFixturesAsync()
+        public async Task<IEnumerable<Fixture>> GetFixturesAsync(string userId)
         {
-            return await _context.Fixtures.OrderByDescending(f => f.Deadline).Include(f => f.Events).ToListAsync();
+            var allFixtures = await _context.Fixtures
+                .OrderByDescending(f => f.Deadline)
+                .Include(f => f.Events)
+                .ToListAsync();
+
+            // When getting all fixtures, only include the current user's entry
+            foreach (var fixture in allFixtures)
+            {
+                var entry = await _context.Entries.FirstOrDefaultAsync(e => e.UserId == userId && e.FixtureId == fixture.Id);
+                fixture.HasSubmitted = entry != null;
+            }
+
+            return allFixtures;
         }
 
-        public async Task<Fixture?> GetFixtureAsync(int id)
+        public async Task<Fixture?> GetFixtureAsync(int id, string userId)
         {
             var fixture = await _context.Fixtures
                 .Include(f => f.Entries.OrderBy(e => e.UserName))
                 .Include(f => f.Events.OrderBy(e => e.Date)).ThenInclude(e => e.HomeTeam)
                 .Include(f => f.Events.OrderBy(e => e.Date)).ThenInclude(e => e.AwayTeam)
                 .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (fixture != null)
+            {
+                fixture.HasSubmitted = fixture.Entries.Any(e => e.UserId == userId);
+            }
+
             return fixture;
         }
 

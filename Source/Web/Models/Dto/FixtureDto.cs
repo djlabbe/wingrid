@@ -10,5 +10,6 @@ namespace Wingrid.Models.Dto
         public bool Locked { get; set; }
         public required string TiebreakerEventId { get; set; }
         public bool IsComplete { get; set; }
+        public bool HasSubmitted { get; set; }
     }
 }

@@ -10,4 +10,5 @@ export interface FixtureDto {
 	locked: boolean;
 	tiebreakerEventId: string;
 	isComplete: boolean;
+	hasSubmitted: boolean;
 }

@@ -7,6 +7,7 @@ import { toastifyError } from "../services/toastService";
 import LoadingContainer from "../components/LoadingContainer";
 import LoadingButton from "../components/LoadingButton";
 import { useLoginContext } from "../hooks/useLoginContext";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const Dashboard = () => {
 	const { loginResult } = useLoginContext();
@@ -63,9 +64,15 @@ const Dashboard = () => {
 							</th>
 							<th
 								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
-								style={{ width: "15%" }}
+								style={{ width: "10%" }}
 							>
 								Event Count
+							</th>
+							<th
+								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
+								style={{ width: "10%" }}
+							>
+								Submitted
 							</th>
 						</tr>
 					</thead>
@@ -89,7 +96,7 @@ const Dashboard = () => {
 												onClick={() => handleMakePicks(fixture.id)}
 												disabled={fixture.locked}
 											>
-												<p className="text-xs">Make Picks</p>
+												<p className="text-xs">{fixture.hasSubmitted ? "Edit" : "Make"} Picks</p>
 											</LoadingButton>
 										)}
 									</div>
@@ -102,6 +109,15 @@ const Dashboard = () => {
 								</td>
 								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.events?.length}
+								</td>
+								<td className="text-green-600 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
+									{fixture.hasSubmitted ? (
+										<center>
+											<AiFillCheckCircle />
+										</center>
+									) : (
+										<></>
+									)}
 								</td>
 							</tr>
 						))}

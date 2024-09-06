@@ -21,7 +21,8 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
    {
       return await ExecuteActionAsync(async () =>
       {
-         var fixtures = await _fixturesService.GetFixturesAsync();
+         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Missing or invalid user id.");
+         var fixtures = await _fixturesService.GetFixturesAsync(userId);
          return _mapper.Map<IEnumerable<FixtureDto>>(fixtures);
       });
    }
@@ -33,7 +34,8 @@ public class FixturesController(IFixturesService fixturesService, IMapper mapper
    {
       return await ExecuteActionAsync(async () =>
       {
-         var fixture = await _fixturesService.GetFixtureAsync(id);
+         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Missing or invalid user id.");
+         var fixture = await _fixturesService.GetFixtureAsync(id, userId);
          return _mapper.Map<FixtureDto>(fixture);
       });
    }
