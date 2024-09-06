@@ -14,6 +14,9 @@ namespace Wingrid.Models
         public bool IsComplete { get; set; }
 
         [NotMapped]
+        public int EntryCount { get; set; }
+
+        [NotMapped]
         public bool HasSubmitted { get; set; }
     }
 }

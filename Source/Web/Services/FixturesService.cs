@@ -66,16 +66,20 @@ namespace Wingrid.Services
 
         public async Task<IEnumerable<Fixture>> GetFixturesAsync(string userId)
         {
+            // Only get fixtures within the last 1 year
             var allFixtures = await _context.Fixtures
+                .Where(f => f.Deadline > DateTime.UtcNow.AddDays(-365))
                 .OrderByDescending(f => f.Deadline)
                 .Include(f => f.Events)
                 .ToListAsync();
 
-            // When getting all fixtures, only include the current user's entry
             foreach (var fixture in allFixtures)
             {
-                var entry = await _context.Entries.FirstOrDefaultAsync(e => e.UserId == userId && e.FixtureId == fixture.Id);
-                fixture.HasSubmitted = entry != null;
+                var myEntry = _context.Entries.FirstOrDefault(e => e.FixtureId == fixture.Id && e.UserId == userId);
+                var numEntries = _context.Entries.Where(e => e.FixtureId == fixture.Id).Count();
+
+                fixture.EntryCount = numEntries;
+                fixture.HasSubmitted = myEntry != null;
             }
 
             return allFixtures;
@@ -92,6 +96,7 @@ namespace Wingrid.Services
             if (fixture != null)
             {
                 fixture.HasSubmitted = fixture.Entries.Any(e => e.UserId == userId);
+                fixture.EntryCount = fixture.Entries.Count;
             }
 
             return fixture;

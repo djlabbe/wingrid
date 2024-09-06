@@ -57,19 +57,25 @@ const Dashboard = () => {
 								Name
 							</th>
 							<th
-								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
+								className="bg-gray-200 px-6 py-3 text-center group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
 								style={{ width: "20%" }}
 							>
 								Deadline
 							</th>
 							<th
-								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
+								className="bg-gray-200 px-6 py-3 text-center group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
 								style={{ width: "10%" }}
 							>
-								Event Count
+								Events
 							</th>
 							<th
-								className="bg-gray-200 px-6 py-3 group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
+								className="bg-gray-200 px-6 py-3 text-center group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
+								style={{ width: "10%" }}
+							>
+								Entries
+							</th>
+							<th
+								className="bg-gray-200 px-6 py-3 text-center group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg dark:bg-gray-700"
 								style={{ width: "10%" }}
 							>
 								Submitted
@@ -104,11 +110,14 @@ const Dashboard = () => {
 								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.name}
 								</td>
-								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
+								<td className="px-6 py-4 text-center group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.deadline ? new Date(fixture.deadline).toLocaleString() : ""}
 								</td>
-								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
+								<td className="px-6 py-4 text-center group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.events?.length}
+								</td>
+								<td className="px-6 py-4 text-center group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
+									{fixture.entryCount}
 								</td>
 								<td className="text-green-600 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
 									{fixture.hasSubmitted ? (

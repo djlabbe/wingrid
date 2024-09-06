@@ -11,4 +11,5 @@ export interface FixtureDto {
 	tiebreakerEventId: string;
 	isComplete: boolean;
 	hasSubmitted: boolean;
+	entryCount: number;
 }
