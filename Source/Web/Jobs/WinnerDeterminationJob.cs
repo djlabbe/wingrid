@@ -77,12 +77,20 @@ namespace Wingrid.Jobs
                                 userStats = new UserStatistics(entry.UserId);
                                 _context.Add(userStats);
                             }
+                            userStats.Entries += 1;
+
+                            if (entry.Winner)
+                            {
+                                userStats.Wins += 1;
+                            }
 
                             userStats.TotalCollegePicks += ncaaEventIds.Count();
                             userStats.TotalProPicks += nflEventIds.Count();
 
                             userStats.CorrectCollegePicks += entry.EventEntries.Where(ee => ncaaEventIds.Contains(ee.EventId) && ee.IsCorrect).Count();
                             userStats.CorrectProPicks += entry.EventEntries.Where(ee => nflEventIds.Contains(ee.EventId) && ee.IsCorrect).Count();
+
+                            userStats.TotalTieBreakerError += entry.TiebreakerResult ?? 0;
                         }
                     }
                 }
