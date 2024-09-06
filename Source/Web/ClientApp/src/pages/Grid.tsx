@@ -30,11 +30,11 @@ const Grid = () => {
 
 	const cellClassRules = (event: EventDto) => {
 		return {
-			"bg-green-200": (p: CellClassParams<EntryDto>) => {
+			"bg-amber-200": (p: CellClassParams<EntryDto>) => {
 				const isCorrect = p.data?.eventEntries.find((ee: EventEntryDto) => ee.eventId === event.id)?.isCorrect;
 				return isCorrect;
 			},
-			"bg-neutral-300": (p: CellClassParams<EntryDto>) => {
+			"bg-neutral-100": (p: CellClassParams<EntryDto>) => {
 				const isCorrect = p.data?.eventEntries.find((ee: EventEntryDto) => ee.eventId === event.id)?.isCorrect;
 				return event.statusCompleted && isCorrect === false;
 			},
