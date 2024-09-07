@@ -37,24 +37,24 @@ const Statistics = () => {
 		{ field: "wins", headerName: "Wins", suppressMovable: true },
 		{
 			headerName: "Win %",
+			filter: "agNumberColumnFilter",
 			valueFormatter: (params) => params.data?.winPercentage?.toFixed(3),
-			suppressMovable: true,
 		},
 		{
 			headerName: "NCAA Pick %",
+			filter: "agNumberColumnFilter",
 			valueFormatter: (params) => params.data?.collegePercentage?.toFixed(3),
-			suppressMovable: true,
 		},
 		{
 			headerName: "NFL Pick %",
+			filter: "agNumberColumnFilter",
 			valueFormatter: (params) => params.data?.proPercentage?.toFixed(3),
-			suppressMovable: true,
 		},
 		{
 			field: "totalPercentage",
 			headerName: "Overall Pick %",
+			filter: "agNumberColumnFilter",
 			valueFormatter: (params) => params.data?.totalPercentage?.toFixed(3),
-			suppressMovable: true,
 		},
 		{ field: "averageTieBreakerError", headerName: "Avg. TB Error", suppressMovable: true },
 	] as ColDef<StatisticsDto>[];
