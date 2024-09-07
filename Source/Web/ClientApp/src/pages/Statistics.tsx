@@ -30,13 +30,17 @@ const Statistics = () => {
 	}, []);
 
 	const colDefs: ColDef<StatisticsDto>[] = [
-		{ field: "user.name", headerName: "Player", suppressMovable: true },
-		{ field: "entries", headerName: "Entries", suppressMovable: true },
-		{ field: "wins", headerName: "Wins", suppressMovable: true },
+		{ field: "user.name", headerName: "Player", pinned: "left", suppressMovable: true },
+		{ field: "entries", headerName: "Entries" },
+		{ field: "wins", headerName: "Wins" },
 		{
 			field: "winPercentage",
 			headerName: "Win %",
-			valueFormatter: (params) => params.data?.winPercentage?.toFixed(3),
+			valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => {
+				if (!params.data?.winPercentage) return undefined;
+				const pct = params.data.winPercentage * 100;
+				return pct.toFixed(1);
+			},
 		},
 		{
 			headerName: "Correct Picks (%)",
