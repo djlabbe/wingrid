@@ -71,7 +71,7 @@ const Grid = () => {
 	);
 
 	const colDefs: ColDef<EntryDto>[] = [
-		{ field: "userName", headerName: "Player", suppressMovable: true },
+		{ field: "userName", headerName: "Player", pinned: "left", suppressMovable: true },
 		{
 			headerName: "Events",
 			children: [...eventCols],
