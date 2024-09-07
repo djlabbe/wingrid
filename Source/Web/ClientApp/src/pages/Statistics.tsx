@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-// import { useLoginContext } from "../hooks/useLoginContext";
 import { ResponseDto } from "../models/ResponseDto";
 import { toastifyError } from "../services/toastService";
 import StatisticsDto from "../models/StatisticsDto";
 import { get } from "../services/api";
-import { ColDef } from "ag-grid-community";
+import { ColDef, ValueFormatterParams } from "ag-grid-community";
 import LoadingContainer from "../components/LoadingContainer";
 import { AgGridReact } from "ag-grid-react";
 
 const Statistics = () => {
-	// const { loginResult } = useLoginContext();
 	const [statistics, setStatistcs] = useState<StatisticsDto[]>();
 	const [loadingInitial, setLoadingInitial] = useState(true);
 	const gridRef = useRef<AgGridReact<StatisticsDto>>(null);
@@ -41,20 +39,38 @@ const Statistics = () => {
 			valueFormatter: (params) => params.data?.winPercentage?.toFixed(3),
 		},
 		{
-			field: "collegePercentage",
-			headerName: "NCAA Pick %",
-			valueFormatter: (params) => params.data?.collegePercentage?.toFixed(3),
+			headerName: "Correct Picks (%)",
+			children: [
+				{
+					field: "collegePercentage",
+					headerName: "NCAA",
+					valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => {
+						if (!params.data?.collegePercentage) return undefined;
+						const pct = params.data.collegePercentage * 100;
+						return pct.toFixed(1);
+					},
+				},
+				{
+					field: "proPercentage",
+					headerName: "NFL",
+					valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => {
+						if (!params.data?.proPercentage) return undefined;
+						const pct = params.data.proPercentage * 100;
+						return pct.toFixed(1);
+					},
+				},
+				{
+					field: "totalPercentage",
+					headerName: "Overall",
+					valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => {
+						if (!params.data?.totalPercentage) return undefined;
+						const pct = params.data.totalPercentage * 100;
+						return pct.toFixed(1);
+					},
+				},
+			],
 		},
-		{
-			field: "proPercentage",
-			headerName: "NFL Pick %",
-			valueFormatter: (params) => params.data?.proPercentage?.toFixed(3),
-		},
-		{
-			field: "totalPercentage",
-			headerName: "Overall Pick %",
-			valueFormatter: (params) => params.data?.totalPercentage?.toFixed(3),
-		},
+
 		{ field: "averageTieBreakerError", headerName: "Avg. TB Error", suppressMovable: true },
 	] as ColDef<StatisticsDto>[];
 
