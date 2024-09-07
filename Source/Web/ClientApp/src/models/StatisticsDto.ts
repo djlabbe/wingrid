@@ -1,5 +1,6 @@
 export interface StatisticsDto {
 	userId: string;
+	userName: string;
 	entries: number;
 	wins: number;
 	collegePercentage: number;
