@@ -1,6 +1,7 @@
+import { UserDto } from "./UserDto";
+
 export interface StatisticsDto {
-	userId: string;
-	userName: string;
+	user: UserDto;
 	entries: number;
 	wins: number;
 	collegePercentage: number;

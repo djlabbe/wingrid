@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Wingrid.Data;
 using Wingrid.Models;
@@ -15,7 +16,7 @@ namespace Web.Services
 
         public async Task<IEnumerable<UserStatistics>> GetStatistics()
         {
-            var statistics = await _context.UserStatistics.ToListAsync();
+            var statistics = await _context.UserStatistics.Include(us => us.User).ToListAsync();
             return statistics;
         }
     }

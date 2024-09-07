@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.Models.Dto;
 using Web.Services;
 using Wingrid.Controllers;
 using Wingrid.Models.Dto;
@@ -22,8 +23,8 @@ namespace Web.Controllers
             return await ExecuteActionAsync(async () =>
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new Exception("Missing or invalid user id.");
-                var fixtures = await _statisticsService.GetStatistics();
-                return _mapper.Map<IEnumerable<FixtureDto>>(fixtures);
+                var statistics = await _statisticsService.GetStatistics();
+                return _mapper.Map<IEnumerable<StatisticsDto>>(statistics);
             });
         }
 

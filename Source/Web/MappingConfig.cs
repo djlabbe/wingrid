@@ -1,5 +1,5 @@
 using AutoMapper;
-using Hangfire.Storage.Monitoring;
+using Web.Models.Dto;
 using Wingrid.Models;
 using Wingrid.Models.Dto;
 
@@ -16,6 +16,7 @@ namespace Wingrid
                 config.CreateMap<Fixture, FixtureDto>().ReverseMap();
                 config.CreateMap<Entry, EntryDto>().ReverseMap();
                 config.CreateMap<UserStatistics, StatisticsDto>().ReverseMap();
+                config.CreateMap<ApplicationUser, UserDto>();
             });
 
             return mappingConfig;

@@ -18,10 +18,10 @@ namespace Wingrid.Models
         public int CorrectProPicks { get; set; }
         public int TotalTieBreakerError { get; set; }
 
-        public decimal CollegePercentage => CorrectCollegePicks / TotalCollegePicks;
-        public decimal ProPercentage => CorrectProPicks / TotalProPicks;
-        public decimal TotalPercentage => (CorrectCollegePicks + CorrectProPicks) / (TotalCollegePicks + TotalProPicks);
-        public decimal WinPercentage => Wins / Entries;
-        public decimal AverageTieBreakerError => TotalTieBreakerError / Entries;
+        public decimal? CollegePercentage => TotalCollegePicks > 0 ? CorrectCollegePicks / TotalCollegePicks : null;
+        public decimal? ProPercentage => TotalProPicks > 0 ? CorrectProPicks / TotalProPicks : null;
+        public decimal? TotalPercentage => (TotalCollegePicks + TotalProPicks) > 0 ? ((CorrectCollegePicks + CorrectProPicks) / (TotalCollegePicks + TotalProPicks)) : null;
+        public decimal? WinPercentage => Entries > 0 ? Wins / Entries : null;
+        public decimal? AverageTieBreakerError => Entries > 0 ? TotalTieBreakerError / Entries : null;
     }
 }

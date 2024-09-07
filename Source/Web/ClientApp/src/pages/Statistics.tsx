@@ -32,7 +32,12 @@ const Statistics = () => {
 	}, []);
 
 	const colDefs: ColDef<StatisticsDto>[] = [
-		{ field: "userName", headerName: "Player", suppressMovable: true },
+		{ field: "user.name", headerName: "Player", suppressMovable: true },
+		{ field: "collegePercentage", headerName: "NCAA %", suppressMovable: true },
+		{ field: "proPercentage", headerName: "NFL %", suppressMovable: true },
+		{ field: "totalPercentage", headerName: "Overall Pick %", suppressMovable: true },
+		{ field: "winPercentage", headerName: "Winning %", suppressMovable: true },
+		{ field: "averageTieBreakerError", headerName: "Avg. TB Error", suppressMovable: true },
 	] as ColDef<StatisticsDto>[];
 
 	return (
