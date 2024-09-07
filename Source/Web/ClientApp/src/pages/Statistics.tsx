@@ -35,10 +35,27 @@ const Statistics = () => {
 		{ field: "user.name", headerName: "Player", suppressMovable: true },
 		{ field: "entries", headerName: "Entries", suppressMovable: true },
 		{ field: "wins", headerName: "Wins", suppressMovable: true },
-		{ field: "winPercentage", headerName: "Winning %", suppressMovable: true },
-		{ field: "collegePercentage", headerName: "NCAA Pick %", suppressMovable: true },
-		{ field: "proPercentage", headerName: "NFL Pick %", suppressMovable: true },
-		{ field: "totalPercentage", headerName: "Overall Pick %", suppressMovable: true },
+		{
+			headerName: "Win %",
+			valueFormatter: (params) => params.data?.winPercentage.toFixed(3),
+			suppressMovable: true,
+		},
+		{
+			headerName: "NCAA Pick %",
+			valueFormatter: (params) => params.data?.collegePercentage.toFixed(3),
+			suppressMovable: true,
+		},
+		{
+			headerName: "NFL Pick %",
+			valueFormatter: (params) => params.data?.proPercentage.toFixed(3),
+			suppressMovable: true,
+		},
+		{
+			field: "totalPercentage",
+			headerName: "Overall Pick %",
+			valueFormatter: (params) => params.data?.totalPercentage.toFixed(3),
+			suppressMovable: true,
+		},
 		{ field: "averageTieBreakerError", headerName: "Avg. TB Error", suppressMovable: true },
 	] as ColDef<StatisticsDto>[];
 
@@ -54,6 +71,7 @@ const Statistics = () => {
 						<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
 							<AgGridReact<StatisticsDto> ref={gridRef} rowData={statistics} columnDefs={colDefs} />
 						</div>
+						<div className="mt-3 text-center text-xs">Updated statistics are tabulated weekly.</div>
 					</>
 				)}
 			</div>
