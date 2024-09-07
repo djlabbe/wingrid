@@ -37,23 +37,23 @@ const Statistics = () => {
 		{ field: "wins", headerName: "Wins", suppressMovable: true },
 		{
 			headerName: "Win %",
-			valueFormatter: (params) => params.data?.winPercentage.toFixed(3),
+			valueFormatter: (params) => params.data?.winPercentage?.toFixed(3),
 			suppressMovable: true,
 		},
 		{
 			headerName: "NCAA Pick %",
-			valueFormatter: (params) => params.data?.collegePercentage.toFixed(3),
+			valueFormatter: (params) => params.data?.collegePercentage?.toFixed(3),
 			suppressMovable: true,
 		},
 		{
 			headerName: "NFL Pick %",
-			valueFormatter: (params) => params.data?.proPercentage.toFixed(3),
+			valueFormatter: (params) => params.data?.proPercentage?.toFixed(3),
 			suppressMovable: true,
 		},
 		{
 			field: "totalPercentage",
 			headerName: "Overall Pick %",
-			valueFormatter: (params) => params.data?.totalPercentage.toFixed(3),
+			valueFormatter: (params) => params.data?.totalPercentage?.toFixed(3),
 			suppressMovable: true,
 		},
 		{ field: "averageTieBreakerError", headerName: "Avg. TB Error", suppressMovable: true },
