@@ -33,9 +33,13 @@ const NavBar = () => {
 							</Navbar.Link>
 							{isAdmin && (
 								<>
+									<Navbar.Link as={NavLink} to="/statistics" className="md:hover:text-green-600">
+										Statistics
+									</Navbar.Link>
 									<Navbar.Link as={NavLink} to="/admin" className="md:hover:text-green-600">
 										Create Fixture
 									</Navbar.Link>
+
 									<a
 										href={`/hangfire?jwt_token=${loginResult.token}`}
 										target="_blank"

@@ -13,6 +13,7 @@ import Grid from "./pages/Grid";
 import Hero from "./components/Hero";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import Statistics from "./pages/Statistics";
 
 interface AuthRequiredProps {
 	authorizedRoles: string[];
@@ -68,6 +69,14 @@ const AppRoutes = () => {
 				element={
 					<AuthRequired authorizedRoles={["USER"]}>
 						<Dashboard />
+					</AuthRequired>
+				}
+			/>
+			<Route
+				path="statistics"
+				element={
+					<AuthRequired authorizedRoles={["USER"]}>
+						<Statistics />
 					</AuthRequired>
 				}
 			/>
