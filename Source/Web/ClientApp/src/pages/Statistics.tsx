@@ -90,7 +90,7 @@ const Statistics = () => {
 						<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
 							<AgGridReact<StatisticsDto> ref={gridRef} rowData={statistics} columnDefs={colDefs} />
 						</div>
-						<div className="mt-3 text-center text-xs">Updated statistics are tabulated weekly.</div>
+						<div className="mt-3 text-center text-xs">Statistics are updated weekly.</div>
 					</>
 				)}
 			</div>
