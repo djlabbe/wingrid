@@ -136,7 +136,7 @@ const Grid = () => {
 						<div id="myGrid" className="ag-theme-quartz" style={{ height: "80vh" }}>
 							<AgGridReact<EntryDto>
 								ref={gridRef}
-								pinnedTopRowData={[myEntry]}
+								pinnedTopRowData={myEntry ? [myEntry] : undefined}
 								rowData={otherEntries}
 								columnDefs={colDefs}
 							/>
