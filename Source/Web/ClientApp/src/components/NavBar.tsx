@@ -31,11 +31,11 @@ const NavBar = () => {
 							<Navbar.Link as={NavLink} to="/dashboard" className="md:hover:text-green-600">
 								Dashboard
 							</Navbar.Link>
+							<Navbar.Link as={NavLink} to="/statistics" className="md:hover:text-green-600">
+								Statistics
+							</Navbar.Link>
 							{isAdmin && (
 								<>
-									<Navbar.Link as={NavLink} to="/statistics" className="md:hover:text-green-600">
-										Statistics
-									</Navbar.Link>
 									<Navbar.Link as={NavLink} to="/admin" className="md:hover:text-green-600">
 										Create Fixture
 									</Navbar.Link>
