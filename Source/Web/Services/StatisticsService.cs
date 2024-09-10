@@ -16,7 +16,7 @@ namespace Web.Services
 
         public async Task<IEnumerable<UserStatistics>> GetStatistics()
         {
-            var statistics = await _context.UserStatistics.Include(us => us.User).ToListAsync();
+            var statistics = await _context.UserStatistics.Include(us => us.User).OrderBy(us => us.User!.Name).ToListAsync();
             return statistics;
         }
     }
