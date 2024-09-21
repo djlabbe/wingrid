@@ -74,8 +74,11 @@ const Statistics = () => {
 				},
 			],
 		},
-
-		{ field: "averageTieBreakerError", headerName: "Avg. TB Error", suppressMovable: true },
+		{
+			field: "averageTieBreakerError",
+			headerName: "Avg. TB Error",
+			valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => params.data?.averageTieBreakerError.toFixed(1),
+		},
 	] as ColDef<StatisticsDto>[];
 
 	return (

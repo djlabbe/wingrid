@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Web.Services;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenTelemetry()
@@ -64,8 +63,6 @@ builder.Services.AddSwaggerGen(options =>
 
 var connectionString = GetConnectionString(builder, "DefaultConnection");
 
-
-
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseNpgsql(connectionString);
@@ -93,8 +90,6 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 
-
-
 builder.Services.AddHangfire(config =>
 {
     config.UseConsole();
@@ -119,7 +114,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHangfireDashboard(options: new DashboardOptions
 {
-    Authorization = new[] { new JobDashboardAuthorizationFilter("role", new StringValues("ADMIN_JOBS")) },
+    Authorization = [new JobDashboardAuthorizationFilter("role", new StringValues("ADMIN_JOBS"))],
     AppPath = "/"
 });
 
