@@ -96,15 +96,15 @@ const Dashboard = () => {
 												<p className="text-xs">View Grid</p>
 											</LoadingButton>
 										)}
-										{!fixture.locked && (
-											<LoadingButton
-												className="me-2"
-												onClick={() => handleMakePicks(fixture.id)}
-												disabled={fixture.locked}
-											>
-												<p className="text-xs">{fixture.hasSubmitted ? "Edit" : "Make"} Picks</p>
-											</LoadingButton>
-										)}
+										{/* {!fixture.locked && ( */}
+										<LoadingButton
+											className="me-2"
+											onClick={() => handleMakePicks(fixture.id)}
+											disabled={fixture.locked}
+										>
+											<p className="text-xs">{fixture.hasSubmitted ? "Edit" : "Make"} Picks</p>
+										</LoadingButton>
+										{/* )} */}
 									</div>
 								</td>
 								<td className="px-6 py-4 group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg">
