@@ -97,24 +97,23 @@ Wingrid requires the following tools:
    ```sh
    git clone https://github.com/djlabbe/wingrid.git
    ```
-1. Start a postgres container named 'dev' listening on port 5432
+1. Install cake
    ```sh
-   docker run --name dev -e POSTGRES_USER=wingrid_app -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres:latest
+   dotnet tool restore
    ```
-1. Start the Authentication Service
+1. Setup the dev database
    ```sh
-   cd Services/Auth
+   dotnet cake
+   ```
+   1. Start the Server
+   ```sh
+   cd Source/Web
    dotnet run
    ```
-1. Start the EventAPI Service
+1. Start the Client App
    ```sh
-   cd Services/EventAPI
-   dotnet run
-   ```
-1. Start the Web Application
-   ```sh
-   cd FrontEnd/Wingrid.Web
-   dotnet run
+   cd Source/Web/ClientApp
+   npm start
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

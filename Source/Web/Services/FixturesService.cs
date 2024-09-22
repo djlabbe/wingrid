@@ -55,7 +55,7 @@ namespace Wingrid.Services
                 Name = fixture.Name,
                 Events = events,
                 TiebreakerEventId = fixture.TiebreakerEventId,
-                Deadline = firstEventStartTime.AddHours(-2)
+                Deadline = firstEventStartTime.AddMinutes(-5)
             };
 
             _context.Fixtures.Add(newFixture);
