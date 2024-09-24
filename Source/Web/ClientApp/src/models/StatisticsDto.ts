@@ -4,6 +4,7 @@ export interface StatisticsDto {
 	user: UserDto;
 	entries: number;
 	wins: number;
+	totalCorrectPicks: number;
 	collegePercentage: number;
 	proPercentage: number;
 	totalPercentage: number;

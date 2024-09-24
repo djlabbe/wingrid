@@ -43,8 +43,21 @@ const Statistics = () => {
 			},
 		},
 		{
+			field: "totalCorrectPicks",
+			headerName: "Correct Picks",
+		},
+		{
 			headerName: "Correct Picks (%)",
 			children: [
+				{
+					field: "totalPercentage",
+					headerName: "Overall",
+					valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => {
+						if (!params.data?.totalPercentage) return undefined;
+						const pct = params.data.totalPercentage * 100;
+						return pct.toFixed(1);
+					},
+				},
 				{
 					field: "collegePercentage",
 					headerName: "NCAA",
@@ -63,17 +76,9 @@ const Statistics = () => {
 						return pct.toFixed(1);
 					},
 				},
-				{
-					field: "totalPercentage",
-					headerName: "Overall",
-					valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => {
-						if (!params.data?.totalPercentage) return undefined;
-						const pct = params.data.totalPercentage * 100;
-						return pct.toFixed(1);
-					},
-				},
 			],
 		},
+
 		{
 			field: "averageTieBreakerError",
 			headerName: "Avg. TB Error",

@@ -14,6 +14,7 @@ namespace Web.Models.Dto
         public int CorrectProPicks { get; set; }
         public int TotalTieBreakerError { get; set; }
 
+        public int TotalCorrectPicks { get; set; }
         public decimal? CollegePercentage { get; set; }
         public decimal? ProPercentage { get; set; }
         public decimal? TotalPercentage { get; set; }
