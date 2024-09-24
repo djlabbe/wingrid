@@ -31,8 +31,8 @@ const Statistics = () => {
 
 	const colDefs: ColDef<StatisticsDto>[] = [
 		{ field: "user.name", headerName: "Player", pinned: "left", suppressMovable: true },
-		{ field: "entries", headerName: "Entries", width: 120 },
-		{ field: "wins", headerName: "Wins", width: 120 },
+		{ field: "entries", headerName: "Entries", width: 140 },
+		{ field: "wins", headerName: "Wins", width: 140 },
 		{
 			field: "winPercentage",
 			headerName: "Win %",
@@ -41,11 +41,12 @@ const Statistics = () => {
 				const pct = params.data.winPercentage * 100;
 				return pct.toFixed(1);
 			},
-			width: 120,
+			width: 140,
 		},
 		{
 			field: "totalCorrectPicks",
 			headerName: "Correct Picks",
+			width: 140,
 		},
 		{
 			headerName: "Correct Picks (%)",
@@ -58,7 +59,7 @@ const Statistics = () => {
 						const pct = params.data.totalPercentage * 100;
 						return pct.toFixed(1);
 					},
-					width: 120,
+					width: 140,
 				},
 				{
 					field: "collegePercentage",
@@ -68,7 +69,7 @@ const Statistics = () => {
 						const pct = params.data.collegePercentage * 100;
 						return pct.toFixed(1);
 					},
-					width: 120,
+					width: 140,
 				},
 				{
 					field: "proPercentage",
@@ -78,7 +79,7 @@ const Statistics = () => {
 						const pct = params.data.proPercentage * 100;
 						return pct.toFixed(1);
 					},
-					width: 120,
+					width: 140,
 				},
 			],
 		},
@@ -87,6 +88,7 @@ const Statistics = () => {
 			field: "averageTieBreakerError",
 			headerName: "Avg. TB Error",
 			valueFormatter: (params: ValueFormatterParams<StatisticsDto>) => params.data?.averageTieBreakerError.toFixed(1),
+			width: 140,
 		},
 	] as ColDef<StatisticsDto>[];
 
