@@ -31,8 +31,8 @@ const Statistics = () => {
 
 	const colDefs: ColDef<StatisticsDto>[] = [
 		{ field: "user.name", headerName: "Player", pinned: "left", suppressMovable: true },
-		{ field: "entries", headerName: "Entries" },
-		{ field: "wins", headerName: "Wins" },
+		{ field: "entries", headerName: "Entries", width: 120 },
+		{ field: "wins", headerName: "Wins", width: 120 },
 		{
 			field: "winPercentage",
 			headerName: "Win %",
@@ -41,6 +41,7 @@ const Statistics = () => {
 				const pct = params.data.winPercentage * 100;
 				return pct.toFixed(1);
 			},
+			width: 120,
 		},
 		{
 			field: "totalCorrectPicks",
@@ -57,6 +58,7 @@ const Statistics = () => {
 						const pct = params.data.totalPercentage * 100;
 						return pct.toFixed(1);
 					},
+					width: 120,
 				},
 				{
 					field: "collegePercentage",
@@ -66,6 +68,7 @@ const Statistics = () => {
 						const pct = params.data.collegePercentage * 100;
 						return pct.toFixed(1);
 					},
+					width: 120,
 				},
 				{
 					field: "proPercentage",
@@ -75,6 +78,7 @@ const Statistics = () => {
 						const pct = params.data.proPercentage * 100;
 						return pct.toFixed(1);
 					},
+					width: 120,
 				},
 			],
 		},
