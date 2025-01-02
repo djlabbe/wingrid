@@ -18,6 +18,7 @@ namespace Wingrid.Jobs
             var currentYear = DateTime.UtcNow.Year;
 
             await SyncNflEvents(currentYear, performContext);
+            await SyncNcaaEvents(currentYear - 1, performContext); // Temp, find better way than 3 sep calls?
             await SyncNcaaEvents(currentYear, performContext);
             await SyncNcaaEvents(currentYear + 1, performContext);
         }
@@ -26,7 +27,7 @@ namespace Wingrid.Jobs
         {
             performContext.WriteLine("Fetching current NFL season events...");
 
-            var espnEventResponses = await _espnService.GetNflSeasonEvents(2024);
+            var espnEventResponses = await _espnService.GetNflSeasonEvents(2025);
             performContext.WriteLine($"Retrieved {espnEventResponses.Count()} responses from ESPN.");
 
             foreach (var response in espnEventResponses)
