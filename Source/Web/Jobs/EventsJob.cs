@@ -27,7 +27,7 @@ namespace Wingrid.Jobs
         {
             performContext.WriteLine("Fetching current NFL season events...");
 
-            var espnEventResponses = await _espnService.GetNflSeasonEvents(2025);
+            var espnEventResponses = await _espnService.GetNflSeasonEvents(2024);
             performContext.WriteLine($"Retrieved {espnEventResponses.Count()} responses from ESPN.");
 
             foreach (var response in espnEventResponses)
