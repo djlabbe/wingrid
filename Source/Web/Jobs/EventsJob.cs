@@ -17,7 +17,25 @@ namespace Wingrid.Jobs
         {
             var currentYear = DateTime.UtcNow.Year;
 
-            await SyncNflEvents(currentYear, performContext);
+            var monthsToInclude = new List<int>();
+            if (DateTime.UtcNow.Month >= 7)
+            {
+                // July-Dec: current year and next year
+                monthsToInclude.Add(currentYear);
+                monthsToInclude.Add(currentYear + 1);
+            }
+            else
+            {
+                // Jan-June: current year and previous year
+                monthsToInclude.Add(currentYear - 1);
+                monthsToInclude.Add(currentYear);
+            }
+
+            foreach (var year in monthsToInclude)
+            {
+                await SyncNflEvents(year, performContext);
+            }
+
             await SyncNcaaEvents(currentYear - 1, performContext); // Temp, find better way than 3 sep calls?
             await SyncNcaaEvents(currentYear, performContext);
             await SyncNcaaEvents(currentYear + 1, performContext);
@@ -27,7 +45,7 @@ namespace Wingrid.Jobs
         {
             performContext.WriteLine("Fetching current NFL season events...");
 
-            var espnEventResponses = await _espnService.GetNflSeasonEvents(2024);
+            var espnEventResponses = await _espnService.GetNflSeasonEvents(year);
             performContext.WriteLine($"Retrieved {espnEventResponses.Count()} responses from ESPN.");
 
             foreach (var response in espnEventResponses)
